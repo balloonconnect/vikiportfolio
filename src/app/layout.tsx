@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { site } from "@/data/site";
 import { Navbar } from "@/components/Navbar";
 import { AIAssistant } from "@/components/AIAssistant";
+import { CustomCursor } from "@/components/CustomCursor";
 
 export const metadata: Metadata = { title: `${site.name} — ${site.role}`, description: site.intro };
 export const viewport: Viewport = { themeColor: "#0d0d0d", width: "device-width", initialScale: 1 };
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main id="main">{children}</main>
         <AIAssistant />
+        <CustomCursor />
       </body>
     </html>
   );

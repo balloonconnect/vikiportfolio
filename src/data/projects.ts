@@ -15,7 +15,11 @@ export type CaseStudy = {
   outcomes: { metric: string; label: string }[];
 };
 
+import type { LayoutId } from "@/components/case/layouts";
+
 export type Project = {
+  /** Which case study layout to use: contracts | give | legalease | itm | transitstats */
+  layout: LayoutId;
   slug: string;
   name: string;
   tagline: string;
@@ -59,6 +63,7 @@ const base = (name: string): CaseStudy => ({
 export const projects: Project[] = [
   {
     slug: "clinical-portal",
+    layout: "contracts",
     name: "Clinical Portal Redesign",
     tagline: "A calmer workspace for healthcare professionals.",
     description: "Redesigned a content-heavy HCP portal around task flows, cutting navigation depth and improving accessibility.",
@@ -67,6 +72,7 @@ export const projects: Project[] = [
   },
   {
     slug: "design-system",
+    layout: "give",
     name: "Enterprise Design System",
     tagline: "From components to ecosystem.",
     description: "A multi-brand component library with variables, theming and documentation, shared across several client teams.",
@@ -75,6 +81,7 @@ export const projects: Project[] = [
   },
   {
     slug: "ai-design-tools",
+    layout: "legalease",
     name: "AI Design Tools",
     tagline: "Figma plugins that fix the boring parts.",
     description: "Plugins for design-system migration and accessibility validation, built for designers working on regulated products.",
@@ -83,6 +90,7 @@ export const projects: Project[] = [
   },
   {
     slug: "photo-studio-os",
+    layout: "itm",
     name: "Studio OS",
     tagline: "Operations software for a photography studio.",
     description: "A CRM, gallery and payment-delivery system for a working photography business, designed and built end to end.",
@@ -91,6 +99,7 @@ export const projects: Project[] = [
   },
   {
     slug: "learning-assistant",
+    layout: "transitstats",
     name: "Bilingual Learning Assistant",
     tagline: "An AI tutor for school students.",
     description: "A bilingual AI teaching assistant concept with a chat-first interface for students from Class 1 to 12.",
