@@ -1,0 +1,102 @@
+// Placeholder projects. Replace copy, `cover` paths and `accent` with your own.
+// If `cover` is omitted, a generated placeholder tile is drawn using `accent`.
+export type CaseStudy = {
+  overview: string;
+  problem: string;
+  objectives: string[];
+  research: string[];
+  personas: { name: string; role: string; goal: string }[];
+  journey: { stage: string; note: string }[];
+  ia: string[];
+  wireframes: string;
+  explorations: string;
+  finalUI: string;
+  prototype: string;
+  outcomes: { metric: string; label: string }[];
+};
+
+export type Project = {
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  years: string;
+  role: string;
+  scope: string;
+  results: string;
+  readTime: number;
+  accent: string;
+  cover?: string;
+  caseStudy: CaseStudy;
+};
+
+const base = (name: string): CaseStudy => ({
+  overview: `${name} is a placeholder case study. Replace this overview with a two or three sentence summary of the product, the team and your part in it.`,
+  problem: "Describe the problem users and the business faced before you started. Keep it specific and measurable.",
+  objectives: ["Reduce task completion time", "Unify the interface under one design system", "Meet WCAG 2.2 AA"],
+  research: ["Stakeholder interviews", "Heuristic audit of the existing product", "Usability sessions with 8 participants", "Analytics review"],
+  personas: [
+    { name: "Primary user", role: "Day-to-day operator", goal: "Finish routine work quickly and with confidence" },
+    { name: "Secondary user", role: "Reviewer or approver", goal: "See status at a glance and act on exceptions" },
+  ],
+  journey: [
+    { stage: "Discover", note: "How users find and understand the tool" },
+    { stage: "Do", note: "Core task flow and friction points" },
+    { stage: "Review", note: "Confirming results and sharing outcomes" },
+  ],
+  ia: ["Dashboard", "Records", "Workflows", "Reports", "Settings"],
+  wireframes: "Low-fidelity flows exploring layout and hierarchy before visual design.",
+  explorations: "Three directions compared on clarity, density and brand fit.",
+  finalUI: "The final interface uses a token-based design system with light and dark themes.",
+  prototype: "Interactive prototype used for testing and developer handoff.",
+  outcomes: [
+    { metric: "-35%", label: "Time on task" },
+    { metric: "+22", label: "SUS score" },
+    { metric: "4x", label: "Faster design handoff" },
+  ],
+});
+
+export const projects: Project[] = [
+  {
+    slug: "clinical-portal",
+    name: "Clinical Portal Redesign",
+    tagline: "A calmer workspace for healthcare professionals.",
+    description: "Redesigned a content-heavy HCP portal around task flows, cutting navigation depth and improving accessibility.",
+    years: "2024-2026", role: "Senior UI/UX Designer", scope: "Research, UX, UI, Design system", results: "Fewer clicks to key content, AA accessibility",
+    readTime: 6, accent: "#2f6f5e", caseStudy: base("Clinical Portal Redesign"),
+  },
+  {
+    slug: "design-system",
+    name: "Enterprise Design System",
+    tagline: "From components to ecosystem.",
+    description: "A multi-brand component library with variables, theming and documentation, shared across several client teams.",
+    years: "2022-2026", role: "Design Systems Designer", scope: "Foundations, Components, Governance", results: "Faster delivery across brands",
+    readTime: 8, accent: "#3b4cca", caseStudy: base("Enterprise Design System"),
+  },
+  {
+    slug: "ai-design-tools",
+    name: "AI Design Tools",
+    tagline: "Figma plugins that fix the boring parts.",
+    description: "Plugins for design-system migration and accessibility validation, built for designers working on regulated products.",
+    years: "2025-2026", role: "Founder, Designer, Engineer", scope: "Strategy, UX, Plugin development", results: "Used by design teams in production",
+    readTime: 5, accent: "#c2410c", caseStudy: base("AI Design Tools"),
+  },
+  {
+    slug: "photo-studio-os",
+    name: "Studio OS",
+    tagline: "Operations software for a photography studio.",
+    description: "A CRM, gallery and payment-delivery system for a working photography business, designed and built end to end.",
+    years: "2025-2026", role: "Product Designer and Developer", scope: "0 to 1, UX, UI, Full-stack", results: "Replaced a manual spreadsheet workflow",
+    readTime: 5, accent: "#a21caf", caseStudy: base("Studio OS"),
+  },
+  {
+    slug: "learning-assistant",
+    name: "Bilingual Learning Assistant",
+    tagline: "An AI tutor for school students.",
+    description: "A bilingual AI teaching assistant concept with a chat-first interface for students from Class 1 to 12.",
+    years: "2026", role: "Product Designer", scope: "Concept, UX, UI, Prototype", results: "Working prototype",
+    readTime: 4, accent: "#0e7490", caseStudy: base("Bilingual Learning Assistant"),
+  },
+];
+
+export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
