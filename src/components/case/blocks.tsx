@@ -21,6 +21,15 @@ export const Video = ({ accent, src, caption }: { accent: string; src?: string; 
     </div>{caption && <figcaption className="mt-3 text-[14px] text-muted">{caption}</figcaption>}
   </figure>
 );
+export const Shot = ({ src, alt, w, h, caption, narrow }: { src: string; alt: string; w: number; h: number; caption?: string; narrow?: boolean }) => (
+  <figure className={narrow ? "max-w-[420px]" : ""}><div className="overflow-hidden rounded-[6px] border border-secondary bg-surface"><img src={src} alt={alt} width={w} height={h} loading="lazy" className="h-auto w-full" /></div>{caption && <figcaption className="mt-3 text-[14px] text-muted">{caption}</figcaption>}</figure>
+);
+export const Steps = ({ items }: { items: [string, string][] }) => (
+  <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">{items.map(([t, d]) => (<li key={t} className="rounded-[6px] border border-secondary bg-surface p-4"><p className="text-[16px] font-semibold">{t}</p><p className="mt-2 text-[14px] leading-[22px] text-muted">{d}</p></li>))}</ol>
+);
+export const Pipeline = ({ steps }: { steps: string[] }) => (
+  <ol className="flex flex-wrap items-center gap-2 text-[14px]">{steps.map((s, i) => (<li key={s} className="flex items-center gap-2"><span className="rounded-full border border-secondary bg-surface px-4 py-2">{s}</span>{i < steps.length - 1 && <span className="text-muted" aria-hidden>→</span>}</li>))}</ol>
+);
 export const Stats = ({ items }: { items: [string, string][] }) => (
   <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">{items.map(([v, l]) => (<div key={l}><p className="text-[clamp(40px,5vw,64px)] leading-none tracking-[-0.02em]">{v}</p><p className="mt-2 text-[15px] text-muted">{l}</p></div>))}</div>
 );
