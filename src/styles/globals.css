@@ -9,6 +9,9 @@
   --text-heading: 24px; --text-body: 16px; --leading-body: 26px; --text-caption: 15px;
   --shadow-card: 0 10px 50px #00000024;
   --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-in: cubic-bezier(.55,0,1,.45);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --duration-fast: .16s; --duration-base: .24s; --duration-slow: .42s;
   --gutter: 84px;
 }
 [data-theme="dark"] {
@@ -22,3 +25,20 @@ body { background: var(--bg); color: var(--fg); font-family: Lato, ui-sans-serif
 .h-display { font-size: clamp(30px, 3.2vw, 46px); line-height: 1.2; letter-spacing: -0.02em; font-weight: 400; }
 .focus-ring:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* Motion primitives (original implementations, measured timings) */
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+@keyframes bob-up { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes caret-blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+@keyframes agent-dot { 0%,var(--agent-delay,0%) { opacity: 0; transform: scale(.4); } 18% { opacity: 1; transform: scale(1.18); } 28%,100% { opacity: 1; transform: scale(1); } }
+@keyframes hero-loop-up { to { transform: translateY(calc(var(--loop, 480px) * -1)); } }
+@keyframes hero-loop-down { to { transform: translateY(var(--loop, 480px)); } }
+.anim-bob { animation: bob 1.6s ease-in-out infinite; }
+.anim-bob-up { animation: bob-up 1.6s ease-in-out infinite; }
+.anim-caret { animation: caret-blink 1s steps(1) infinite; }
+.agent-dots span { display: inline-block; width: 6px; height: 6px; border-radius: 9999px; background: currentColor; opacity: 0; animation: agent-dot 1.2s var(--ease-out) infinite; }
+.agent-dots span:nth-child(2) { animation-delay: .4s; } .agent-dots span:nth-child(3) { animation-delay: .8s; }
+.hero-loop-up { animation: hero-loop-up 40s linear infinite; } .hero-loop-down { animation: hero-loop-down 40s linear infinite; }
+.press { transition: transform var(--duration-base) var(--ease-spring), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out); }
+.press:hover { transform: scale(1.05); } .press:active { transform: scale(.96); }
+.hero-glass-inner { box-shadow: 0 0 20px rgba(0,0,0,.14); }

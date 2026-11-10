@@ -65,7 +65,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-6">
           <Link href={href("#contact")} data-cursor="Contact me" className="hidden items-center gap-2 text-[17px] lg:flex"><CircleUser size={20} strokeWidth={1.5} />Contact</Link>
-          <button onClick={openAI} data-cursor="Open AI chat" className="hidden items-center gap-2 rounded-full border-[0.8px] border-border bg-transparent px-4 py-[6px] text-[17px] transition-colors duration-200 hover:bg-fg hover:text-bg lg:flex">
+          <button onClick={openAI} data-cursor="Open AI chat" className="hidden items-center gap-2 press rounded-full border-[0.8px] border-border bg-transparent px-4 py-[6px] text-[17px] hover:bg-fg hover:text-bg lg:flex">
             <MessageSquare size={16} strokeWidth={1.5} />Ask AI
           </button>
           <div className="lg:hidden"><ThemeToggle /></div>

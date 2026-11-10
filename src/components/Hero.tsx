@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { MapPin, Clock } from "lucide-react";
+import { MapPin, Clock, ChevronDown } from "lucide-react";
 import { site } from "@/data/site";
 import { projects } from "@/data/projects";
 import { Placeholder } from "./Placeholder";
@@ -66,6 +66,7 @@ export function Hero() {
             </div>
           ))}
         </div>
+        <a href="#work" aria-label="Scroll to work" data-cursor="grow" className="mx-auto mt-10 hidden w-fit text-muted transition-colors duration-[160ms] hover:text-fg lg:block"><ChevronDown className="anim-bob" size={24} /></a>
       </div>
     </section>
   );

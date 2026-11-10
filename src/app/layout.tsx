@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { site } from "@/data/site";
 import { Navbar } from "@/components/Navbar";
 import { AIAssistant } from "@/components/AIAssistant";
+import { ScrollDots } from "@/components/ScrollDots";
 import { CustomCursor } from "@/components/CustomCursor";
 
 export const metadata: Metadata = { title: `${site.name} — ${site.role}`, description: site.intro };
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <AIAssistant />
         <CustomCursor />
+        <ScrollDots />
       </body>
     </html>
   );

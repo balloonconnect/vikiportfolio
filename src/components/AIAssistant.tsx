@@ -28,6 +28,7 @@ export function AIAssistant() {
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([{ from: "ai", text: `Hi, I answer questions about ${site.name}'s work and background.` }]);
   const [input, setInput] = useState("");
+  const [thinking, setThinking] = useState(false);
   const end = useRef<HTMLDivElement>(null);
 
   useEffect(() => { const f = () => setOpen(true); window.addEventListener("open-ai", f); return () => window.removeEventListener("open-ai", f); }, []);
@@ -36,8 +37,9 @@ export function AIAssistant() {
 
   const send = (text: string) => {
     const t = text.trim(); if (!t) return;
-    setMsgs((m) => [...m, { from: "user", text: t }, { from: "ai", text: answer(t) }]);
-    setInput("");
+    setMsgs((m) => [...m, { from: "user", text: t }]);
+    setInput(""); setThinking(true);
+    window.setTimeout(() => { setMsgs((m) => [...m, { from: "ai", text: answer(t) }]); setThinking(false); }, 700);
   };
 
   return (
@@ -52,7 +54,8 @@ export function AIAssistant() {
           {msgs.map((m, i) => (
             <p key={i} className={`max-w-[85%] rounded-2xl px-4 py-2 text-[15px] leading-[1.5] ${m.from === "user" ? "ml-auto bg-fg text-bg" : "bg-tile"}`}>{m.text}</p>
           ))}
-          {msgs.length < 3 && <div className="flex flex-wrap gap-2 pt-2">{suggestions.map((s) => <button key={s} onClick={() => send(s)} className="rounded-full border border-secondary px-3 py-1 text-[13px] hover:bg-tile">{s}</button>)}</div>}
+          {thinking && <p className="agent-dots flex w-fit gap-1 rounded-2xl bg-tile px-4 py-3" role="status" aria-label="Thinking"><span /><span /><span /></p>}
+          {msgs.length < 3 && <div className="flex flex-wrap gap-2 pt-2">{suggestions.map((s) => <button key={s} onClick={() => send(s)} className="press rounded-full border border-secondary px-3 py-1 text-[13px] hover:bg-tile">{s}</button>)}</div>}
           <div ref={end} />
         </div>
         <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="flex gap-2 border-t border-secondary p-4">
