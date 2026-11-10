@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { createHost } from "./mockHost";
+import { SourceGate } from "./SourceGate";
 
-const REPO = "https://github.com/balloonconnect/global-design-check";
 const isDark = () => document.documentElement.dataset.theme === "dark";
 
 // Runs the plugin's real interface (public/plugin/ui.html, synced from the GitHub repo) in a 420 x 700 frame.
@@ -27,7 +27,7 @@ export function PluginFrame() {
       <div className="overflow-hidden rounded-[14px] border border-secondary shadow-[0_10px_50px_#00000024]" data-cursor="grow">
         <iframe ref={frame} src="/plugin/ui.html" title="Global Design Check plugin, interactive demo" loading="lazy" className="block h-[700px] w-full border-0 bg-surface" />
       </div>
-      <figcaption className="mt-3 text-[14px] text-muted">The plugin's real interface running on a sample file, so scanning and fixing here don't touch anything. <a className="underline underline-offset-2 hover:text-fg" href={REPO} target="_blank" rel="noopener noreferrer">View the plugin source</a>.</figcaption>
+      <figcaption className="mt-3 text-[14px] text-muted">The plugin's real interface running on a sample file, so scanning and fixing here don't touch anything. <SourceGate />.</figcaption>
     </figure>
   );
 }
