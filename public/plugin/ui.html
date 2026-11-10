@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Global Design Check</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: Inter, -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--bg);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button, select, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; opacity: .5; }
+button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--purple); outline-offset: 1px; }
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+
+body {
+  --bg: #ffffff; --surface: #ffffff; --surface-subtle: #f7f7f8; --surface-hover: #f1f1f3;
+  --text: #26272b; --text-soft: #5f636c; --text-faint: #8b8f98;
+  --border: #e6e7e9; --border-strong: #d5d7db;
+  --purple: #6257e9; --purple-hover: #5549d9; --purple-soft: #f0efff;
+  --green: #1f9d69; --green-soft: #eaf8f2;
+  --orange: #d77913; --orange-soft: #fff4e5;
+  --red: #d84646; --red-soft: #fff0f0;
+  --blue: #4b8ee8; --blue-soft: #eaf3ff;
+}
+body.dark {
+  --bg: #16171a; --surface: #1d1e22; --surface-subtle: #242529; --surface-hover: #2a2b30;
+  --text: #f0f0f2; --text-soft: #aaadb5; --text-faint: #7d818b;
+  --border: #303238; --border-strong: #41434a;
+  --purple: #847af7; --purple-hover: #958cf9; --purple-soft: #2a274b;
+  --green: #4fcf99; --green-soft: #19372d;
+  --orange: #f2a747; --orange-soft: #3b2b1a;
+  --red: #f06c6c; --red-soft: #402323;
+  --blue: #6aa6f2; --blue-soft: #1d3048;
+}
+
+.shell { position: relative; height: 100vh; display: flex; flex-direction: column; background: var(--bg); overflow: hidden; }
+.icon { flex: none; }
+
+/* header */
+.app-header { height: 52px; flex: 0 0 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 14px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand h1 { font-size: 13px; line-height: 16px; font-weight: 650; letter-spacing: -.015em; }
+.brand p { color: var(--text-faint); font-size: 10px; }
+.logo-mark { width: 28px; height: 28px; padding: 5px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: 7px; background: var(--purple); }
+.logo-mark span { background: #fff; border-radius: 1.5px; }
+.logo-mark span:nth-child(2) { border-radius: 4px 4px 4px 1.5px; opacity: .9; }
+.logo-mark span:nth-child(3) { border-radius: 4px 1.5px 4px 4px; opacity: .7; }
+.logo-mark span:nth-child(4) { opacity: .45; }
+.header-actions { display: flex; gap: 6px; }
+.icon-button { width: 28px; height: 28px; display: grid; place-items: center; color: var(--text-soft); background: transparent; border: 1px solid var(--border); border-radius: 7px; }
+.icon-button:hover { background: var(--surface-hover); color: var(--text); }
+
+/* scan panel */
+.scan-panel { flex: none; padding: 12px 14px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.score-block { display: flex; align-items: center; gap: 12px; }
+.health-ring { --score: 0deg; --ring: var(--green); width: 56px; height: 56px; flex: 0 0 56px; padding: 5px; border-radius: 50%; background: conic-gradient(var(--ring) var(--score), var(--border) 0); }
+.health-ring > div { height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--surface); }
+.health-ring strong { font-size: 16px; letter-spacing: -.04em; }
+.health-ring small { color: var(--text-faint); font-size: 9px; margin-left: 1px; }
+.score-copy { min-width: 0; flex: 1; }
+.eyebrow { color: var(--text-faint); font-size: 9px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+.score-title { margin: 1px 0 5px; font-size: 13px; font-weight: 600; letter-spacing: -.02em; }
+.metric-row { display: flex; flex-wrap: wrap; gap: 3px 10px; }
+.metric-row span { display: flex; align-items: center; gap: 4px; color: var(--text-soft); font-size: 10px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.dot.warning { background: var(--orange); }
+.dot.critical { background: var(--red); }
+.dot.idle { background: var(--border-strong); }
+
+.scan-actions { display: flex; gap: 7px; margin-top: 11px; }
+.scope-select { height: 32px; flex: 1; display: flex; align-items: center; gap: 6px; padding: 0 8px; color: var(--text-soft); background: var(--surface-subtle); border: 1px solid var(--border); border-radius: 7px; }
+.scope-select select, .filter-button select { min-width: 0; flex: 1; appearance: none; -webkit-appearance: none; border: 0; outline: 0; background: transparent; font-size: 11px; font-weight: 550; cursor: pointer; }
+.scope-select select option, .filter-button select option { color: #26272b; background: #fff; }
+.primary-button { height: 32px; min-width: 138px; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 13px; color: #fff; background: var(--purple); border: 0; border-radius: 7px; font-size: 11px; font-weight: 650; box-shadow: 0 2px 5px rgba(74,61,198,.25); }
+.primary-button:hover:not(:disabled) { background: var(--purple-hover); }
+.primary-button.cancel { background: var(--surface-hover); color: var(--text); box-shadow: none; border: 1px solid var(--border-strong); }
+.spin { animation: spin .8s linear infinite; }
+
+/* tabs */
+.tabs { flex: none; height: 38px; display: flex; overflow-x: auto; padding: 0 4px; justify-content: space-between; background: var(--surface); border-bottom: 1px solid var(--border); scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { position: relative; height: 38px; display: flex; align-items: center; gap: 2px; padding: 0 2px; white-space: nowrap; color: var(--text-soft); background: transparent; border: 0; font-size: 9px; letter-spacing: -.01em; font-weight: 550; }
+.tabs button:hover { color: var(--text); }
+.tabs button.active { color: var(--text); font-weight: 650; }
+.tabs button.active::after { content: ""; position: absolute; height: 2px; inset: auto 3px -1px; background: var(--purple); border-radius: 2px 2px 0 0; }
+.tabs button span { min-width: 12px; padding: 1px 2px; letter-spacing: 0; text-align: center; color: var(--text-faint); background: var(--surface-hover); border-radius: 6px; font-size: 9px; }
+.tabs button.active span { color: var(--purple); background: var(--purple-soft); }
+
+/* workspace */
+.content-scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; background: var(--surface-subtle); }
+.toolbar { position: sticky; top: 0; z-index: 2; display: flex; gap: 6px; padding: 10px 12px 8px; background: var(--surface-subtle); }
+.search-box { height: 30px; flex: 1; display: flex; align-items: center; gap: 6px; padding: 0 8px; color: var(--text-faint); background: var(--surface); border: 1px solid var(--border); border-radius: 7px; }
+.search-box:focus-within { border-color: var(--purple); box-shadow: 0 0 0 2px var(--purple-soft); }
+.search-box input { width: 100%; min-width: 0; background: transparent; border: 0; outline: 0; font-size: 11px; }
+.search-box input::placeholder { color: var(--text-faint); }
+kbd { padding: 1px 4px; color: var(--text-faint); background: var(--surface-subtle); border: 1px solid var(--border); border-radius: 4px; font: inherit; font-size: 9px; white-space: nowrap; }
+.filter-button { width: 104px; height: 30px; display: flex; align-items: center; gap: 5px; padding: 0 8px; color: var(--text-soft); background: var(--surface); border: 1px solid var(--border); border-radius: 7px; }
+.workspace { padding: 0 12px 16px; }
+.col-body { margin: 9px 0 8px 34px; display: grid; gap: 6px; }
+.col-body label { color: var(--text-faint); font-size: 9px; }
+.col-body select { width: 100%; padding: 7px 8px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 6px; font-size: 11px; }
+.col-plan { padding: 7px 9px; color: var(--text-soft); background: var(--surface-subtle); border-radius: 6px; font-size: 10.5px; line-height: 15px; }
+.col-plan strong { color: var(--text); }
+.col-plan.ok { color: var(--green); background: var(--green-soft); }
+.col-plan details { margin-top: 4px; }
+.col-plan summary { cursor: pointer; color: var(--orange); }
+.col-plan ul { margin: 4px 0 0 16px; max-height: 90px; overflow-y: auto; }
+.section-heading { display: flex; justify-content: space-between; align-items: center; margin: 6px 2px 8px; }
+.section-heading h2 { font-size: 12px; font-weight: 650; }
+.section-heading p { margin-top: 1px; color: var(--text-faint); font-size: 10px; }
+.text-action { display: flex; align-items: center; gap: 4px; color: var(--purple); background: transparent; border: 0; font-size: 10.5px; font-weight: 650; }
+.text-action.confirm { color: var(--orange); }
+.notice { margin: 0 0 8px; padding: 7px 9px; color: var(--text-soft); background: var(--orange-soft); border: 1px solid color-mix(in srgb, var(--orange) 30%, var(--border)); border-radius: 7px; font-size: 10px; line-height: 14px; }
+.notice b { color: var(--text); }
+
+.issue-groups { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.issue-group { overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+.group-header { width: 100%; height: 30px; display: flex; align-items: center; justify-content: space-between; padding: 0 9px; color: var(--text-soft); background: var(--surface); border: 0; border-bottom: 1px solid var(--border); text-transform: capitalize; font-size: 10px; font-weight: 650; }
+.group-header > span { display: flex; align-items: center; gap: 6px; }
+.group-header i { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); }
+.critical .group-header i { background: var(--red); }
+.info .group-header i { background: var(--blue); }
+.group-header b { min-width: 16px; padding: 1px 4px; text-align: center; color: var(--text-faint); background: var(--surface-hover); border-radius: 5px; font-size: 9px; }
+.group-header > .icon { transition: transform .2s; }
+.issue-group.collapsed .group-header { border-bottom: 0; }
+.issue-group.collapsed .group-header > .icon { transform: rotate(-90deg); }
+.cards { display: grid; grid-template-columns: minmax(0, 1fr); }
+
+.issue-card { position: relative; min-width: 0; padding: 10px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.issue-card:last-child { border-bottom: 0; }
+.issue-card:hover { background: color-mix(in srgb, var(--surface) 94%, var(--purple)); }
+.issue-card.selected { box-shadow: inset 2px 0 var(--purple); background: color-mix(in srgb, var(--surface) 95%, var(--purple)); }
+.issue-card.fixed { opacity: .6; }
+.card-top { display: flex; align-items: center; gap: 8px; }
+.checkbox { width: 15px; height: 15px; flex: 0 0 15px; display: grid; place-items: center; padding: 0; color: #fff; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 4px; }
+.checkbox.spacer { visibility: hidden; }
+.selected .checkbox { background: var(--purple); border-color: var(--purple); }
+.category-icon { width: 26px; height: 26px; flex: 0 0 26px; display: grid; place-items: center; color: var(--purple); background: var(--purple-soft); border-radius: 6px; }
+.category-icon.colors { color: #397ccb; background: var(--blue-soft); }
+.category-icon.accessibility { color: var(--orange); background: var(--orange-soft); }
+.category-icon.components { color: #bc5aad; background: color-mix(in srgb, var(--red-soft) 55%, var(--purple-soft)); }
+.card-title { min-width: 0; flex: 1; }
+.card-title h3 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; line-height: 15px; font-weight: 650; }
+.card-title p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-soft); font-size: 10px; line-height: 13px; }
+.badge { padding: 2px 6px; white-space: nowrap; border-radius: 5px; font-size: 9px; font-weight: 650; }
+.badge.conf { color: var(--green); background: var(--green-soft); }
+.badge.conf.mid { color: var(--orange); background: var(--orange-soft); }
+.badge.safe { color: var(--purple); background: var(--purple-soft); }
+.badges { display: flex; gap: 4px; }
+
+.comparison { display: grid; grid-template-columns: 1fr 15px 1fr; align-items: center; gap: 5px; margin: 9px 0 8px 48px; padding: 7px 8px; background: var(--surface-subtle); border-radius: 6px; }
+.comparison > .icon { color: var(--text-faint); }
+.comparison div { min-width: 0; }
+.comparison span { display: block; margin-bottom: 2px; color: var(--text-faint); font-size: 9px; }
+.comparison strong { display: flex; align-items: center; gap: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10.5px; font-weight: 550; }
+.comparison div:last-child strong { color: var(--purple); }
+.comparison div:last-child strong.none { color: var(--text-faint); font-weight: 450; }
+.swatch { width: 11px; height: 11px; flex: 0 0 11px; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.14); }
+.card-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-left: 48px; }
+.secondary-small, .action-small { white-space: nowrap; }
+.layer-meta { display: flex; align-items: center; gap: 4px; color: var(--text-faint); font-size: 10px; }
+.card-footer > div { display: flex; align-items: center; gap: 5px; }
+.secondary-small, .action-small { height: 24px; display: flex; align-items: center; gap: 4px; padding: 0 8px; color: var(--text-soft); background: var(--surface); border: 1px solid var(--border); border-radius: 5px; font-size: 10px; font-weight: 600; }
+.secondary-small:hover { background: var(--surface-hover); color: var(--text); }
+.secondary-small.ghost { border-color: transparent; background: transparent; color: var(--text-faint); }
+.action-small { color: #fff; background: var(--purple); border-color: var(--purple); }
+.action-small:hover:not(:disabled) { background: var(--purple-hover); }
+.manual { color: var(--text-faint); font-size: 10px; padding: 0 4px; }
+
+.prop-grid { margin: 8px 0 0 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.prop { min-width: 0; padding: 5px 7px; background: var(--surface-subtle); border-radius: 6px; }
+.prop span { display: flex; align-items: center; gap: 4px; color: var(--text-faint); font-size: 9px; }
+.prop strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10.5px; font-weight: 550; }
+.prop em { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; color: var(--purple); font-size: 9.5px; }
+.type-preview { margin: 8px 0 0 48px; display: flex; align-items: baseline; gap: 8px; color: var(--text); font-size: 20px; line-height: 24px; overflow: hidden; white-space: nowrap; }
+.type-preview span { color: var(--text-soft); font-family: Inter, sans-serif; font-size: 10px; }
+.component-preview { margin: 8px 0 8px 48px; display: flex; align-items: center; gap: 7px; }
+.mini-component { min-width: 0; height: 26px; display: flex; align-items: center; gap: 5px; padding: 0 8px; color: var(--text-soft); background: var(--surface-subtle); border: 1px solid var(--border); border-radius: 5px; font-size: 10px; }
+.mini-component span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 130px; }
+.mini-component i { width: 7px; height: 7px; flex: none; background: #a7aab0; border-radius: 2px; }
+.mini-component.suggested { color: var(--purple); border-color: color-mix(in srgb, var(--purple) 35%, var(--border)); }
+.mini-component.suggested i { background: var(--purple); }
+.contrast-preview { margin: 8px 0 0 48px; display: flex; align-items: center; gap: 9px; }
+.contrast-sample { width: 34px; height: 26px; display: grid; place-items: center; border-radius: 5px; font-size: 13px; font-weight: 650; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.ratio { font-size: 14px; font-weight: 650; }
+.ratio span { color: var(--text-faint); font-size: 10px; margin-left: 2px; }
+.contrast-meter { display: flex; gap: 2px; }
+.contrast-meter i { width: 10px; height: 5px; border-radius: 2px; background: var(--border); }
+.contrast-meter i.on { background: var(--orange); }
+.contrast-meter i.on.bad { background: var(--red); }
+.contrast-preview > small { color: var(--text-faint); font-size: 10px; }
+
+.empty-state { min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 26px 24px; }
+.empty-icon { width: 48px; height: 48px; display: grid; place-items: center; margin-bottom: 12px; color: var(--green); background: var(--green-soft); border-radius: 50%; }
+.empty-icon.idle { color: var(--purple); background: var(--purple-soft); }
+.empty-state h3 { font-size: 14px; font-weight: 650; }
+.empty-state p { max-width: 290px; margin: 6px 0 12px; color: var(--text-soft); font-size: 11px; line-height: 16px; }
+.empty-state > span { padding: 4px 8px; color: var(--green); background: var(--green-soft); border-radius: 5px; font-size: 10px; font-weight: 650; }
+.empty-state .primary-button { margin-top: 2px; }
+
+.bottom-bar { flex: none; height: 55px; display: flex; align-items: center; gap: 5px; padding: 9px 12px; background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -5px 18px rgba(20,22,28,.05); position: relative; z-index: 4; }
+.footer-action { height: 34px; display: flex; align-items: center; gap: 5px; padding: 0 8px; color: var(--text-soft); background: transparent; border: 0; border-radius: 6px; font-size: 10.5px; font-weight: 550; }
+.footer-action:hover:not(:disabled) { background: var(--surface-hover); color: var(--text); }
+.fix-button { height: 34px; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; color: #fff; background: var(--purple); border: 0; border-radius: 7px; font-size: 11px; font-weight: 650; box-shadow: 0 2px 7px rgba(77,64,207,.28); }
+.fix-button:hover:not(:disabled) { background: var(--purple-hover); }
+.popover { position: absolute; left: 10px; bottom: 60px; min-width: 170px; padding: 4px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.22); z-index: 20; }
+.popover button { width: 100%; display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px; text-align: left; color: var(--text); background: transparent; border: 0; border-radius: 5px; font-size: 11px; }
+.popover button:hover { background: var(--surface-hover); }
+
+.toast { position: absolute; left: 50%; bottom: 65px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; max-width: 92%; padding: 8px 12px; color: #fff; background: #25272c; border: 1px solid rgba(255,255,255,.12); border-radius: 7px; box-shadow: 0 8px 24px rgba(0,0,0,.25); font-size: 11px; font-weight: 550; z-index: 30; animation: toast-in .2s ease-out; }
+.toast .icon { color: #68d5a6; }
+.toast.err .icon { color: #ff8b8b; }
+
+/* settings sheet */
+.sheet { position: absolute; inset: 52px 0 0 0; z-index: 25; display: flex; flex-direction: column; background: var(--bg); animation: slide-in .18s ease-out; }
+.sheet-head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.sheet-head h2 { font-size: 13px; font-weight: 650; }
+.sheet-body { flex: 1; overflow-y: auto; padding: 4px 14px 18px; }
+.sheet h4 { margin: 14px 0 6px; color: var(--text-faint); font-size: 9.5px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 34px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.row:last-of-type { border-bottom: 0; }
+.row label, .row .lbl { font-size: 11.5px; font-weight: 550; }
+.row small { display: block; color: var(--text-faint); font-size: 10px; font-weight: 400; }
+.switch { position: relative; width: 30px; height: 18px; flex: none; background: var(--border-strong); border: 0; border-radius: 10px; transition: background .15s; }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: #fff; border-radius: 50%; transition: transform .15s; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+.switch.on { background: var(--purple); }
+.switch.on::after { transform: translateX(12px); }
+.field { display: grid; gap: 4px; padding: 6px 0; }
+.field > span { font-size: 11.5px; font-weight: 550; }
+.field > small { color: var(--text-faint); font-size: 10px; }
+.field input, .field textarea, .field select, .num { width: 100%; padding: 7px 8px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 6px; font-size: 11px; }
+.field textarea { min-height: 74px; resize: vertical; font-family: ui-monospace, Menlo, monospace; font-size: 10.5px; }
+.num { width: 64px; text-align: center; }
+.row select { padding: 5px 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 6px; font-size: 11px; }
+.danger-link { margin-top: 6px; color: var(--red); background: transparent; border: 0; font-size: 11px; font-weight: 600; }
+.about { margin-top: 14px; color: var(--text-faint); font-size: 10px; line-height: 15px; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 5px); } }
+@keyframes slide-in { from { opacity: 0; transform: translateY(8px); } }
+</style>
+<link rel="stylesheet" href="inter.css">
+</head>
+<body>
+<div class="shell" id="root"></div>
+
+<script>
+/* ---------------------------------------------------------------- */
+/* Icons (same set as the Figma Make design)                         */
+/* ---------------------------------------------------------------- */
+const ICONS = {
+  accessibility: '<circle cx="12" cy="4.5" r="2"/><path d="M5 8.5h14M12 7v5m0 0-4 8m4-8 4 8"/>',
+  alert: '<path d="M10.3 3.5 2.7 17a2 2 0 0 0 1.8 3h15a2 2 0 0 0 1.8-3L13.7 3.5a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4m0 3.5v.1"/>',
+  arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
+  check: '<path d="m5 12 4 4L19 6"/>',
+  chevron: '<path d="m8 10 4 4 4-4"/>',
+  component: '<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>',
+  export: '<path d="M12 15V3m0 0L8 7m4-4 4 4"/><path d="M5 13v6h14v-6"/>',
+  file: '<path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v5h5M9 13h6m-6 4h4"/>',
+  filter: '<path d="M4 6h16M7 12h10m-7 6h4"/>',
+  layers: '<path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 12 9 5 9-5m-18 4 9 5 9-5"/>',
+  locate: '<circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3"/>',
+  moon: '<path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/>',
+  palette: '<circle cx="12" cy="12" r="9"/><circle cx="8" cy="9" r=".75" fill="currentColor"/><circle cx="12" cy="7" r=".75" fill="currentColor"/><circle cx="16" cy="10" r=".75" fill="currentColor"/><path d="M15 18c-1.2 0-2-1-1.4-2 .7-1.2 2.4-.3 3.6-1.2"/>',
+  refresh: '<path d="M20 7v5h-5"/><path d="M19 12a7 7 0 1 0-1 5"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+  selection: '<path d="M4 8V4h4m8 0h4v4M4 16v4h4m8 0h4v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/>',
+  spark: '<path d="m12 2 1.4 5.6L19 9l-5.6 1.4L12 16l-1.4-5.6L5 9l5.6-1.4Z"/><path d="m19 15 .6 2.4L22 18l-2.4.6L19 21l-.6-2.4L16 18l2.4-.6Z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  type: '<path d="M5 5h14M12 5v14M8 19h8"/>',
+  variable: '<path d="M9 4H7a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2m6-16h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2"/>',
+  wand: '<path d="m4 20 11-11"/><path d="m13 5 2-3 2 3 3 2-3 2-2 3-2-3-3-2Z"/><path d="m5 11 .8 1.7L8 14l-2.2.8L5 17l-.8-2.2L2 14l2.2-1.3Z"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+};
+const icon = (name, size) => `<svg class="icon" width="${size || 15}" height="${size || 15}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/* ---------------------------------------------------------------- */
+/* State                                                             */
+/* ---------------------------------------------------------------- */
+const TABS = [
+  { name: 'All', icon: 'alert' },
+  { name: 'Variables', icon: 'variable' },
+  { name: 'Typography', icon: 'type' },
+  { name: 'Colors', icon: 'palette' },
+  { name: 'Components', icon: 'component' },
+  { name: 'Accessibility', icon: 'accessibility' },
+  { name: 'Collections', icon: 'layers' },
+];
+const CHECK_KEYS = { Variables: 'variables', Typography: 'typography', Colors: 'colors', Components: 'components', Accessibility: 'accessibility' };
+const DEFAULT_SETTINGS = {
+  dark: null,
+  scope: 'page',
+  checks: { variables: true, typography: true, colors: true, components: true, accessibility: true, collections: true },
+  minText: 12,
+  minTarget: 24,
+  includeInstances: false,
+  includeHidden: false,
+  includeLibraryVars: false,
+};
+
+const S = {
+  settings: JSON.parse(JSON.stringify(DEFAULT_SETTINGS)),
+  dark: document.documentElement.classList.contains('figma-dark'),
+  tab: 'All',
+  filter: 'All issues',
+  query: '',
+  status: 'idle', // idle | scanning | done
+  progress: { nodes: 0, label: '' },
+  issues: [],
+  stats: null,
+  selected: new Set(),
+  collapsed: new Set(),
+  fixed: new Set(),
+  ignored: new Set(),
+  selectionCount: 0,
+  ignoredTotal: 0,
+  confirm: null,
+  toast: null,
+  popover: false,
+  sheet: false,
+  fixing: false,
+  scopeUsed: 'page',
+  collections: [],
+  colTargets: [],
+  colSel: {},
+  colPlan: {},
+  colDone: {},
+  colBusy: null,
+};
+
+const send = (msg) => parent.postMessage({ pluginMessage: msg }, '*');
+let toastTimer = null;
+function toast(text, err) {
+  S.toast = { text, err: !!err };
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { S.toast = null; render(); }, err ? 4200 : 2800);
+  render();
+}
+
+/* ---------------------------------------------------------------- */
+/* Derived data                                                      */
+/* ---------------------------------------------------------------- */
+const live = () => S.issues.filter((i) => !S.fixed.has(i.id) && !S.ignored.has(i.id));
+function countFor(tab) {
+  const l = live();
+  if (tab === 'Collections') return S.collections.length;
+  return tab === 'All' ? l.length : l.filter((i) => i.cat === tab).length;
+}
+function visibleIssues() {
+  const q = S.query.trim().toLowerCase();
+  return S.issues.filter((i) => {
+    if (S.ignored.has(i.id)) return false;
+    if (S.filter === 'Fixed') { if (!S.fixed.has(i.id)) return false; }
+    else if (S.fixed.has(i.id)) return false;
+    if (S.tab !== 'All' && i.cat !== S.tab) return false;
+    if (['Critical', 'Warning', 'Info'].includes(S.filter) && i.sev !== S.filter.toLowerCase()) return false;
+    if (!q) return true;
+    return `${i.title} ${i.object} ${i.cat} ${i.current} ${i.suggested}`.toLowerCase().includes(q);
+  });
+}
+function healthScore() {
+  const l = live();
+  const nodes = Math.max((S.stats && S.stats.nodes) || 1, 50);
+  const w = { critical: 3, warning: 1.5, info: 0.4 };
+  const penalty = l.reduce((s, i) => s + w[i.sev] * i.layers, 0);
+  let score = Math.round(100 * (1 - Math.min(1, penalty / nodes)));
+  if (l.some((i) => i.sev !== 'info')) score = Math.min(score, 99);
+  return Math.max(0, score);
+}
+function categoryStatus(cat) {
+  if (S.status === 'idle') return 'idle';
+  const l = live().filter((i) => i.cat === cat);
+  if (l.some((i) => i.sev === 'critical')) return 'critical';
+  if (l.some((i) => i.sev === 'warning')) return 'warning';
+  return 'good';
+}
+const safeIssues = () => live().filter((i) => i.canFix && i.safe);
+
+/* ---------------------------------------------------------------- */
+/* Rendering                                                         */
+/* ---------------------------------------------------------------- */
+function renderPreview(i) {
+  const p = i.preview;
+  if (i.cat === 'Typography' && p) {
+    const fam = p.family ? `"${esc(p.family)}", ` : '';
+    const grid = (p.props || []).length ? `<div class="prop-grid">${p.props.map((x) => `<div class="prop"><span><i class="dot ${x.linked ? '' : 'warning'}"></i>${esc(x.label)} · ${x.auto ? 'auto' : x.linked ? 'linked' : 'not linked'}</span><strong>${esc(x.value)}</strong>${x.sug && !x.linked ? `<em>→ ${esc(x.sug)}</em>` : ''}</div>`).join('')}</div>` : '';
+    return `<div class="type-preview"><b style="font-family:${fam}Inter,sans-serif;font-size:${Math.min(26, Math.max(12, p.size))}px;font-weight:${/bold|black|heavy/i.test(p.style) ? 700 : /medium/i.test(p.style) ? 500 : /light|thin/i.test(p.style) ? 300 : 400}">Ag</b><span>${esc(p.family)} · ${esc(p.style)} · ${esc(p.size)}px</span></div>${grid}`;
+  }
+  if (i.cat === 'Accessibility' && p && p.kind === 'contrast') {
+    const bars = 4;
+    const on = Math.max(1, Math.min(bars - 1, Math.round((p.ratio / p.required) * bars)));
+    const meter = Array.from({ length: bars }, (_, k) => `<i class="${k < on ? 'on' : ''} ${k < on && i.sev === 'critical' ? 'bad' : ''}"></i>`).join('');
+    return `<div class="contrast-preview"><div class="contrast-sample" style="background:${esc(p.bg)};color:${esc(p.fg)}">Aa</div><div class="ratio">${p.ratio.toFixed(1)}<span>: 1</span></div><div class="contrast-meter">${meter}</div><small>AA needs ${p.required} : 1</small></div>`;
+  }
+  if (i.cat === 'Accessibility' && p && i.rule === 'text-size') {
+    return `<div class="type-preview"><b style="font-size:${Math.max(8, Math.min(20, p.size))}px">Ag</b><span>${esc(p.size)}px — hard to read</span></div>`;
+  }
+  if (i.cat === 'Components' && p) {
+    return `<div class="component-preview"><span class="mini-component" title="${esc(p.from)}"><i></i><span>${esc(p.from)}</span></span>${icon('arrow', 14)}<span class="mini-component suggested" title="${esc(p.to)}"><i></i><span>${esc(p.to)}</span></span></div>`;
+  }
+  return '';
+}
+
+function renderCard(i) {
+  const sel = S.selected.has(i.id);
+  const fixed = S.fixed.has(i.id);
+  const tab = TABS.find((t) => t.name === i.cat);
+  const conf = i.conf ? `<span class="badge conf ${i.conf < 90 ? 'mid' : ''}">${i.conf}% match</span>` : '';
+  const safe = i.safe && !fixed ? `<span class="badge safe">Safe</span>` : '';
+  const cb = i.canFix && !fixed
+    ? `<button class="checkbox" data-act="toggle" data-id="${i.id}" aria-label="Select">${sel ? icon('check', 12) : ''}</button>`
+    : `<span class="checkbox spacer"></span>`;
+  const cur = `${i.currentSwatch ? `<i class="swatch" style="background:${esc(i.currentSwatch)}"></i>` : ''}<span title="${esc(i.current)}">${esc(i.current)}</span>`;
+  const sug = `${i.suggestedSwatch ? `<i class="swatch" style="background:${esc(i.suggestedSwatch)}"></i>` : ''}<span title="${esc(i.suggested)}">${esc(i.suggested)}</span>`;
+  const layerText = i.cat === 'Colors' ? `Used on ${i.layers} layer${i.layers === 1 ? '' : 's'}` : `${i.layers} layer${i.layers === 1 ? '' : 's'}`;
+  const locateText = i.layers > 1 ? (i.cat === 'Components' ? 'Find all' : 'Select layers') : 'Locate';
+  const typeBtns = `${i.hasStyle ? `<button class="action-small" data-act="fix" data-mode="style" data-id="${i.id}" ${S.fixing ? 'disabled' : ''}>Apply Style</button>` : ''}${i.hasVars ? `<button class="${i.hasStyle ? 'secondary-small' : 'action-small'}" data-act="fix" data-mode="vars" data-id="${i.id}" ${S.fixing ? 'disabled' : ''}>Link Variables</button>` : ''}`;
+  const action = fixed
+    ? `<span class="manual">✓ Fixed</span>`
+    : i.cat === 'Typography' && i.rule === 'unlinked-type' && i.canFix ? typeBtns
+    : i.canFix && i.action
+      ? `<button class="action-small" data-act="fix" data-id="${i.id}" ${S.fixing ? 'disabled' : ''}>${esc(i.action)}</button>`
+      : `<span class="manual">Manual fix</span>`;
+  return `<article class="issue-card ${sel ? 'selected' : ''} ${fixed ? 'fixed' : ''}">
+    <div class="card-top">
+      ${cb}
+      <div class="category-icon ${i.cat.toLowerCase()}">${icon(tab ? tab.icon : 'alert', 14)}</div>
+      <div class="card-title"><h3>${esc(i.title)}</h3><p>${esc(i.object)}</p></div>
+      <div class="badges">${safe}${conf}</div>
+    </div>
+    ${renderPreview(i)}
+    ${i.cat === 'Components' && i.preview ? '' : `<div class="comparison">
+      <div><span>Current</span><strong>${cur}</strong></div>${icon('arrow', 13)}
+      <div><span>Suggested</span><strong class="${i.canFix ? '' : 'none'}">${sug}</strong></div>
+    </div>`}
+    <div class="card-footer">
+      <span class="layer-meta">${icon('layers', 13)}${layerText}</span>
+      <div>
+        <button class="secondary-small ghost" data-act="ignore" data-id="${i.id}" title="Hide this issue in future scans">Ignore</button>
+        <button class="secondary-small" data-act="locate" data-id="${i.id}">${icon('locate', 13)}${locateText}</button>
+        ${action}
+      </div>
+    </div>
+  </article>`;
+}
+
+function renderGroups(list) {
+  return ['critical', 'warning', 'info'].map((sev) => {
+    const g = list.filter((i) => i.sev === sev);
+    if (!g.length) return '';
+    const col = S.collapsed.has(sev);
+    return `<section class="issue-group ${sev} ${col ? 'collapsed' : ''}">
+      <button class="group-header" data-act="collapse" data-sev="${sev}"><span><i></i>${sev}<b>${g.length}</b></span>${icon('chevron', 15)}</button>
+      ${col ? '' : `<div class="cards">${g.map(renderCard).join('')}</div>`}
+    </section>`;
+  }).join('');
+}
+
+const colKey = (t) => (t.kind === 'local' ? 'local:' + t.id : 'library:' + t.key);
+function colTarget(key) {
+  const t = S.colTargets.find((x) => colKey(x) === key);
+  return t ? { kind: t.kind, id: t.id, key: t.key } : null;
+}
+function renderCollections() {
+  const q = S.query.trim().toLowerCase();
+  const list = S.collections.filter((c) => !q || (c.name + ' ' + c.lib).toLowerCase().includes(q));
+  if (!S.settings.checks.collections) return `<div class="empty-state"><div class="empty-icon idle">${icon('layers', 22)}</div><h3>Collections check is off</h3><p>Turn on “Collections” in Settings and run the check.</p></div>`;
+  if (!list.length) return `<div class="empty-state"><div class="empty-icon idle">${icon('layers', 22)}</div><h3>No variable bindings found</h3><p>No layers in this scope use variables yet.</p></div>`;
+  return `<div class="issue-groups"><section class="issue-group"><div class="cards">${list.map((c) => {
+    const sel = S.colSel[c.id] || '';
+    const plan = S.colPlan[c.id];
+    const done = S.colDone[c.id];
+    const opts = S.colTargets.filter((t) => !(t.kind === 'local' && t.id === c.id));
+    const loc = opts.filter((t) => t.kind === 'local');
+    const lib = opts.filter((t) => t.kind === 'library');
+    const select = `<select data-col="${esc(c.id)}"><option value="">Choose collection…</option>
+      ${loc.length ? `<optgroup label="This file">${loc.map((t) => `<option value="${esc(colKey(t))}" ${sel === colKey(t) ? 'selected' : ''}>${esc(t.name)} (${t.count})</option>`).join('')}</optgroup>` : ''}
+      ${lib.length ? `<optgroup label="Libraries">${lib.map((t) => `<option value="${esc(colKey(t))}" ${sel === colKey(t) ? 'selected' : ''}>${esc((t.lib ? t.lib + ' / ' : '') + t.name)}</option>`).join('')}</optgroup>` : ''}</select>`;
+    let planHtml = '';
+    if (plan === 'loading') planHtml = `<div class="col-plan">Matching variables by name…</div>`;
+    else if (plan) planHtml = `<div class="col-plan"><strong>${plan.matched} of ${plan.total}</strong> variables match by name · ${plan.layers} layer${plan.layers === 1 ? '' : 's'} will change${plan.unmatched.length ? `<details><summary>${plan.total - plan.matched} unmatched — stay on the current collection</summary><ul>${plan.unmatched.map((n) => `<li>${esc(n)}</li>`).join('')}</ul></details>` : ''}</div>`;
+    if (done) planHtml = `<div class="col-plan ok">✓ Swapped ${done.vars} variable${done.vars === 1 ? '' : 's'} on ${done.layers} layer${done.layers === 1 ? '' : 's'}${done.failed ? ` · ${done.failed} failed` : ''}${done.unmatched ? ` · ${done.unmatched} unmatched` : ''}. Rescan to refresh.</div>`;
+    const busy = S.colBusy === c.id;
+    return `<article class="issue-card">
+      <div class="card-top"><div class="category-icon">${icon('variable', 14)}</div>
+        <div class="card-title"><h3>${esc(c.name)}</h3><p>${esc(c.remote ? (c.lib || 'Library') : 'This file')} · ${c.varCount} variable${c.varCount === 1 ? '' : 's'} · ${c.layers} layer${c.layers === 1 ? '' : 's'}</p></div>
+        <span class="badge ${c.remote ? 'safe' : 'conf'}">${c.remote ? 'Library' : 'Local'}</span></div>
+      <div class="col-body"><label>Swap to</label>${select}${planHtml}</div>
+      <div class="card-footer"><span class="layer-meta">${icon('layers', 13)}${c.layers} layers</span>
+        <div><button class="secondary-small" data-act="col-locate" data-id="${esc(c.id)}">${icon('locate', 13)}Select layers</button>
+        <button class="action-small" data-act="col-swap" data-id="${esc(c.id)}" ${!plan || plan === 'loading' || !plan.matched || busy || done ? 'disabled' : ''}>${busy ? 'Swapping…' : 'Swap collection'}</button></div></div>
+    </article>`;
+  }).join('')}</div></section></div>`;
+}
+
+function renderBody() {
+  if (S.status === 'idle') {
+    return `<div class="empty-state"><div class="empty-icon idle">${icon('spark', 24)}</div><h3>Ready to check your design</h3>
+      <p>Scan the selection, this page or the whole file for unlinked variables, missing text styles, raw colors, legacy components and accessibility problems.</p>
+      <button class="primary-button" data-act="scan">${icon('spark')}Run Design Check</button></div>`;
+  }
+  if (S.status === 'scanning') {
+    return `<div class="empty-state"><div class="empty-icon idle">${icon('refresh', 24).replace('class="icon"', 'class="icon spin"')}</div><h3>Scanning…</h3>
+      <p>${esc(S.progress.label || '')}<br>${S.progress.nodes.toLocaleString()} layers checked</p></div>`;
+  }
+  if (S.tab === 'Collections') return renderCollections();
+  const list = visibleIssues();
+  const allCount = countFor(S.tab);
+  if (!list.length) {
+    const fixedView = S.filter === 'Fixed';
+    const compliant = allCount === 0 && S.filter === 'All issues' && !S.query;
+    if (fixedView) return `<div class="empty-state"><div class="empty-icon idle">${icon('wand', 22)}</div><h3>Nothing fixed yet</h3><p>Issues you fix in this session appear here.</p></div>`;
+    if (!compliant) return `<div class="empty-state"><div class="empty-icon idle">${icon('search', 22)}</div><h3>No matches</h3><p>Try a different search or filter.</p></div>`;
+    const hint = '';
+    return `<div class="empty-state"><div class="empty-icon">${icon('check', 24)}</div><h3>${S.tab === 'All' ? 'Design System Compliant' : 'No ' + S.tab.toLowerCase() + ' issues'}</h3>
+      <p>No issues found. All variables, styles, colors, and components are properly connected.</p>${hint}<span>Health score · ${healthScore()}%</span></div>`;
+  }
+  let notice = '';
+  if (S.stats && S.stats.tokens.floats === 0 && (S.tab === 'Variables' || S.tab === 'All') && list.some((i) => i.cat === 'Variables')) {
+    notice = `<div class="notice"><b>No spacing / radius variables found.</b> Create local number variables, or turn on “Include team-library variables” in Settings, to get suggestions.</div>`;
+  }
+  if (S.stats && S.stats.libraryError) notice += `<div class="notice"><b>Team library:</b> ${esc(S.stats.libraryError)}</div>`;
+  if (S.stats && S.stats.truncated) notice += `<div class="notice"><b>Large file:</b> scan stopped at ${S.stats.nodes.toLocaleString()} layers. Scan a page or selection for full coverage.</div>`;
+  return notice + `<div class="issue-groups">${renderGroups(list)}</div>`;
+}
+
+function render() {
+  const active = document.activeElement;
+  const scEl = document.getElementById('scroll');
+  const shEl = document.querySelector('.sheet-body');
+  const scTop = scEl ? scEl.scrollTop : 0;
+  const shTop = shEl ? shEl.scrollTop : 0;
+  const keep = active && active.id ? { id: active.id, s: active.selectionStart, e: active.selectionEnd } : null;
+  const scoreReady = S.status === 'done';
+  const score = scoreReady ? healthScore() : 0;
+  const total = live().length;
+  const ring = score >= 85 ? 'var(--green)' : score >= 60 ? 'var(--orange)' : 'var(--red)';
+  const title = S.status === 'idle' ? 'Not scanned yet' : S.status === 'scanning' ? 'Scanning…' :
+    `${score >= 90 ? 'Healthy' : score >= 70 ? 'Good' : score >= 50 ? 'Needs attention' : 'At risk'}, ${total === 0 ? 'no issues' : total + ' issue' + (total === 1 ? '' : 's')}`;
+  const scope = S.settings.scope === 'selection' && S.selectionCount === 0 ? 'page' : S.settings.scope;
+  const scopeIcon = scope === 'selection' ? 'selection' : scope === 'file' ? 'file' : 'layers';
+  const list = S.status === 'done' ? visibleIssues() : [];
+  const tabAll = S.tab !== 'All' && S.tab !== 'Collections';
+  const fixable = list.filter((i) => i.canFix && !S.fixed.has(i.id));
+  const nonSafe = fixable.filter((i) => !i.safe).length;
+  const confirmKey = 'tab:' + S.tab;
+  const selectedFixable = live().filter((i) => S.selected.has(i.id) && i.canFix);
+  const safeCount = safeIssues().length;
+
+  document.body.classList.toggle('dark', S.dark);
+
+  const metrics = ['Variables', 'Colors', 'Typography', 'Components', 'Accessibility']
+    .map((c) => `<span><i class="dot ${categoryStatus(c)}"></i>${c}</span>`).join('');
+
+  document.getElementById('root').innerHTML = `
+  <header class="app-header">
+    <div class="brand"><div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+      <div><h1>Global Design Check</h1><p>Design system governance</p></div></div>
+    <div class="header-actions">
+      <button class="icon-button" data-act="theme" aria-label="Toggle theme">${icon(S.dark ? 'sun' : 'moon')}</button>
+      <button class="icon-button" data-act="settings" aria-label="Settings">${icon('settings')}</button>
+    </div>
+  </header>
+
+  <section class="scan-panel">
+    <div class="score-block">
+      <div class="health-ring" style="--score:${score * 3.6}deg;--ring:${ring}"><div><strong>${scoreReady ? score : '–'}</strong>${scoreReady ? '<small>%</small>' : ''}</div></div>
+      <div class="score-copy"><div class="eyebrow">Project health</div><div class="score-title">${esc(title)}</div><div class="metric-row">${metrics}</div></div>
+    </div>
+    <div class="scan-actions">
+      <div class="scope-select">${icon(scopeIcon, 14)}
+        <select id="scope" aria-label="Scan scope" ${S.status === 'scanning' ? 'disabled' : ''}>
+          <option value="selection" ${scope === 'selection' ? 'selected' : ''} ${S.selectionCount === 0 ? 'disabled' : ''}>Scan Selection${S.selectionCount ? ' (' + S.selectionCount + ')' : ''}</option>
+          <option value="page" ${scope === 'page' ? 'selected' : ''}>Scan Page</option>
+          <option value="file" ${scope === 'file' ? 'selected' : ''}>Scan Entire File</option>
+        </select>${icon('chevron', 14)}
+      </div>
+      ${S.status === 'scanning'
+        ? `<button class="primary-button cancel" data-act="cancel">${icon('x', 14)}Cancel · ${S.progress.nodes.toLocaleString()}</button>`
+        : `<button class="primary-button" data-act="scan">${icon('spark')}Run Design Check</button>`}
+    </div>
+  </section>
+
+  <nav class="tabs" aria-label="Check categories">
+    ${TABS.map((t) => `<button class="${S.tab === t.name ? 'active' : ''}" data-act="tab" data-tab="${t.name}">${t.name}<span>${S.status === 'done' ? countFor(t.name) : '–'}</span></button>`).join('')}
+  </nav>
+
+  <div class="content-scroll" id="scroll">
+    <div class="toolbar">
+      <label class="search-box">${icon('search', 14)}<input id="q" value="${esc(S.query)}" placeholder="Search ${S.tab === 'All' ? 'issues' : S.tab.toLowerCase()}" autocomplete="off" /><kbd>⌘K</kbd></label>
+
+    </div>
+    <section class="workspace">
+      ${S.status === 'done' ? `<div class="section-heading"><div><h2>${S.tab === 'All' ? 'Issues to review' : S.tab === 'Collections' ? 'Variable collections' : S.tab}</h2>
+        <p>${S.tab === 'Collections' ? S.collections.length + ' in use · swap bindings to another collection' : list.length + ' shown · sorted by priority'}${S.stats ? ' · ' + S.stats.nodes.toLocaleString() + ' layers scanned in ' + (S.stats.ms / 1000).toFixed(1) + 's' : ''}</p></div>
+        ${tabAll && fixable.length ? `<button class="text-action ${S.confirm === confirmKey ? 'confirm' : ''}" data-act="fix-tab">${icon('wand', 13)}${S.confirm === confirmKey ? `Click again — ${nonSafe} will change appearance` : 'Fix all ' + S.tab.toLowerCase()}</button>` : ''}</div>` : ''}
+      ${renderBody()}
+    </section>
+  </div>
+
+  <footer class="bottom-bar">
+    <button class="footer-action" data-act="export-menu" ${S.status !== 'done' ? 'disabled' : ''}>${icon('export', 14)}Export</button>
+    <button class="footer-action" data-act="scan" ${S.status === 'scanning' ? 'disabled' : ''}>${icon('refresh', 14)}Rescan</button>
+    <button class="fix-button" data-act="fix-footer" ${S.fixing || (!selectedFixable.length && safeCount === 0) ? 'disabled' : ''}>${icon('wand', 14)}${S.fixing ? 'Fixing…' : selectedFixable.length ? 'Fix ' + selectedFixable.length + ' selected' : 'Fix All Safe Issues' + (safeCount ? ' (' + safeCount + ')' : '')}</button>
+  </footer>
+
+  ${S.popover ? `<div class="popover">
+    <button data-act="export" data-fmt="csv">${icon('file', 14)}Download CSV</button>
+    <button data-act="export" data-fmt="json">${icon('file', 14)}Download JSON</button>
+    <button data-act="export" data-fmt="copy">${icon('layers', 14)}Copy summary</button></div>` : ''}
+  ${S.toast ? `<div class="toast ${S.toast.err ? 'err' : ''}">${icon(S.toast.err ? 'alert' : 'check', 14)}${esc(S.toast.text)}</div>` : ''}
+  ${S.sheet ? renderSettings() : ''}`;
+
+  const sc2 = document.getElementById('scroll');
+  if (sc2) sc2.scrollTop = scTop;
+  const sh2 = document.querySelector('.sheet-body');
+  if (sh2) sh2.scrollTop = shTop;
+  if (keep) {
+    const el = document.getElementById(keep.id);
+    if (el) { el.focus(); try { el.setSelectionRange(keep.s, keep.e); } catch (e) {} }
+  }
+}
+
+function toggle(key, on, label, hint) {
+  return `<div class="row"><div class="lbl">${label}${hint ? `<small>${hint}</small>` : ''}</div><button class="switch ${on ? 'on' : ''}" data-act="set" data-key="${key}" role="switch" aria-checked="${on}"></button></div>`;
+}
+function renderSettings() {
+  const s = S.settings;
+  return `<div class="sheet">
+    <div class="sheet-head"><h2>Settings</h2><button class="icon-button" data-act="settings" aria-label="Close">${icon('x', 14)}</button></div>
+    <div class="sheet-body">
+      <h4>Checks</h4>
+      ${toggle('check.variables', s.checks.variables, 'Variables', 'Padding, gap, corner radius')}
+      ${toggle('check.typography', s.checks.typography, 'Typography', 'Unlinked font, weight, size, line height')}
+      ${toggle('check.colors', s.checks.colors, 'Colors', 'Raw fills & strokes, broken tokens')}
+      ${toggle('check.components', s.checks.components, 'Components', 'External library instances')}
+      ${toggle('check.collections', s.checks.collections, 'Collections', 'Variable collection usage and swapping')}
+      ${toggle('check.accessibility', s.checks.accessibility, 'Accessibility', 'Contrast, text size, touch targets')}
+      <h4>Thresholds</h4>
+      <div class="row"><div class="lbl">Minimum text size<small>Smaller text is flagged</small></div><input class="num" id="minText" type="number" min="6" max="24" value="${s.minText}" /></div>
+      <div class="row"><div class="lbl">Minimum touch target<small>Buttons, inputs, tabs, toggles</small></div>
+        <select id="minTarget"><option value="24" ${s.minTarget === 24 ? 'selected' : ''}>24px · WCAG 2.2 AA</option><option value="44" ${s.minTarget === 44 ? 'selected' : ''}>44px · mobile / AAA</option></select></div>
+      <h4>Scan scope</h4>
+      ${toggle('includeInstances', s.includeInstances, 'Include instance contents', 'Also check layers inside component instances')}
+      ${toggle('includeHidden', s.includeHidden, 'Include hidden layers')}
+      ${toggle('includeLibraryVars', s.includeLibraryVars, 'Include team-library variables', 'Imports enabled library variables as suggestions (slower)')}
+      <h4>Data</h4>
+      <div class="row"><div class="lbl">Ignored issues<small>${S.ignoredTotal} hidden in this file</small></div></div>
+      <button class="danger-link" data-act="reset-ignored" ${S.ignoredTotal ? '' : 'disabled'}>Reset ignored issues</button>
+      <p class="about">“Safe” fixes never change how a layer looks (exact value matches). Everything else is applied only when you click it. Each fix batch is one undo step (⌘Z / Ctrl+Z).</p>
+    </div></div>`;
+}
+
+/* ---------------------------------------------------------------- */
+/* Actions                                                           */
+/* ---------------------------------------------------------------- */
+function persist() { send({ type: 'settings', settings: S.settings }); }
+
+function startScan() {
+  if (S.status === 'scanning') return;
+  const scope = S.settings.scope === 'selection' && S.selectionCount === 0 ? 'page' : S.settings.scope;
+  S.status = 'scanning';
+  S.progress = { nodes: 0, label: 'Starting…' };
+  S.selected.clear(); S.fixed.clear(); S.ignored.clear(); S.confirm = null; S.popover = false; S.colBusy = null;
+  render();
+  const s = S.settings;
+  send({ type: 'scan', scope, opts: {
+    checks: s.checks, minText: Number(s.minText) || 12, minTarget: Number(s.minTarget) || 24,
+    includeInstances: s.includeInstances, includeHidden: s.includeHidden, includeLibraryVars: s.includeLibraryVars } });
+}
+
+function runFix(ids, modes) {
+  const real = ids.filter((id) => { const i = S.issues.find((x) => x.id === id); return i && i.canFix && !S.fixed.has(id); });
+  if (!real.length) return;
+  S.fixing = true; S.confirm = null; render();
+  send({ type: 'fix', ids: real, modes: modes || {} });
+}
+
+function exportReport(fmt) {
+  const l = S.issues.filter((i) => !S.ignored.has(i.id));
+  const status = (i) => (S.fixed.has(i.id) ? 'fixed' : 'open');
+  if (fmt === 'json') {
+    download('global-design-check-report.json', 'application/json', JSON.stringify({ generated: new Date().toISOString(), score: healthScore(), stats: S.stats, issues: l.map((i) => Object.assign({}, i, { status: status(i) })) }, null, 2));
+  } else if (fmt === 'csv') {
+    const cols = ['status', 'severity', 'category', 'issue', 'objects', 'layers', 'pages', 'current', 'suggested', 'confidence', 'safe_fix'];
+    const q = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const rows = l.map((i) => [status(i), i.sev, i.cat, i.title, i.object, i.layers, i.pages.join(' | '), i.current, i.suggested, i.conf || '', i.safe ? 'yes' : 'no'].map(q).join(','));
+    download('global-design-check-report.csv', 'text/csv', [cols.join(',')].concat(rows).join('\n'));
+  } else {
+    const open = l.filter((i) => !S.fixed.has(i.id));
+    const by = (c) => open.filter((i) => i.cat === c).length;
+    const text = `Global Design Check — health ${healthScore()}%\n${open.length} open issues (${open.filter((i) => i.sev === 'critical').length} critical, ${open.filter((i) => i.sev === 'warning').length} warning, ${open.filter((i) => i.sev === 'info').length} info)\n` +
+      ['Variables', 'Typography', 'Colors', 'Components', 'Accessibility'].map((c) => `- ${c}: ${by(c)}`).join('\n');
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('Summary copied'); } catch (e) { toast('Copy failed', true); }
+    ta.remove(); S.popover = false; return;
+  }
+  S.popover = false; toast('Report exported');
+}
+function download(name, type, content) {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-act]');
+  if (!t) { if (S.popover) { S.popover = false; render(); } return; }
+  const act = t.dataset.act;
+  const id = t.dataset.id;
+  switch (act) {
+    case 'scan': return startScan();
+    case 'cancel': send({ type: 'cancel' }); return;
+    case 'theme': S.dark = !S.dark; S.settings.dark = S.dark; persist(); return render();
+    case 'settings': S.sheet = !S.sheet; return render();
+    case 'tab': S.tab = t.dataset.tab; S.confirm = null; return render();
+    case 'collapse': S.collapsed.has(t.dataset.sev) ? S.collapsed.delete(t.dataset.sev) : S.collapsed.add(t.dataset.sev); return render();
+    case 'toggle': S.selected.has(id) ? S.selected.delete(id) : S.selected.add(id); return render();
+    case 'locate': send({ type: 'locate', id }); return;
+    case 'col-locate': send({ type: 'col-locate', sourceId: id }); return;
+    case 'col-swap': { const key = S.colSel[id]; if (!key) return; S.colBusy = id; render(); send({ type: 'col-swap', sourceId: id, target: colTarget(key) }); return; }
+    case 'ignore': { const i = S.issues.find((x) => x.id === id); if (!i) return; S.ignored.add(id); S.selected.delete(id); S.ignoredTotal++; send({ type: 'ignore', sigs: [i.sig] }); toast('Issue ignored · restore in Settings'); return; }
+    case 'fix': return runFix([id], t.dataset.mode ? { [id]: t.dataset.mode } : null);
+    case 'fix-tab': {
+      const list = visibleIssues().filter((i) => i.canFix);
+      const nonSafe = list.filter((i) => !i.safe).length;
+      const key = 'tab:' + S.tab;
+      if (nonSafe && S.confirm !== key) { S.confirm = key; render(); setTimeout(() => { if (S.confirm === key) { S.confirm = null; render(); } }, 4000); return; }
+      return runFix(list.map((i) => i.id));
+    }
+    case 'fix-footer': {
+      const sel = live().filter((i) => S.selected.has(i.id) && i.canFix).map((i) => i.id);
+      return runFix(sel.length ? sel : safeIssues().map((i) => i.id));
+    }
+    case 'export-menu': S.popover = !S.popover; e.stopPropagation(); return render();
+    case 'export': return exportReport(t.dataset.fmt), render();
+    case 'reset-ignored': S.ignoredTotal = 0; send({ type: 'reset-ignored' }); toast('Ignored issues cleared — rescan to see them'); return;
+    case 'set': {
+      const key = t.dataset.key;
+      if (key.startsWith('check.')) S.settings.checks[key.slice(6)] = !S.settings.checks[key.slice(6)];
+      else S.settings[key] = !S.settings[key];
+      persist(); return render();
+    }
+  }
+});
+
+document.addEventListener('input', (e) => {
+  const id = e.target.id;
+  if (id === 'q') { S.query = e.target.value; return render(); }
+  
+});
+document.addEventListener('change', (e) => {
+  const id = e.target.id;
+  if (id === 'scope') { S.settings.scope = e.target.value; persist(); return render(); }
+  if (e.target.dataset && e.target.dataset.col) {
+    const sid = e.target.dataset.col; const val = e.target.value;
+    S.colSel[sid] = val; delete S.colDone[sid];
+    if (!val) { delete S.colPlan[sid]; return render(); }
+    S.colPlan[sid] = 'loading'; render();
+    send({ type: 'col-plan', sourceId: sid, targetKey: val, target: colTarget(val) });
+    return;
+  }
+  if (id === 'minText') { S.settings.minText = Math.max(6, Math.min(24, Number(e.target.value) || 12)); persist(); return render(); }
+  if (id === 'minTarget') { S.settings.minTarget = Number(e.target.value); persist(); return render(); }
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); const q = document.getElementById('q'); if (q) q.focus(); }
+  if (e.key === 'Escape' && S.sheet) { S.sheet = false; render(); }
+});
+
+/* ---------------------------------------------------------------- */
+/* Messages from the plugin                                          */
+/* ---------------------------------------------------------------- */
+window.onmessage = (event) => {
+  const m = event.data && event.data.pluginMessage;
+  if (!m) return;
+  switch (m.type) {
+    case 'init': {
+      if (m.settings) {
+        const saved = m.settings;
+        S.settings = Object.assign({}, DEFAULT_SETTINGS, saved, { checks: Object.assign({}, DEFAULT_SETTINGS.checks, saved.checks || {}) });
+      }
+      if (S.settings.dark !== null && S.settings.dark !== undefined) S.dark = !!S.settings.dark;
+      S.selectionCount = m.selection || 0;
+      S.ignoredTotal = m.ignored || 0;
+      return render();
+    }
+    case 'selection': S.selectionCount = m.count; return render();
+    case 'progress': S.progress = { nodes: m.nodes || 0, label: m.label || '' }; return render();
+    case 'cancelled': S.status = S.issues.length ? 'done' : 'idle'; return render();
+    case 'result': {
+      S.collections = m.collections || []; S.colTargets = m.colTargets || []; S.colSel = {}; S.colPlan = {}; S.colDone = {}; S.colBusy = null;
+      S.issues = m.issues; S.stats = m.stats; S.scopeUsed = m.scope; S.status = 'done'; S.ignoredTotal = m.stats.ignored;
+      S.collapsed.clear();
+      render();
+      return toast(`${m.scope === 'selection' ? 'Selection' : m.scope === 'file' ? 'File' : 'Page'} scan complete · ${m.issues.length} issue${m.issues.length === 1 ? '' : 's'} found`);
+    }
+    case 'error': S.status = S.issues.length ? 'done' : 'idle'; S.fixing = false; S.colBusy = null; for (const k in S.colPlan) if (S.colPlan[k] === 'loading') delete S.colPlan[k]; render(); return toast(m.message || 'Something went wrong', true);
+    case 'fixed': {
+      S.fixing = false;
+      let ok = 0, layers = 0, failed = 0, reason = '';
+      m.results.forEach((r) => { if (r.ok) { ok++; layers += r.fixed; S.fixed.add(r.id); S.selected.delete(r.id); } else { failed++; reason = r.reason || reason; } });
+      render();
+      if (failed && !ok) return toast(`Couldn't fix: ${reason}`, true);
+      return toast(`${ok} issue${ok === 1 ? '' : 's'} fixed (${layers} layer${layers === 1 ? '' : 's'})${failed ? ` · ${failed} failed` : ' · ⌘Z to undo'}`, failed > 0);
+    }
+    case 'ignored': S.ignoredTotal = m.count; return render();
+    case 'col-plan': { if (S.colSel[m.sourceId] === m.targetKey) S.colPlan[m.sourceId] = m; return render(); }
+    case 'col-swapped': { S.colBusy = null; S.colDone[m.sourceId] = m; delete S.colPlan[m.sourceId]; render(); return toast(`Swapped ${m.vars} variable${m.vars === 1 ? '' : 's'} on ${m.layers} layers · ⌘Z to undo`, m.failed > 0); }
+  }
+};
+
+if (S.settings.dark !== null) S.dark = S.settings.dark;
+render();
+send({ type: 'ready' });
+</script>
+</body>
+</html>
