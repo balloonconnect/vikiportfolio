@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { CircleUser, MessageSquare, Menu as MenuIcon, X } from "lucide-react";
-import { navItems } from "@/data/site";
+import { CircleUser, MessageSquare, Menu as MenuIcon, X, Copy, Check, ArrowUpRight } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { navItems, site } from "@/data/site";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
@@ -11,6 +12,9 @@ export function Navbar() {
   const router = useRouter();
   const [active, setActive] = useState("home");
   const [open, setOpen] = useState(false);
+  const [pop, setPop] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const copy = () => { navigator.clipboard?.writeText(site.email); setCopied(true); setTimeout(() => setCopied(false), 1400); };
   const onHome = pathname === "/";
   const href = (h: string) => (onHome ? h : `/${h}`);
 
@@ -64,7 +68,19 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-6">
-          <Link href={href("#contact")} data-cursor="Contact me" className="hidden items-center gap-2 text-[17px] lg:flex"><CircleUser size={20} strokeWidth={1.5} />Contact</Link>
+          <div className="relative hidden lg:block" onMouseEnter={() => setPop(true)} onMouseLeave={() => setPop(false)} onFocus={() => setPop(true)} onBlur={() => setPop(false)}>
+            <Link href={href("#contact")} className="flex items-center gap-2 text-[17px]"><CircleUser size={20} strokeWidth={1.5} />Contact</Link>
+            <AnimatePresence>{pop && (
+              <motion.div initial={{ opacity: 0, y: -6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }} transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute right-0 top-full z-[110] w-[260px] pt-2">
+                <div className="rounded-xl border border-border bg-bg p-3 text-[14px] shadow-xl">
+                  <button onClick={copy} className="flex w-full items-center justify-between rounded-md p-2 text-left hover:bg-secondary"><span><span className="block text-[11px] text-muted">Email</span>{site.email}</span>{copied ? <Check size={15} /> : <Copy size={15} />}</button>
+                  {site.social.slice(0, 1).map((l) => <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-md p-2 hover:bg-secondary"><span><span className="block text-[11px] text-muted">{l.label}</span>Open profile</span><ArrowUpRight size={15} /></a>)}
+                  <a href={site.resumeUrl} download className="flex items-center justify-between rounded-md p-2 hover:bg-secondary"><span><span className="block text-[11px] text-muted">Resume</span>Download PDF</span><ArrowUpRight size={15} /></a>
+                </div>
+              </motion.div>
+            )}</AnimatePresence>
+          </div>
           <button onClick={openAI} data-cursor="Open AI chat" className="hidden items-center gap-2 press rounded-full border-[0.8px] border-border bg-transparent px-4 py-[6px] text-[17px] hover:bg-fg hover:text-bg lg:flex">
             <MessageSquare size={16} strokeWidth={1.5} />Ask AI
           </button>

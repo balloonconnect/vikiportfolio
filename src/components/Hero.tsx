@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MapPin, Clock, ChevronDown } from "lucide-react";
 import { site } from "@/data/site";
 import { projects } from "@/data/projects";
@@ -20,10 +20,31 @@ function useClock() {
   return t;
 }
 
+// Deterministic scatter offsets so server and client render the same markup.
+const scatter = (i: number) => ({ x: ((i * 53) % 120) - 60, y: ((i * 37) % 90) - 30, rotate: ((i * 29) % 24) - 12 });
+
+function hoursBehind() {
+  try {
+    const off = (tz: string) => { const d = new Date(); const l = new Date(d.toLocaleString("en-US", { timeZone: tz })); return (l.getTime() - d.getTime()) / 36e5; };
+    const diff = off(site.timeZone) - off(Intl.DateTimeFormat().resolvedOptions().timeZone);
+    if (Math.abs(diff) < 0.05) return "Same time as you";
+    return `${Math.abs(diff).toFixed(1).replace(".0", "")} hours ${diff > 0 ? "ahead of" : "behind"} you`;
+  } catch { return ""; }
+}
+
 export function Hero() {
   const reduce = useReducedMotion();
   const time = useClock();
   const [canDrag, setCanDrag] = useState(false);
+  const [order, setOrder] = useState(() => spans.map((_, i) => i));
+  const [tip, setTip] = useState(false);
+  const tipText = tip ? hoursBehind() : "";
+  const swapAt = (from: number, x: number, y: number) => {
+    const el = document.elementsFromPoint(x, y).find((n) => (n as HTMLElement).dataset?.tile && Number((n as HTMLElement).dataset.tile) !== from) as HTMLElement | undefined;
+    if (!el) return;
+    const to = Number(el.dataset.tile);
+    setOrder((o) => { const n = [...o]; const a = n.indexOf(from), b = n.indexOf(to); [n[a], n[b]] = [n[b], n[a]]; return n; });
+  };
   useEffect(() => { setCanDrag(!reduce && matchMedia("(hover: hover) and (pointer: fine)").matches); }, [reduce]);
   const words = site.headline.split(" ");
   return (
@@ -43,27 +64,34 @@ export function Hero() {
         </motion.p>
         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[15px] text-muted lg:justify-end lg:-mt-8">
           <span className="flex items-center gap-2"><MapPin size={16} />{site.location}</span>
-          <span className="flex items-center gap-2" suppressHydrationWarning><Clock size={16} />{time || " "}</span>
+          <span className="relative flex cursor-default items-center gap-2" suppressHydrationWarning onMouseEnter={() => setTip(true)} onMouseLeave={() => setTip(false)}>
+            <Clock size={16} />{time || " "}
+            <AnimatePresence>{tipText && (
+              <motion.span initial={{ opacity: 0, y: 6, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 6, scale: 0.96 }} transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute bottom-full right-0 mb-2 whitespace-nowrap rounded-lg border border-border bg-bg px-3 py-2 text-[12px] text-fg shadow-lg">{tipText}</motion.span>
+            )}</AnimatePresence>
+          </span>
         </div>
 
         {/* Draggable glass tiles: 6 x 2 grid that scales with its container (u = width / 1272). */}
         <div className="mt-[74px] w-full max-lg:mt-6" style={{ containerType: "inline-size" }}>
           <div className="grid aspect-[1272/408] grid-cols-6 grid-rows-2" style={{ "--u": "calc(100cqw / 1272)", gap: "calc(24 * var(--u))" } as React.CSSProperties}>
-            {spans.map((span, idx) => {
-              const p = projects[idx % projects.length];
+            {order.map((tile, slot) => {
+              const p = projects[tile % projects.length];
+              const sc = scatter(tile);
               return (
-                <motion.div key={idx} style={{ gridColumn: `span ${span}` }}
-                  initial={reduce ? false : { opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 + 0.05 * idx, ease: [0.22, 1, 0.36, 1] }}>
+                <motion.div key={tile} layout={!reduce} data-tile={tile} style={{ gridColumn: `span ${spans[slot]}` }}
+                  initial={reduce ? false : { opacity: 0, ...sc, scale: 0.9 }} animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 120, damping: 18, delay: 0.35 + 0.06 * tile, layout: { type: "spring", stiffness: 260, damping: 30 } }}>
                   <motion.div
                     drag={canDrag} dragSnapToOrigin dragElastic={1} dragMomentum={false}
                     whileDrag={{ scale: 1.03, zIndex: 30, cursor: "grabbing" }}
-                    transition={{ type: "spring", stiffness: 700, damping: 30, mass: 1 }}
-                    data-cursor={canDrag ? "Drag me" : undefined} draggable={false}
+                    onDragEnd={(e) => { const pt = e as PointerEvent; if (pt.clientX != null) swapAt(tile, pt.clientX, pt.clientY); }}
+                    data-cursor={canDrag ? "Drag me around" : undefined} draggable={false}
                     className="relative size-full select-none overflow-hidden border border-white bg-white/50 will-change-transform [touch-action:none]"
                     style={{ borderRadius: "calc(10 * var(--u))", cursor: canDrag ? "grab" : undefined, padding: "calc(4 * var(--u))" }}>
                     <div className="hero-glass-inner pointer-events-none size-full overflow-hidden bg-secondary" style={{ borderRadius: "calc(6 * var(--u))" }} aria-hidden>
-                      <Placeholder accent={p.accent} variant={idx} />
+                      <Placeholder accent={p.accent} variant={tile} />
                     </div>
                   </motion.div>
                 </motion.div>

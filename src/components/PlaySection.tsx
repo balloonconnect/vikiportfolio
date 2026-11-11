@@ -13,8 +13,12 @@ export function PlaySection() {
     const el = ref.current; if (!el) return;
     setPos({ start: el.scrollLeft < 4, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4 });
   };
+  const drag = useRef({ down: false, x: 0, left: 0, moved: false });
+  const onDown = (e: React.PointerEvent) => { const el = ref.current; if (!el || e.pointerType !== "mouse") return; drag.current = { down: true, x: e.clientX, left: el.scrollLeft, moved: false }; };
+  const onMove = (e: React.PointerEvent) => { const d = drag.current, el = ref.current; if (!d.down || !el) return; const dx = e.clientX - d.x; if (Math.abs(dx) > 4) { d.moved = true; el.style.scrollSnapType = "none"; el.scrollLeft = d.left - dx; } };
+  const onUp = () => { const el = ref.current; drag.current.down = false; if (el) el.style.scrollSnapType = ""; };
   const go = (d: number) => ref.current?.scrollBy({ left: d * (ref.current.clientWidth * 0.6), behavior: "smooth" });
-  const btn = "flex size-[42px] items-center justify-center rounded-full border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40 border-secondary enabled:hover:bg-fg enabled:hover:text-bg";
+  const btn = "flex size-[42px] items-center justify-center rounded-full border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40 border-border enabled:bg-fg enabled:text-bg enabled:hover:scale-105 enabled:active:scale-95";
   return (
     <section id="play" className="pt-[144px] max-lg:pt-20">
       <div className="wrap">
@@ -29,7 +33,7 @@ export function PlaySection() {
           </div>
         </div>
       </div>
-      <ul ref={ref} onScroll={update} className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[var(--gutter)] pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-lg:grid max-lg:grid-cols-2 max-lg:overflow-visible max-sm:grid-cols-1">
+      <ul ref={ref} onScroll={update} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp} onClickCapture={(e) => { if (drag.current.moved) { e.preventDefault(); e.stopPropagation(); drag.current.moved = false; } }} data-cursor="Drag" className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[var(--gutter)] pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-lg:grid max-lg:grid-cols-2 max-lg:overflow-visible max-sm:grid-cols-1">
         {play.map((item, i) => (
           <motion.li key={item.id} whileHover="hover" className="w-[min(34vw,480px)] shrink-0 snap-start max-lg:w-auto">
             <div className="aspect-[4/5] overflow-hidden rounded-[6px]">
