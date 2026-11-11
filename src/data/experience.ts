@@ -22,4 +22,7 @@ export const play = [
   { id: "p4", title: "Poster", caption: "Print poster", accent: "#a21caf" },
   { id: "p5", title: "Photography", caption: "Studio session", accent: "#0e7490" },
   { id: "p6", title: "Motion test", caption: "Micro-interaction", accent: "#4d7c0f" },
+  { id: "p7", title: "Dashboard study", caption: "Data-dense UI", accent: "#b45309" },
+  { id: "p8", title: "Mobile flow", caption: "App screens", accent: "#1d4ed8" },
+  { id: "p9", title: "Brand mark", caption: "Logo exploration", accent: "#be123c" },
 ];
