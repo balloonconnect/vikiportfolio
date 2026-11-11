@@ -4,6 +4,12 @@ export const experience = [
   { company: "Ad2pro Media Solution", role: "Production Designer", years: "2018 - 2020" },
 ];
 
+export const education = [
+  { degree: "M.Sc in Computer Science", school: "Tamil Nadu Open University (Distance Learning)", years: "2018 - 2020" },
+  { degree: "Bachelor of Computer Application", school: "Hindusthan College of Arts & Science", years: "2015 - 2018" },
+  { degree: "Diploma in Instrumentation & Control Engineering", school: "CIT Sandwich Polytechnic College", years: "2012 - 2015" },
+];
+
 // Replace with your real awards, or leave the array empty to hide the block.
 export const awards = [
   { title: "Award title", org: "Organisation", note: "Short description of what it was for" },

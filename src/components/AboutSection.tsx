@@ -1,5 +1,6 @@
 import { site } from "@/data/site";
 import { Experience } from "./Experience";
+import { Education } from "./Education";
 import { Awards } from "./Awards";
 import { Reveal } from "./Reveal";
 
@@ -22,7 +23,7 @@ export function AboutSection() {
           <div className="mb-10 flex aspect-[4/5] w-full max-w-[420px] items-center justify-center rounded-[6px] bg-tile text-[13px] text-muted">Portrait placeholder</div>
                   </Reveal>
       </div>
-      <div className="wrap mt-[96px] max-lg:mt-12"><Experience /><Awards /></div>
+      <div className="wrap mt-[96px] max-lg:mt-12"><Experience /><Education /><Awards /></div>
     </section>
   );
 }
