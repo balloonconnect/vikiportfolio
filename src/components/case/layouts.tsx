@@ -124,6 +124,7 @@ const D = "/case/global-design-check";
 const plugin: Layout = {
   toc: T("Overview", "Try it", "Problem", "Goals", "Approach", "Features", "How it works", "Decisions", "Design system", "Prototype", "Outcomes", "Next steps", "More work"),
   render: (p) => (<>
+    <div className="mb-[72px] max-lg:mb-12"><Shot src={`${D}/cover.png`} alt="Global Design Check: one plugin for every global designer to find and fix design-system drift" w={1440} h={892} /></div>
     <Sec id="overview" title="A single, trustworthy pass over a design file">
       <div className="grid items-start gap-10 md:grid-cols-[minmax(0,1fr)_320px]">
         <div><P>Global teams share one design system across many files, markets and designers. Drift creeps in quietly. Global Design Check turns an hours-long manual audit into a scan, a review and a one-step fix.</P>
