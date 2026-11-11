@@ -55,7 +55,7 @@ export function PlaySection() {
       </div>
       <ul ref={ref} onScroll={update} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp} onClickCapture={(e) => { if (drag.current.moved) { e.preventDefault(); e.stopPropagation(); drag.current.moved = false; } }} data-cursor="Drag" className="mt-14 flex snap-x snap-mandatory scroll-pl-[var(--gutter)] gap-[clamp(16px,2vw,32px)] overflow-x-auto px-[var(--gutter)] pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-lg:mt-8">
         {play.map((item, i) => (
-          <motion.li key={item.id} whileHover="hover" aria-label={`${item.title}: ${item.caption}`} className="shrink-0 snap-start overflow-hidden rounded-[14px] max-sm:rounded-[10px]" style={{ height: "var(--play-h)", aspectRatio: ratios[i % ratios.length] }}>
+          <motion.li key={item.id} whileHover="hover" aria-label={`${item.title}: ${item.caption}`} className="shrink-0 snap-start overflow-hidden rounded-[14px] max-sm:rounded-[10px]" style={{ height: "var(--play-h)", aspectRatio: item.ratio ?? ratios[i % ratios.length] }}>
             <motion.div className="h-full w-full" variants={{ hover: { scale: 1.04 } }} transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}>
               <Link href={item.href} draggable={false} className="block h-full w-full bg-tile">{item.kind ? <Tile kind={item.kind} /> : <img src={item.src} alt={`${item.title}: ${item.caption}`} loading="lazy" draggable={false} className="h-full w-full object-cover object-top" />}</Link>
             </motion.div>
