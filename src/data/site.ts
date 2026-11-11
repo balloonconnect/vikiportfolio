@@ -25,7 +25,7 @@ export const site = {
     "Good design should do more than look polished. It should make things easier to understand, easier to use, and more valuable to the people on both sides of the experience. That’s the craft I care about—and the standard I bring to every project.",
   ],
   ctaVerbs: ["create", "design", "build", "make"],
-  skills: ["Product design", "UX research", "Design systems", "Visual design", "Web applications", "AI product design", "Figma", "Prototyping"],
+  skills: ["Product design", "UX research", "Design systems", "Visual design", "Web applications", "AI product design", "Figma", "Figma plugin design", "AI-powered workflows", "Prototyping"],
 };
 
 export const navItems = [
