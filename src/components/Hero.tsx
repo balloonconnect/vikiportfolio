@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { MapPin, Clock, ChevronDown } from "lucide-react";
 import { site } from "@/data/site";
 import { projects } from "@/data/projects";
@@ -34,6 +34,8 @@ function hoursBehind() {
 
 export function Hero() {
   const reduce = useReducedMotion();
+  const { scrollY } = useScroll();
+  const drift = useTransform(scrollY, [0, 700], [0, -56]);
   const time = useClock();
   const [canDrag, setCanDrag] = useState(false);
   const [order, setOrder] = useState(() => spans.map((_, i) => i));
@@ -115,7 +117,7 @@ export function Hero() {
         </div>
 
         {/* Draggable glass tiles: 6 x 2 grid that scales with its container (u = width / 1272). */}
-        <div className="mt-[74px] w-full max-lg:mt-6" style={{ containerType: "inline-size" }}>
+        <motion.div className="mt-[74px] w-full max-lg:mt-6" style={{ containerType: "inline-size", y: reduce ? 0 : drift }}>
           <div ref={grid} className="grid aspect-[1272/408] grid-cols-6 grid-rows-2" style={{ "--u": "calc(100cqw / 1272)", gap: "calc(24 * var(--u))" } as React.CSSProperties}>
             {order.map((tile, slot) => {
               const p = projects[tile % projects.length];
@@ -141,7 +143,7 @@ export function Hero() {
               );
             })}
           </div>
-        </div>
+        </motion.div>
         <a href="#work" aria-label="Scroll to work" data-cursor="grow" className="mx-auto mt-10 hidden w-fit text-muted transition-colors duration-[160ms] hover:text-fg lg:block"><ChevronDown className="anim-bob" size={24} /></a>
       </div>
     </section>

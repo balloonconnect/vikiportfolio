@@ -1,3 +1,4 @@
+import { Parallax } from "./Parallax";
 import { site } from "@/data/site";
 import { Experience } from "./Experience";
 import { Education } from "./Education";
@@ -19,7 +20,7 @@ export function AboutSection() {
           </ul>
         </Reveal>
         <Reveal className="col-span-5 col-start-8 max-lg:col-span-12 max-lg:col-start-1" delay={0.1}>
-          <img src="/about/portrait.webp" alt="Vignesh Kannan, Senior UI/UX & AI Designer" width={933} height={1400} loading="lazy" className="mb-10 aspect-[4/5] w-full max-w-[420px] rounded-[6px] object-cover object-top" />
+          <Parallax amount={6} className="mb-10 aspect-[4/5] w-full max-w-[420px] rounded-[6px]"><img src="/about/portrait.webp" alt="Vignesh Kannan, Senior UI/UX & AI Designer" width={933} height={1400} loading="lazy" className="h-full w-full object-cover object-top" /></Parallax>
                   </Reveal>
       </div>
       <div className="wrap mt-[96px] max-lg:mt-12"><Experience /><Education /><Awards /></div>
