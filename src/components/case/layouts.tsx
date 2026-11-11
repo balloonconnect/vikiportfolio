@@ -164,7 +164,7 @@ const medisystem: Layout = {
     const A = p.accent;
     const Cap = ({ children }: { children: React.ReactNode }) => <p className="mt-3 text-[14px] text-muted">{children}</p>;
     return (<>
-    <div className="mb-[72px] max-lg:mb-12"><Shot src={`${M}/cover.png`} alt="MediSystem AI: patient explanation, doctor review and mobile screens" w={1440} h={892} /></div>
+    <div className="mb-[72px] max-lg:mb-12"><Shot src={`${M}/cover.png`} alt="MediSystem AI: patient explanation, doctor review and mobile screens" w={1440} h={704} /></div>
     <Sec id="overview" title="Helping people understand their results, and helping doctors review them">
       <P>Lab reports reach patients as numbers and ranges. This concept explains a report in plain language, ties every statement to its source value, and routes it through a doctor before it is treated as reviewed.</P>
       <div className="mt-8"><Shot src={`${M}/pd/02-dashboard.webp`} alt="Patient dashboard with reports, review count and an AI-assisted explanation" w={1440} h={900} caption="Patient dashboard: recent reports, next appointment and an AI-assisted explanation" /></div>
