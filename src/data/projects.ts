@@ -31,6 +31,7 @@ export type Project = {
   readTime: number;
   accent: string;
   cover?: string;
+  coverBg?: string; // background colour shown around a letterboxed cover
   caseStudy: CaseStudy;
 };
 
@@ -68,7 +69,7 @@ export const projects: Project[] = [
     tagline: "One plugin to find and fix design-system drift.",
     description: "A Figma plugin that scans a file for unlinked variables, text styles, colors, external components, contrast and collection mismatches, with safe one-step fixes.",
     years: "2026", role: "Product design, UX, plugin build", scope: "Discovery, UX, UI, Figma Plugin API", results: "19 issue groups found, 16 fixed in one undoable pass (mock file)",
-    readTime: 7, accent: "#5b4fe0", caseStudy: base("Global Design Check"),
+    readTime: 7, accent: "#5b4fe0", cover: "/case/global-design-check/cover.png", coverBg: "#6257e9", caseStudy: base("Global Design Check"),
   },
   {
     slug: "clinical-portal",

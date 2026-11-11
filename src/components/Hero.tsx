@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MapPin, Clock, ChevronDown } from "lucide-react";
 import { site } from "@/data/site";
 import { projects } from "@/data/projects";
-import { Placeholder } from "./Placeholder";
+import { Cover } from "./Cover";
 
 // 9 tiles on a 6 x 2 grid: row 1 = 2+1+1+2 columns, row 2 = 1+1+2+1+1.
 const spans = [2, 1, 1, 2, 1, 1, 2, 1, 1];
@@ -91,7 +91,7 @@ export function Hero() {
                     className="relative size-full select-none overflow-hidden border border-white bg-white/50 will-change-transform [touch-action:none]"
                     style={{ borderRadius: "calc(10 * var(--u))", cursor: canDrag ? "grab" : undefined, padding: "calc(4 * var(--u))" }}>
                     <div className="hero-glass-inner pointer-events-none size-full overflow-hidden bg-secondary" style={{ borderRadius: "calc(6 * var(--u))" }} aria-hidden>
-                      <Placeholder accent={p.accent} variant={tile} />
+                      <Cover project={p} variant={tile} />
                     </div>
                   </motion.div>
                 </motion.div>
