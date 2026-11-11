@@ -35,7 +35,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
           <motion.div className="h-full w-full" whileHover={{ scale: 1.03 }} transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}>
             <Parallax className="h-full w-full"><Cover project={project} variant={index} /></Parallax>
           </motion.div>
-          <motion.span aria-hidden className="pointer-events-none absolute inset-0 bg-secondary" initial={{ opacity: 1 }} whileInView={{ opacity: 0 }} viewport={{ once: true, margin: "-10% 0px" }} transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }} />
+          <motion.span aria-hidden className="pointer-events-none absolute inset-0 bg-secondary" initial={{ opacity: 1 }} whileInView={{ opacity: 0 }} viewport={{ once: false, margin: "-10% 0px" }} transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }} />
         </Link>
       </Reveal>
     </article>
