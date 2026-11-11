@@ -1,7 +1,7 @@
 export const experience = [
-  { company: "Indegene", role: "UI/UX Designer", years: "2022 - Present" },
+  { company: "Indegene", role: "UI/UX Designer to Senior UI/UX Designer", years: "2022 - Present" },
   { company: "Hoffensoft", role: "UI/UX Designer", years: "2020 - 2022" },
-  { company: "ad2pro Media Solution", role: "Production Designer", years: "2018 - 2020" },
+  { company: "Ad2pro Media Solution", role: "Production Designer", years: "2018 - 2020" },
 ];
 
 // Replace with your real awards, or leave the array empty to hide the block.
