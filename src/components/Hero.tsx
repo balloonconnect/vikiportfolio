@@ -63,8 +63,8 @@ export function Hero() {
           {site.subline} @ <span className="rounded-md bg-black/5 px-2 py-[2px] text-fg dark:bg-white/10">{site.employer}</span>
         </motion.p>
         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[15px] text-muted lg:justify-end lg:-mt-8">
-          <span className="flex items-center gap-2"><MapPin size={16} />{site.location}</span>
-          <span className="relative flex cursor-default items-center gap-2" suppressHydrationWarning onMouseEnter={() => setTip(true)} onMouseLeave={() => setTip(false)}>
+          <span data-icon-hover className="flex items-center gap-2"><MapPin size={16} />{site.location}</span>
+          <span data-icon-hover className="relative flex cursor-default items-center gap-2" suppressHydrationWarning onMouseEnter={() => setTip(true)} onMouseLeave={() => setTip(false)}>
             <Clock size={16} />{time || " "}
             <AnimatePresence>{tipText && (
               <motion.span initial={{ opacity: 0, y: 6, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 6, scale: 0.96 }} transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}

@@ -42,3 +42,29 @@ body { background: var(--bg); color: var(--fg); font-family: Lato, ui-sans-serif
 .press { transition: transform var(--duration-base) var(--ease-spring), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out); }
 .press:hover { transform: scale(1.05); } .press:active { transform: scale(.96); }
 .hero-glass-inner { box-shadow: 0 0 20px rgba(0,0,0,.14); }
+
+/* Icon hover motion: each lucide icon animates when its link, button or label is hovered or focused. */
+svg.lucide { transition: transform var(--duration-base, .24s) var(--ease-spring, cubic-bezier(.34,1.56,.64,1)); transform-origin: center; }
+@keyframes icon-wiggle { 0%,100% { transform: rotate(0) } 25% { transform: rotate(-14deg) } 55% { transform: rotate(10deg) } 80% { transform: rotate(-5deg) } }
+@keyframes icon-pop { 0% { transform: scale(1) } 45% { transform: scale(1.28) } 100% { transform: scale(1.12) } }
+@keyframes icon-hop { 0%,100% { transform: translateY(0) } 40% { transform: translateY(-4px) } 70% { transform: translateY(1px) } }
+@keyframes icon-spin-sun { to { transform: rotate(180deg) } }
+@media (hover: hover) {
+  :is(a, button, label, [role="button"], li, span):hover > svg.lucide-arrow-up-right,
+  :is(a, button):hover svg.lucide-arrow-up-right { transform: translate(3px, -3px); }
+  :is(a, button):hover > svg.lucide-arrow-right, :is(a, button):hover svg.lucide-arrow-right { transform: translateX(4px); }
+  :is(a, button):hover > svg.lucide-arrow-left, :is(a, button):hover svg.lucide-arrow-left { transform: translateX(-4px); }
+  :is(a, button):hover svg.lucide-send { transform: translate(3px, -3px) rotate(8deg); }
+  :is(a, button):hover svg.lucide-x { transform: rotate(90deg) scale(1.1); }
+  :is(a, button):hover svg.lucide-menu { transform: scaleX(1.15); }
+  :is(a, button):hover svg.lucide-circle-user { transform: scale(1.15); }
+  :is(a, button):hover svg.lucide-message-square { animation: icon-wiggle .5s ease-in-out; }
+  :is(a, button):hover svg.lucide-mail { animation: icon-wiggle .5s ease-in-out; }
+  :is(a, button):hover svg.lucide-copy, :is(a, button):hover svg.lucide-check { animation: icon-pop .3s var(--ease-spring, ease-out) forwards; }
+  :is(a, button):hover svg.lucide-lock { animation: icon-wiggle .5s ease-in-out; }
+  :is(a, button):hover svg.lucide-play { transform: scale(1.2); }
+  :is(a, button):hover svg.lucide-chevron-down { animation: icon-hop .6s ease-in-out; }
+  :is(a, button):hover svg.lucide-sun, :is(a, button):hover svg.lucide-moon { animation: icon-spin-sun .5s var(--ease-out, ease-out) forwards; }
+  [data-icon-hover]:hover svg.lucide-clock, [data-icon-hover]:hover svg.lucide-map-pin { animation: icon-hop .55s ease-in-out; }
+  :is(a, button):focus-visible svg.lucide-arrow-up-right { transform: translate(3px, -3px); }
+}
