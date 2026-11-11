@@ -15,14 +15,19 @@ export const awards = [
   { title: "Creative Excellence Awards 2024", org: "Indegene", note: "Silver award in the category of UI UX - Mobile, Web Experience" },
 ];
 
-export const play = [
-  { id: "p1", title: "Doctor dashboard", caption: "MediSystem AI · desktop", src: "/case/medisystem-ai/pd/02-dashboard.webp", href: "/work/medisystem-ai" },
-  { id: "p2", title: "Patient home", caption: "MediSystem AI · mobile", src: "/case/medisystem-ai/pm/03-home.webp", href: "/work/medisystem-ai" },
-  { id: "p3", title: "Issue scan", caption: "Global Design Check · plugin", src: "/case/global-design-check/screens/03-all-issues.png", href: "/work/global-design-check" },
-  { id: "p4", title: "AI explanation", caption: "MediSystem AI · mobile", src: "/case/medisystem-ai/pm/10-explanation.webp", href: "/work/medisystem-ai" },
-  { id: "p5", title: "Color variables", caption: "Global Design Check · plugin", src: "/case/global-design-check/screens/06-colors.png", href: "/work/global-design-check" },
-  { id: "p6", title: "Medora", caption: "Design system cover", src: "/case/medora-design-system/cover.png", href: "/work/medora-design-system" },
-  { id: "p7", title: "AI chat", caption: "MediSystem AI · mobile", src: "/case/medisystem-ai/pm/11-ai-chat.webp", href: "/work/medisystem-ai" },
-  { id: "p8", title: "Compliant", caption: "Global Design Check · plugin", src: "/case/global-design-check/screens/11-compliant.png", href: "/work/global-design-check" },
-  { id: "p9", title: "Appointments", caption: "MediSystem AI · mobile", src: "/case/medisystem-ai/pm/13-appointments.webp", href: "/work/medisystem-ai" },
+export const play: { id: string; title: string; caption: string; href: string; src?: string; kind?: "components" | "tokens" }[] = [
+  { id: "p1", title: "Doctor dashboard", caption: "MediSystem AI · desktop", href: "/work/medisystem-ai", src: "/case/medisystem-ai/pd/02-dashboard.webp" },
+  { id: "p2", title: "Patient home", caption: "MediSystem AI · mobile", href: "/work/medisystem-ai", src: "/case/medisystem-ai/pm/03-home.webp" },
+  { id: "p3", title: "Issue scan", caption: "Global Design Check · plugin", href: "/work/global-design-check", src: "/case/global-design-check/screens/03-all-issues.png" },
+  { id: "p4", title: "AI explanation", caption: "MediSystem AI · mobile", href: "/work/medisystem-ai", src: "/case/medisystem-ai/pm/10-explanation.webp" },
+  { id: "p5", title: "Color variables", caption: "Global Design Check · plugin", href: "/work/global-design-check", src: "/case/global-design-check/screens/06-colors.png" },
+  { id: "p6", title: "Components & icons", caption: "Medora · buttons, inputs, icons", href: "/work/medora-design-system", kind: "components" },
+  { id: "p7", title: "AI chat", caption: "MediSystem AI · mobile", href: "/work/medisystem-ai", src: "/case/medisystem-ai/pm/11-ai-chat.webp" },
+  { id: "p8", title: "Compliant", caption: "Global Design Check · plugin", href: "/work/global-design-check", src: "/case/global-design-check/screens/11-compliant.png" },
+  { id: "p9", title: "Appointments", caption: "MediSystem AI · mobile", href: "/work/medisystem-ai", src: "/case/medisystem-ai/pm/13-appointments.webp" },
+  { id: "p10", title: "Type & color", caption: "Medora · tokens", href: "/work/medora-design-system", kind: "tokens" },
+  { id: "p11", title: "Report detail", caption: "MediSystem AI · mobile", href: "/work/medisystem-ai", src: "/case/medisystem-ai/pm/05-report-detail.webp" },
+  { id: "p12", title: "Component audit", caption: "Global Design Check · plugin", href: "/work/global-design-check", src: "/case/global-design-check/screens/07-components.png" },
+  { id: "p13", title: "Prescriptions", caption: "MediSystem AI · mobile", href: "/work/medisystem-ai", src: "/case/medisystem-ai/pm/16-prescriptions.webp" },
+  { id: "p14", title: "Accessibility", caption: "Global Design Check · plugin", href: "/work/global-design-check", src: "/case/global-design-check/screens/08-accessibility.png" },
 ];
