@@ -6,6 +6,7 @@ import { Placeholder } from "@/components/Placeholder";
 import { FigmaEmbed } from "./FigmaEmbed";
 import { Reveal } from "../Reveal";
 import { TemplatesExplorer } from "./medora/Templates";
+import { ComponentAnatomy } from "./medora/Anatomy";
 import { Swatches, TypeScale, GlobalTokens, SemanticTokens, Contrast, SpacingRadius, Grids, Elevation, IconGrid, ButtonMatrix, InputMatrix, SelectionMatrix, ThemePreview } from "./medora/Parts";
 import { ProtoFlows } from "./medisystem/Flows";
 import { Sec, P, Img, Video, Stats, Personas, Cards, Columns, Decisions, Features, Directions, Choose, Quotes, Callouts, Gallery, Grid, Compare, MoreWork, Shot, Steps, Pipeline } from "./blocks";
@@ -265,7 +266,7 @@ const medora: Layout = {
       <p className="mb-2 mt-12 text-[20px]">Inputs</p><P>Inputs combine a label, field and supporting text. Predefined states ensure consistent feedback and predictable behavior.</P><div className="mt-6"><InputMatrix /></div>
       <p className="mb-2 mt-12 text-[20px]">Checkboxes, Radios & Switches</p><P>Selection controls support binary and multiple choices, with indeterminate and disabled states sharing one interaction model.</P><div className="mt-6"><SelectionMatrix /></div>
       <p className="mb-2 mt-12 text-[20px]">Clear Anatomy, Scalable Components</p><P>Each component is built from clearly defined elements, shared tokens and reusable subcomponents. Documented sizing, spacing and dependencies keep variants consistent.</P>
-      <div className="mt-6 grid gap-6 md:grid-cols-2"><Columns items={[{ title: "Button", bullets: ["1 · Container: radius/md, size/control/md", "2 · Leading icon: boolean + instance swap", "3 · Label: Label/Large text style", "4 · Trailing icon: boolean + instance swap"] }]} /><Columns items={[{ title: "Card", bullets: ["1 · Slot / Media: Show media boolean", "2 · Slot / Header: Header content swap", "3 · Slot / Body: Body content swap", "4 · Slot / Footer: Show footer boolean"] }]} /></div>
+      <div className="mt-8"><ComponentAnatomy /></div>
     </Sec>
     <Sec id="slot-method" title="Slot Method"><P>A slot is a named, bounded region inside a component. It accepts swappable content so teams compose variations without detaching or rebuilding.</P>
       <div className="mt-8"><Decisions items={[["Slot frame", "Auto-layout frame named \"Slot / Body\". Owns padding, gap and width, so dropped content keeps the layout."], ["Instance swap", "Property such as \"Body content\" replaces the default with any compatible component."], ["Boolean", "Properties such as \"Show media\" or \"Show footer\" hide a slot and the component re-hugs."], ["Documented bounds", "Each slot lists what it accepts and its reading order, so usage stays predictable."]]} /></div>
