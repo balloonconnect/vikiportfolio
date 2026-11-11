@@ -1,4 +1,5 @@
 "use client";
+import { Drift } from "@/components/Parallax";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -42,12 +43,12 @@ export function ProtoFlows() {
       <ol className={`grid gap-4 ${mobile ? "grid-cols-3 md:grid-cols-6" : "grid-cols-2 md:grid-cols-3"}`}>
         {f.items.map((it, i) => (
           <li key={it.src}>
-            <button onClick={() => setOpen(i)} data-cursor="grow" className="group block w-full text-left" aria-label={`Open ${it.n} ${it.label}`}>
+            <Drift amount={10}><button onClick={() => setOpen(i)} data-cursor="grow" className="group block w-full text-left" aria-label={`Open ${it.n} ${it.label}`}>
               <div className="overflow-hidden rounded-[6px] border border-secondary bg-surface transition-[transform,box-shadow] duration-[240ms] ease-spring group-hover:-translate-y-1 group-hover:shadow-[0_10px_30px_#0000001f]">
                 <img src={it.src} alt={`${k}: ${it.label}`} width={f.w} height={f.h} loading="lazy" className="h-auto w-full" />
               </div>
               <p className="mt-2 text-[13px] text-muted">{it.n} · {it.label}</p>
-            </button>
+            </button></Drift>
           </li>
         ))}
       </ol>

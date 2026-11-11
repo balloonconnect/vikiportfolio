@@ -1,4 +1,5 @@
 "use client";
+import { Drift } from "@/components/Parallax";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -47,9 +48,9 @@ export function StatesRow({ items }: { items: { label: string; src: string }[] }
     <div>
       <ol className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {items.map((it, k) => (
-          <li key={it.src}><button onClick={() => setOpen(k)} data-cursor="grow" className="group block w-full text-left" aria-label={`Open ${it.label}`}>
+          <li key={it.src}><Drift amount={10}><button onClick={() => setOpen(k)} data-cursor="grow" className="group block w-full text-left" aria-label={`Open ${it.label}`}>
             <div className="overflow-hidden rounded-[6px] border border-secondary bg-surface transition-[transform,box-shadow] duration-[240ms] ease-spring group-hover:-translate-y-1 group-hover:shadow-[0_10px_30px_#0000001f]"><img src={it.src} alt={it.label} width={W} height={H} loading="lazy" className="h-auto w-full" /></div>
-            <p className="mt-2 text-[13px] text-muted">{it.label}</p></button></li>
+            <p className="mt-2 text-[13px] text-muted">{it.label}</p></button></Drift></li>
         ))}
       </ol>
       {typeof document !== "undefined" && createPortal(<AnimatePresence>{cur && (

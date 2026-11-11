@@ -1,3 +1,4 @@
+import { Parallax } from "@/components/Parallax";
 import Link from "next/link";
 import { ArrowUpRight, Play } from "lucide-react";
 import { Placeholder } from "../Placeholder";
@@ -22,7 +23,7 @@ export const Video = ({ accent, src, caption }: { accent: string; src?: string; 
   </figure>
 );
 export const Shot = ({ src, alt, w, h, caption, narrow }: { src: string; alt: string; w: number; h: number; caption?: string; narrow?: boolean }) => (
-  <figure className={narrow ? "max-w-[420px]" : ""}><div className="overflow-hidden rounded-[6px] border border-secondary bg-surface"><img src={src} alt={alt} width={w} height={h} loading="lazy" className="h-auto w-full" /></div>{caption && <figcaption className="mt-3 text-[14px] text-muted">{caption}</figcaption>}</figure>
+  <figure className={narrow ? "max-w-[420px]" : ""}><div className="overflow-hidden rounded-[6px] border border-secondary bg-surface"><Parallax amount={3} scale={1.07}><img src={src} alt={alt} width={w} height={h} loading="lazy" className="h-auto w-full" /></Parallax></div>{caption && <figcaption className="mt-3 text-[14px] text-muted">{caption}</figcaption>}</figure>
 );
 export const Steps = ({ items }: { items: [string, string][] }) => (
   <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">{items.map(([t, d]) => (<li key={t} className="rounded-[6px] border border-secondary bg-surface p-4"><p className="text-[16px] font-semibold">{t}</p><p className="mt-2 text-[14px] leading-[22px] text-muted">{d}</p></li>))}</ol>
