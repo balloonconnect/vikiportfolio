@@ -44,22 +44,20 @@ const ButtonAnatomy = () => (
 );
 
 // ---------- Card ----------
-const CardMock = ({ media = true, header = "Complete blood count", body = "Two values are outside the printed reference range.", footer = true, marks = false, children }: { media?: boolean; header?: string; body?: string; footer?: boolean; marks?: boolean; children?: ReactNode }) => {
-  const M = ({ n, children, inset = 16 }: { n: number; children: ReactNode; inset?: number }) => marks ? (
-    <div className="relative"><span className="absolute top-1/2 -translate-y-1/2" style={{ left: -(inset + 34) }}><Dot n={n} className="!relative" /></span><span className="pointer-events-none absolute top-1/2 h-px" style={{ background: INK, left: -(inset + 12), width: inset + 12 }} />{children}</div>) : <>{children}</>;
+// Matches the Figma Card: 24px padding, inset media, header (title + description), body, footer right-aligned with Secondary then Primary.
+const CardMock = ({ media = true, header = "Complete blood count", desc = "Uploaded 12 Mar 2025", body = "Two values are outside the printed reference range.", footer = true, secondary = true, marks = false }: { media?: boolean; header?: string; desc?: string; body?: string; footer?: boolean; secondary?: boolean; marks?: boolean }) => {
+  const M = ({ n, children }: { n: number; children: ReactNode }) => marks ? (
+    <div className="relative"><span className="absolute top-1/2 -translate-y-1/2" style={{ left: -58 }}><Dot n={n} className="!relative" /></span><span className="pointer-events-none absolute top-1/2 h-px" style={{ background: INK, left: -36, width: 36 }} />{children}</div>) : <>{children}</>;
   return (
-    <div className="w-[260px] overflow-visible rounded-[12px] border bg-white text-left" style={{ borderColor: LINE, boxShadow: "0 1px 3px rgba(15,23,42,.08)", ...font }}>
-      {media && <M n={1} inset={0}><div className="flex h-[96px] items-center justify-center rounded-t-[12px]" style={{ background: "#dbeafe", color: BLUE }}><ImageIcon size={28} /></div></M>}
-      <div className="space-y-2 p-4">
-        <M n={2}><p className="text-[16px] font-semibold">{header}</p></M>
-        <M n={3}><p className="text-[13px] leading-[19px]" style={{ color: SUB }}>{body}</p></M>
-        {children}
-        {footer && <M n={4}><div className="flex gap-2 pt-1"><Btn>Review</Btn></div></M>}
-      </div>
+    <div className="w-[290px] space-y-3 rounded-[12px] border bg-white p-5 text-left" style={{ borderColor: LINE, boxShadow: "0 1px 3px rgba(15,23,42,.08)", ...font }}>
+      {media && <M n={1}><div className="flex h-[110px] items-center justify-center rounded-[8px]" style={{ background: "#dbeafe", color: BLUE }}><ImageIcon size={28} /></div></M>}
+      <M n={2}><div><p className="text-[16px] font-semibold leading-[22px]">{header}</p><p className="text-[13px] leading-[18px]" style={{ color: SUB }}>{desc}</p></div></M>
+      <M n={3}><p className="text-[13px] leading-[19px]" style={{ color: SUB }}>{body}</p></M>
+      {footer && <M n={4}><div className="flex justify-end gap-2 pt-1">{secondary && <Btn v="secondary">Dismiss</Btn>}<Btn>Review</Btn></div></M>}
     </div>);
 };
 const CardAnatomy = () => (
-  <Shell title="Card" legend={[["Slot / Media", "Show media boolean. Fixed ratio, never stretched."], ["Slot / Header", "Header content swap: title, status or both."], ["Slot / Body", "Body content swap. Short, scannable copy."], ["Slot / Footer", "Show footer boolean. One primary action, optional secondary."]]}
+  <Shell title="Card" legend={[["Slot / Media", "Show media boolean. Fixed ratio, never stretched."], ["Slot / Header", "Header content swap: title and description."], ["Slot / Body", "Body content swap. Short, scannable copy."], ["Slot / Footer", "Show footer boolean. Actions sit on the right: Secondary, then Primary at the far right."]]}
     pad="py-10" stage={<div className="pl-10 max-sm:pl-8"><CardMock marks /></div>} />
 );
 
@@ -87,10 +85,10 @@ const buttonRows: [ReactNode, ReactNode][] = [
    <Verdict key="f" ok={false} title="Off-token colours" text="Hard-coded fills break dark mode and contrast checks. Use the semantic tokens."><Btn v="custom">Save changes</Btn></Verdict>],
 ];
 const cardRows: [ReactNode, ReactNode][] = [
-  [<Verdict key="a" ok title="Keep the slot order" text="Media, header, body, then footer. The same order on every card builds a predictable scan path."><div className="scale-[.82]"><CardMock /></div></Verdict>,
+  [<Verdict key="a" ok title="Keep the slot order" text="Media, header, body, then footer, with actions on the right as in the Figma component."><div className="scale-[.82]"><CardMock /></div></Verdict>,
    <Verdict key="b" ok={false} title="Rearranging or skipping the structure" text="Body text above the header and an unlabeled block make cards harder to compare."><div className="w-[220px] rounded-[12px] border bg-white p-4" style={{ borderColor: LINE, ...font }}><p className="text-[13px]" style={{ color: SUB }}>Two values are outside the printed reference range and need review before the visit.</p><p className="mt-3 text-[15px] font-semibold">Complete blood count</p></div></Verdict>],
-  [<Verdict key="c" ok title="One clear footer action" text="A single primary action, with an optional secondary one beside it."><div className="scale-[.82]"><CardMock media={false} /></div></Verdict>,
-   <Verdict key="d" ok={false} title="A crowd of actions" text="Three or more buttons in the footer split attention and overflow on mobile."><div className="w-[220px] rounded-[12px] border bg-white p-4" style={{ borderColor: LINE, ...font }}><p className="text-[15px] font-semibold">Complete blood count</p><div className="mt-3 flex flex-wrap gap-2"><Btn>Review</Btn><Btn v="secondary">Share</Btn><Btn v="ghost">Edit</Btn><Btn v="danger">Delete</Btn></div></div></Verdict>],
+  [<Verdict key="c" ok title="One clear footer action" text="One Primary at the right edge, with at most one Secondary to its left."><div className="scale-[.82]"><CardMock media={false} secondary={false} /></div></Verdict>,
+   <Verdict key="d" ok={false} title="A crowd of actions" text="Three or more buttons in the footer split attention and overflow on mobile."><div className="w-[220px] rounded-[12px] border bg-white p-4" style={{ borderColor: LINE, ...font }}><p className="text-[15px] font-semibold">Complete blood count</p><div className="mt-3 flex flex-wrap justify-end gap-2"><Btn v="ghost">Edit</Btn><Btn v="secondary">Share</Btn><Btn v="danger">Delete</Btn><Btn>Review</Btn></div></div></Verdict>],
   [<Verdict key="e" ok title="Turn unused slots off" text="Use the Show media and Show footer booleans so the card collapses cleanly."><div className="scale-[.82]"><CardMock media={false} footer={false} /></div></Verdict>,
    <Verdict key="f" ok={false} title="Leaving empty placeholders" text="An empty media area or footer gap wastes space and looks unfinished."><div className="w-[220px] overflow-hidden rounded-[12px] border bg-white" style={{ borderColor: LINE, ...font }}><div className="h-[64px] border-b border-dashed" style={{ borderColor: "#cbd5e1", background: "#f8fafc" }} /><div className="p-4"><p className="text-[15px] font-semibold">Complete blood count</p><div className="mt-6 h-8" /></div></div></Verdict>],
 ];
