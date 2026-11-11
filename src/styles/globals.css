@@ -68,3 +68,8 @@ svg.lucide { transition: transform var(--duration-base, .24s) var(--ease-spring,
   [data-icon-hover]:hover svg.lucide-clock, [data-icon-hover]:hover svg.lucide-map-pin { animation: icon-hop .55s ease-in-out; }
   :is(a, button):focus-visible svg.lucide-arrow-up-right { transform: translate(3px, -3px); }
 }
+
+/* Medora page: theme-aware palette (follows the site light/dark toggle) */
+.medora { --m-bg:#f5f5f6; --m-card:#fff; --m-sub:#f8fafc; --m-line:#e2e8f0; --m-line2:#cbd5e1; --m-fg:#0f172a; --m-muted:#64748b; --m-muted2:#475569; --m-grey:#ececec; --m-chip:#eef2f7; --m-tint:#dbeafe; --m-tint2:#eef2ff; --m-hero:#f7f8fc; --m-wm:#0f172a0d;
+  --bg:var(--m-bg); --surface:var(--m-card); --fg:var(--m-fg); --fg-muted:var(--m-muted); --border:var(--m-line); --tile:var(--m-chip); --secondary:var(--m-line); }
+[data-theme="dark"] .medora { --m-bg:#0b0f1a; --m-card:#111827; --m-sub:#0f172a; --m-line:#263247; --m-line2:#334155; --m-fg:#f8fafc; --m-muted:#94a3b8; --m-muted2:#a8b3c5; --m-grey:#1a2233; --m-chip:#1e293b; --m-tint:#1e3a8a; --m-tint2:#16213f; --m-hero:#0d1322; --m-wm:#f8fafc0d; }

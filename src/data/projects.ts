@@ -21,6 +21,8 @@ export type Project = {
   /** Which case study layout to use: contracts | give | legalease | itm | transitstats */
   layout: LayoutId;
   slug: string;
+  /** Optional Figma file URL, rendered as an interactive embed so visitors can browse all pages */
+  figma?: string;
   name: string;
   tagline: string;
   description: string;
@@ -73,6 +75,7 @@ export const projects: Project[] = [
   },
   {
     slug: "medora-design-system",
+    figma: "https://www.figma.com/design/DErYluda5bAKKIjmrjfnWB",
     layout: "medora",
     name: "MEDORA Design System",
     tagline: "A scalable healthcare design system: tokens, atomic components, slots and governance.",
