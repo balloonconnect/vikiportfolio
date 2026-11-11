@@ -3,6 +3,7 @@ import { PluginFrame } from "./plugin/PluginFrame";
 import { OutcomeStats, AnimatedPipeline, FlowTabs } from "./plugin/Motion";
 import { ViewsExplorer, StatesRow } from "./plugin/Views";
 import { Placeholder } from "@/components/Placeholder";
+import { TemplatesExplorer } from "./medora/Templates";
 import { Swatches, TypeScale, GlobalTokens, SemanticTokens, Contrast, SpacingRadius, Grids, Elevation, IconGrid, ButtonMatrix, InputMatrix, SelectionMatrix, ThemePreview } from "./medora/Parts";
 import { ProtoFlows } from "./medisystem/Flows";
 import { Sec, P, Img, Video, Stats, Personas, Cards, Columns, Decisions, Features, Directions, Choose, Quotes, Callouts, Gallery, Grid, Compare, MoreWork, Shot, Steps, Pipeline } from "./blocks";
@@ -228,7 +229,7 @@ const medisystem: Layout = {
 };
 
 const medora: Layout = {
-  toc: T("Overview", "Approach", "Foundations", "Atomic design", "Typography", "Color", "Tokens", "Spacing", "Components", "Slot method", "Pages", "Themes", "Quality", "Outcome", "More work"),
+  toc: T("Overview", "Approach", "Foundations", "Atomic design", "Typography", "Color", "Tokens", "Spacing", "Components", "Slot method", "Pages", "Templates", "Themes", "Quality", "Outcome", "More work"),
   render: (p) => (<>
     <div className="mb-[72px] max-lg:mb-12"><Shot src="/case/medora-design-system/cover.png" alt="MEDORA design system: tokens, components and light and dark themes" w={1440} h={800} /></div>
     <Sec id="overview" title="One system for a large, regulated, content-heavy website">
@@ -272,6 +273,7 @@ const medora: Layout = {
       <Cards cols={3} items={[["4 · Dialog", "Slots: Header, Body, Footer. The body slot takes a form, text or alert. The footer slot holds actions and can be hidden for read-only dialogs."], ["5 · Hero Banner", "Slots: Media, Content, Actions. The media slot holds a photo or the image placeholder; the actions slot is toggled off when the page needs no call to action."], ["6 · Page Header", "Slots: Leading, Actions. The leading slot shows a back button when the page is nested; the actions slot is swapped for the primary task of each page."], ["7 · Accordion Item", "Slots: Content. The content slot expands in place and can hold text, lists or media. Closed items hide the slot and re-hug."], ["8 · Alert", "Slots: Actions. The actions slot takes any button group. With it hidden the alert becomes a simple notice."], ["9 · Button", "Slots: Leading icon, Label, Trailing icon. Icon slots accept any icon through instance swap, so one Button covers text-only, leading and trailing icon cases."]]} /></Sec>
     <Sec id="pages" title="Two Example Pages"><P>Two full pages from the Page Examples library, built only from system components. Each is shown at desktop and mobile in the light theme.</P>
       <div className="mt-8 grid gap-6 md:grid-cols-2"><Cards items={[["Page 1 · Homepage", "Hero banner, stats, story cards with imagery, FAQ accordion and footer. Desktop 1280 and Mobile 375."]]} /><Cards items={[["Page 2 · Science inner page", "Breadcrumb, page header, image banner, alert, accordion list and footer. Desktop 1280 and Mobile 375."]]} /></div></Sec>
+    <Sec id="templates" title="Templates"><P>Three reference layouts from E3, each built only from system components: Corporate Home, Culture Story and Topic Hub. Every page ships at desktop 1280 and mobile 375 in the light theme, so the same templates cover the full range of content.</P><div className="mt-8"><TemplatesExplorer /></div></Sec>
     <Sec id="themes" title="From system to interface"><P>Semantic color variables remap surfaces, text, borders and interactive states while preserving the same hierarchy, structure and component behavior.</P>
       <div className="mt-8 grid grid-cols-1 items-start gap-6 md:grid-cols-2 [&>*]:min-w-0"><div><p className="mb-3 text-[15px] text-muted">Light theme</p><ThemePreview /></div><div><p className="mb-3 text-[15px] text-muted">Dark theme</p><ThemePreview dark /></div></div>
       <div className="mt-6"><P>Layout, Spacing, Size and Typography collections switch by viewport; Color and Component collections switch by theme.</P></div></Sec>
