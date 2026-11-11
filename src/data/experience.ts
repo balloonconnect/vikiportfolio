@@ -16,13 +16,13 @@ export const awards = [
 ];
 
 export const play = [
-  { id: "p1", title: "Type experiment", caption: "Variable type study", accent: "#2f6f5e" },
-  { id: "p2", title: "Brand sketch", caption: "Identity exploration", accent: "#c2410c" },
-  { id: "p3", title: "Icon set", caption: "Healthcare icon grid", accent: "#3b4cca" },
-  { id: "p4", title: "Poster", caption: "Print poster", accent: "#a21caf" },
-  { id: "p5", title: "Photography", caption: "Studio session", accent: "#0e7490" },
-  { id: "p6", title: "Motion test", caption: "Micro-interaction", accent: "#4d7c0f" },
-  { id: "p7", title: "Dashboard study", caption: "Data-dense UI", accent: "#b45309" },
-  { id: "p8", title: "Mobile flow", caption: "App screens", accent: "#1d4ed8" },
-  { id: "p9", title: "Brand mark", caption: "Logo exploration", accent: "#be123c" },
+  { id: "p1", title: "Doctor dashboard", caption: "MediSystem AI · desktop", src: "/case/medisystem-ai/pd/02-dashboard.webp", href: "/work/medisystem-ai" },
+  { id: "p2", title: "Patient home", caption: "MediSystem AI · mobile", src: "/case/medisystem-ai/pm/03-home.webp", href: "/work/medisystem-ai" },
+  { id: "p3", title: "Issue scan", caption: "Global Design Check · plugin", src: "/case/global-design-check/screens/03-all-issues.png", href: "/work/global-design-check" },
+  { id: "p4", title: "AI explanation", caption: "MediSystem AI · mobile", src: "/case/medisystem-ai/pm/10-explanation.webp", href: "/work/medisystem-ai" },
+  { id: "p5", title: "Color variables", caption: "Global Design Check · plugin", src: "/case/global-design-check/screens/06-colors.png", href: "/work/global-design-check" },
+  { id: "p6", title: "Medora", caption: "Design system cover", src: "/case/medora-design-system/cover.png", href: "/work/medora-design-system" },
+  { id: "p7", title: "AI chat", caption: "MediSystem AI · mobile", src: "/case/medisystem-ai/pm/11-ai-chat.webp", href: "/work/medisystem-ai" },
+  { id: "p8", title: "Compliant", caption: "Global Design Check · plugin", src: "/case/global-design-check/screens/11-compliant.png", href: "/work/global-design-check" },
+  { id: "p9", title: "Appointments", caption: "MediSystem AI · mobile", src: "/case/medisystem-ai/pm/13-appointments.webp", href: "/work/medisystem-ai" },
 ];
