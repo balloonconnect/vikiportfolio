@@ -9,7 +9,7 @@ export function Reveal({ children, delay = 0, y = 28, className }: { children: R
       className={className}
       initial={reduce ? false : { opacity: 0, y, filter: "blur(14px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: false, margin: "-8% 0px" }}
+      viewport={{ once: false, amount: 0.01, margin: "0px" }}
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
