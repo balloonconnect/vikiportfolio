@@ -19,8 +19,7 @@ export function AboutSection() {
           </ul>
         </Reveal>
         <Reveal className="col-span-5 col-start-8 max-lg:col-span-12 max-lg:col-start-1" delay={0.1}>
-          {/* Replace with <Image src="/portrait.jpg" .../> */}
-          <div className="mb-10 flex aspect-[4/5] w-full max-w-[420px] items-center justify-center rounded-[6px] bg-tile text-[13px] text-muted">Portrait placeholder</div>
+          <img src="/about/portrait.webp" alt="Vignesh Kannan, Senior UI/UX & AI Designer" width={933} height={1400} loading="lazy" className="mb-10 aspect-[4/5] w-full max-w-[420px] rounded-[6px] object-cover object-top" />
                   </Reveal>
       </div>
       <div className="wrap mt-[96px] max-lg:mt-12"><Experience /><Education /><Awards /></div>
