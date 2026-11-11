@@ -7,6 +7,8 @@ export const experience = [
 // Replace with your real awards, or leave the array empty to hide the block.
 export const awards = [
   { title: "Award title", org: "Organisation", note: "Short description of what it was for" },
+  { title: "Award title", org: "Organisation", note: "Short description of what it was for" },
+  { title: "Award title", org: "Organisation", note: "Short description of what it was for" },
 ];
 
 export const play = [

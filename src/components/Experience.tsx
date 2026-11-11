@@ -1,16 +1,20 @@
 import { experience } from "@/data/experience";
+import { Reveal } from "./Reveal";
+
+// Full-width row: label on the left, entries spread across columns (reference layout).
 export function Experience() {
   return (
-    <div>
-      <h3 className="text-[20px] font-semibold">Experience</h3>
-      <ul className="mt-6 divide-y divide-secondary">
+    <Reveal className="grid grid-cols-12 gap-x-6 gap-y-6 border-t border-secondary py-[72px] max-lg:py-10">
+      <h3 className="col-span-2 text-[24px] font-semibold leading-[1.2] max-lg:col-span-12 max-lg:text-[20px]">Experience</h3>
+      <ul className="col-span-10 grid grid-flow-col auto-cols-fr gap-x-6 max-lg:col-span-12 max-lg:grid-flow-row max-lg:gap-y-6 max-sm:grid-cols-1">
         {experience.map((e) => (
-          <li key={e.company + e.years} className="grid grid-cols-[1fr_auto] gap-x-4 py-4">
-            <div><p className="text-[16px]">{e.company}</p><p className="text-[15px] text-muted">{e.role}</p></div>
-            <p className="text-[15px] text-muted tabular-nums">({e.years})</p>
+          <li key={e.company + e.years}>
+            <p className="text-[16px] font-medium">{e.company}</p>
+            <p className="mt-1 text-[16px] text-muted">{e.role}</p>
+            <p className="mt-4 text-[16px]">({e.years})</p>
           </li>
         ))}
       </ul>
-    </div>
+    </Reveal>
   );
 }

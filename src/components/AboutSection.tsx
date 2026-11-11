@@ -20,9 +20,9 @@ export function AboutSection() {
         <Reveal className="col-span-5 col-start-8 max-lg:col-span-12 max-lg:col-start-1" delay={0.1}>
           {/* Replace with <Image src="/portrait.jpg" .../> */}
           <div className="mb-10 flex aspect-[4/5] w-full max-w-[420px] items-center justify-center rounded-[6px] bg-tile text-[13px] text-muted">Portrait placeholder</div>
-          <div className="space-y-10"><Experience /><Awards /></div>
-        </Reveal>
+                  </Reveal>
       </div>
+      <div className="wrap mt-[96px] max-lg:mt-12"><Experience /><Awards /></div>
     </section>
   );
 }
