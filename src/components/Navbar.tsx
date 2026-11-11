@@ -47,7 +47,8 @@ export function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-[100]">
-      <nav aria-label="Primary" className="mx-auto flex h-[72px] max-w-page items-center justify-between px-[var(--gutter)]">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[104px] bg-bg/85 backdrop-blur-md [mask-image:linear-gradient(to_bottom,#000_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,#000_55%,transparent)]" />
+      <nav aria-label="Primary" className="relative mx-auto flex h-[72px] max-w-page items-center justify-between px-[var(--gutter)]">
         <ul className="hidden items-center gap-8 lg:flex">
           {navItems.map((n) => (
             <li key={n.href}>
