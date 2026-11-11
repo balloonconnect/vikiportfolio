@@ -3,6 +3,8 @@ import { PluginFrame } from "./plugin/PluginFrame";
 import { OutcomeStats, AnimatedPipeline, FlowTabs } from "./plugin/Motion";
 import { ViewsExplorer, StatesRow } from "./plugin/Views";
 import { Placeholder } from "@/components/Placeholder";
+import { FigmaEmbed } from "./FigmaEmbed";
+import { Reveal } from "../Reveal";
 import { TemplatesExplorer } from "./medora/Templates";
 import { Swatches, TypeScale, GlobalTokens, SemanticTokens, Contrast, SpacingRadius, Grids, Elevation, IconGrid, ButtonMatrix, InputMatrix, SelectionMatrix, ThemePreview } from "./medora/Parts";
 import { ProtoFlows } from "./medisystem/Flows";
@@ -229,7 +231,7 @@ const medisystem: Layout = {
 };
 
 const medora: Layout = {
-  toc: T("Overview", "Approach", "Foundations", "Atomic design", "Typography", "Color", "Tokens", "Spacing", "Components", "Slot method", "Templates", "Themes", "Quality", "Outcome", "More work"),
+  toc: T("Overview", "Approach", "Foundations", "Atomic design", "Typography", "Color", "Tokens", "Spacing", "Components", "Slot method", "Templates", "Themes", "Quality", "Outcome", "Figma file", "More work"),
   render: (p) => (<>
     <div className="mb-[72px] max-lg:mb-12"><Shot src="/case/medora-design-system/cover.png" alt="MEDORA design system: tokens, components and light and dark themes" w={1440} h={800} /></div>
     <Sec id="overview" title="One system for a large, regulated, content-heavy website">
@@ -277,6 +279,7 @@ const medora: Layout = {
       <div className="mt-6"><P>Layout, Spacing, Size and Typography collections switch by viewport; Color and Component collections switch by theme.</P></div></Sec>
     <Sec id="quality" title="Accessible by default, governed by process"><Cards cols={2} items={[["Accessibility", "Contrast-checked color pairs, 44px touch targets, visible focus, semantic names for assistive tech."], ["Documentation", "Each component: variants, anatomy, usage, do and don\u2019t, three viewports in both themes."], ["Handoff", "Storybook mapping, token names matching code, Code Connect ready structure."], ["Governance", "Contribution steps, versioned changelog, review checklist."]]} /></Sec>
     <Sec id="outcome" title="A system that scales with the content"><Cards cols={2} items={[["Consistent", "Consistent components across three viewports and two themes."], ["Layered tokens", "Tokens in three layers: change once, update everywhere."], ["Composable", "Slots let teams compose pages without detaching."], ["Ready to extend", "Contribution and governance in place."]]} /></Sec>
+    {p.figma && <Reveal className="scroll-mt-28 pb-20 max-lg:pb-14"><FigmaEmbed url={p.figma} title={p.name} /></Reveal>}
     <Sec id="more-work" title="More of my work"><MoreWork current={p.slug} /></Sec>
   </>),
 };
