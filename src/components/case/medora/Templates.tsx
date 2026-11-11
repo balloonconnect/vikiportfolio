@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { Sun, Moon } from "lucide-react";
 import { Stage } from "./Stage";
 
 type K = "bar" | "app" | "hero" | "image" | "cards" | "text" | "tags" | "footer" | "rows" | "downloads" | "callout" | "crumb" | "feature";
@@ -66,11 +67,11 @@ function Viewport({ blocks, w, label, id, kind, mode }: { blocks: Blk[]; w: numb
 }
 
 export function TemplatesExplorer() {
-  const [i, setI] = useState(0); const [mode, setMode] = useState<"light" | "dark">("light"); const p = pages[i];
+  const [i, setI] = useState(0); const [mode, setMode] = useState<"light" | "dark">("light"); useEffect(() => { if (document.documentElement.dataset.theme === "dark") setMode("dark"); }, []); const p = pages[i];
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center gap-2"><div className="flex flex-wrap gap-2" role="tablist">{pages.map((x, k) => <button key={x.id} role="tab" aria-selected={k === i} onClick={() => setI(k)} className={`rounded-full border px-4 py-2 text-[14px] transition-colors ${k === i ? "border-fg bg-fg text-bg" : "border-secondary text-muted hover:text-fg"}`}>{`Page ${k + 1} · ${x.name}`}</button>)}</div>
-        <label className="ml-auto flex items-center gap-2 text-[14px] text-muted">Theme<select value={mode} onChange={(e) => setMode(e.target.value as "light" | "dark")} aria-label="Template theme" className="rounded-full border border-secondary bg-surface px-4 py-2 text-[14px] text-fg outline-none transition-colors hover:border-fg focus-visible:border-fg"><option value="light">Light</option><option value="dark">Dark</option></select></label></div>
+        <div role="group" aria-label="Template theme" className="ml-auto inline-flex rounded-full border border-secondary bg-surface p-1">{(["light", "dark"] as const).map((m) => <button key={m} type="button" aria-pressed={mode === m} onClick={() => setMode(m)} className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[14px] transition-colors ${mode === m ? "bg-fg text-bg" : "text-muted hover:text-fg"}`}>{m === "light" ? <Sun size={15} /> : <Moon size={15} />}{m === "light" ? "Light" : "Dark"}</button>)}</div></div>
       <p className="mb-6 max-w-[720px] text-[15px] leading-[24px] text-muted">{p.read}</p>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_220px]">
         <Viewport key={p.id + mode + "d"} blocks={p.d} w={1280} id={p.id} kind="desktop" mode={mode} label={`Desktop · 1280 · ${mode === "dark" ? "Dark" : "Light"}`} />
