@@ -63,6 +63,15 @@ const base = (name: string): CaseStudy => ({
 
 export const projects: Project[] = [
   {
+    slug: "medisystem-ai",
+    layout: "medisystem",
+    name: "MediSystem AI",
+    tagline: "Better understanding. More connected care.",
+    description: "A concept patient and doctor product that explains medical reports in plain language, with source traceability and clinician review. Sample data only.",
+    years: "2025", role: "Senior UI/UX & AI Designer (solo)", scope: "Research, UX, UI, design system, prototype", results: "54 screens, ~30 components, 2 prototype flows (concept)",
+    readTime: 6, accent: "#0f766e", caseStudy: base("MediSystem AI"),
+  },
+  {
     slug: "global-design-check",
     layout: "plugin",
     name: "Global Design Check",

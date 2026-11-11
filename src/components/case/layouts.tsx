@@ -1,9 +1,10 @@
 import type { Project } from "@/data/projects";
 import { PluginFrame } from "./plugin/PluginFrame";
 import { OutcomeStats, AnimatedPipeline, FlowTabs } from "./plugin/Motion";
+import { ProtoFlows } from "./medisystem/Flows";
 import { Sec, P, Img, Video, Stats, Personas, Cards, Columns, Decisions, Features, Directions, Choose, Quotes, Callouts, Gallery, Grid, Compare, MoreWork, Shot, Steps, Pipeline } from "./blocks";
 
-export type LayoutId = "contracts" | "give" | "legalease" | "itm" | "transitstats" | "plugin";
+export type LayoutId = "contracts" | "give" | "legalease" | "itm" | "transitstats" | "plugin" | "medisystem";
 type Layout = { toc: { id: string; label: string }[]; render: (p: Project) => React.ReactNode };
 const T = (...labels: string[]) => labels.map((l) => ({ id: l.toLowerCase().replace(/[^a-z0-9]+/g, "-"), label: l }));
 const S = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -147,6 +148,47 @@ const plugin: Layout = {
   </>),
 };
 
-export const layouts: Record<LayoutId, Layout> = { contracts, give, legalease, itm, transitstats, plugin };
+
+const Table = ({ head, rows }: { head: string[]; rows: string[][] }) => (
+  <div className="overflow-x-auto rounded-[6px] border border-secondary"><table className="w-full min-w-[560px] border-collapse text-left text-[15px]">
+    <thead><tr className="bg-surface">{head.map((h) => <th key={h} className="px-4 py-3 font-semibold">{h}</th>)}</tr></thead>
+    <tbody>{rows.map((r) => <tr key={r[0]} className="border-t border-secondary">{r.map((c, i) => <td key={i} className={`px-4 py-3 align-top ${i ? "text-muted" : ""}`}>{c}</td>)}</tr>)}</tbody>
+  </table></div>
+);
+
+const medisystem: Layout = {
+  toc: T("Overview", "Problem", "Research", "Competitors", "Users", "Solution", "Screens", "Safety", "Prototype", "Reflection", "More work"),
+  render: (p) => (<>
+    <div className="mb-[72px] max-lg:mb-12"><Img accent={p.accent} ratio="16/10" caption="Concept project, sample data only. AI assists, never diagnoses." /></div>
+    <Sec id="overview" title="Helping people understand their results, and helping doctors review them">
+      <P>Lab reports reach patients as numbers and ranges. This concept explores a product that explains a report in plain language, ties every statement to its source value, and routes it through a doctor before it is treated as reviewed.</P>
+      <div className="mt-8"><Cards cols={3} items={[["The problem", "Patients cannot interpret results; doctors lack structured, reviewed context before visits."], ["My role", "End-to-end product design: desk research, UX strategy, UI, design system, prototype, test plan."], ["The solution", "Upload, explanation with source rows, consent-first sharing, and a doctor review workspace."]]} /></div>
+      <div className="mt-6"><Cards cols={2} items={[["Platforms", "Desktop web 1440 · Mobile 390"], ["Deliverables", "54 screens · ~30 components · 2 prototype flows"], ["Status", "Concept. Not user-tested."], ["Role", "Senior UI/UX & AI Designer (solo)"]]} /></div>
+    </Sec>
+    <Sec id="problem" title="The gap is understanding, not access"><P>Records and booking are widely available. Making sense of results is not.</P>
+      <div className="mt-6"><Cards cols={3} items={[["Patients", "See values without context. \u201cOut of range\u201d is not the same as disease. Some turn to general AI chatbots with no source linkage."], ["Doctors", "Receive reports with little structure and cannot see what the patient already read or concluded."], ["Opportunity", "Explain a person\u2019s own report, show uncertainty, and keep a clinician in the loop."]]} /></div></Sec>
+    <Sec id="research" title="What I did, and what I did not"><P>Honest framing first: this is desk research and design judgement, not primary research.</P>
+      <div className="mt-6"><Table head={["Activity", "Status", "Evidence"]} rows={[["Public-source review of five reference products", "Done", "Product pages, app listings, help pages, reviews"], ["Interview guides and affinity template", "Prepared", "Ready to run"], ["Personas and empathy maps", "Provisional", "Synthetic, hypothesis-based"], ["Primary user research", "Not done", "No interviews conducted"], ["Usability testing", "Planned", "Test plan only"]]} /></div></Sec>
+    <Sec id="competitors" title="Five reference points, one open space"><P>Observed from public information. “Not observed” means not found in sources reviewed.</P>
+      <div className="mt-6"><Table head={["Capability", "Practo", "Apple Health", "MyChart", "Ada", "MediSystem AI"]} rows={[["Store and organise reports", "Yes", "Yes", "Yes", "Partial", "Proposed"], ["Plain-language result context", "Not observed", "Yes", "Partial", "n/a", "Proposed"], ["Generative AI explanation of reports", "Not observed", "Not observed", "Partial (planned)", "Not observed", "Proposed (core)"], ["Share with a doctor", "Yes", "Yes (US)", "Yes", "Partial", "Proposed, consent-first"], ["Doctor review of AI output", "Not observed", "n/a", "Partial", "n/a", "Proposed, required"], ["Source-value traceability", "Not observed", "Partial", "Not observed", "n/a", "Proposed (core)"]]} /></div>
+      <div className="mt-6"><Cards cols={2} items={[["Practo", "Breadth of care tasks; results explanation not observed."], ["Apple Health Records", "Calm in-range context; no care workflow."], ["MyChart (Epic)", "Messaging and scheduling inside a health system; generative AI described as planned."], ["Ada · AI chatbots", "Clear advice levels; chatbots are instant but leave verification to the patient."]]} /></div></Sec>
+    <Sec id="users" title="Two provisional personas"><P>Synthetic and hypothesis-based; to be confirmed or replaced by interviews.</P>
+      <div className="mt-6"><Cards cols={2} items={[["Maya Iyer, 34 (patient)", "Product marketing lead who also manages her father\u2019s appointments. \u201cI get the numbers. I don\u2019t get what they mean for me.\u201d"], ["Dr. Arjun Menon, 45 (doctor)", "General physician. \u201cGive me the signal fast, and let me check it myself.\u201d"]]} /></div>
+      <div className="mt-8"><Table head={["Stage", "Patient moment", "Pain (hypothesis)", "Design response"]} rows={[["Receive result", "Report arrives as numbers", "Anxiety, no context", "Plain-language summary with uncertainty"], ["Understand", "Searches or asks a chatbot", "Unverified answers", "Each statement tied to a report value"], ["Share", "Emails a PDF", "Privacy risk", "Consent-first sharing with audit"], ["Follow up", "Waits for a reply", "Uncertainty drags on", "Visible doctor review status"]]} /></div></Sec>
+    <Sec id="solution" title="Structure, system and safeguards"><Cards cols={3} items={[["Information architecture", "Patient: Home, Records, Upload, Appointments, Messages, Profile. Doctor: Dashboard, Patients, Review queue, Notes, Audit."], ["Design system", "Variables for colour (light/dark), spacing and radius; 12 text styles; ~30 component sets; 35 icons."], ["AI safeguards", "May summarise and cite source rows. Must not diagnose, prescribe or call values safe or dangerous."]]} /></Sec>
+    <Sec id="screens" title="54 screens across patient desktop, patient mobile and doctor desktop"><P>Selected screens, assembled from design system components.</P>
+      <div className="mt-6 space-y-4"><Img accent={p.accent} ratio="16/10" caption="Patient desktop: dashboard" /><div className="grid gap-4 md:grid-cols-2"><Img accent={p.accent} variant={1} ratio="16/10" caption="Patient desktop: AI explanation, with source row and not-a-diagnosis label" /><Img accent={p.accent} variant={2} ratio="16/10" caption="Doctor desktop: AI review. Nothing reaches the patient until approved" /></div>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4"><Img accent={p.accent} variant={3} ratio="9/19" caption="Mobile: dashboard" /><Img accent={p.accent} variant={4} ratio="9/19" caption="Mobile: explanation" /><Img accent={p.accent} variant={5} ratio="9/19" caption="Mobile: AI chat" /><Img accent={p.accent} variant={6} ratio="9/19" caption="Mobile: appointments" /></div></div></Sec>
+    <Sec id="safety" title="Contrast audit fixed in the tokens"><P>A computed audit of 14 colour pairs found failures in light-mode status colours and dark-mode brand text. I changed the variable values so every screen updated; all pairs now pass WCAG 2.2 AA by calculation. Not yet tested with assistive technology.</P>
+      <div className="mt-6"><Cards cols={3} items={[["Never diagnoses", "AI explains and cites; a clinician review state is first-class."], ["Status is never colour-only", "Always paired with text or icon."], ["Failure degrades safely", "Raw report remains available when extraction fails."]]} /></div></Sec>
+    <Sec id="prototype" title="Two clickable flows and a ready test plan"><P>Patient path and Doctor path, 8 frames each. A test plan with hypotheses H1 to H4 is ready. No sessions have been run and no results are claimed.</P><div className="mt-8"><ProtoFlows accent={p.accent} /></div></Sec>
+    <Sec id="reflection" title="What I learned and what is next">
+      <Table head={["Learned", "Not done (yet)", "Next"]} rows={[["Source-linked explanations build trust better than chat alone", "Interviews, usability tests, AI validation", "Run research and test H1 to H4"], ["Tokens make accessibility fixes cheap", "Assistive-technology testing, tablet screens", "Clinical and legal wording review"], ["Honest limits make a case study credible", "Business results (none claimed)", "Iterate, then extend"]]} />
+      <p className="mt-6 text-[14px] text-muted">Concept project with sample data only. Not a medical product.</p></Sec>
+    <Sec id="more-work" title="More of my work"><MoreWork current={p.slug} /></Sec>
+  </>),
+};
+
+export const layouts: Record<LayoutId, Layout> = { contracts, give, legalease, itm, transitstats, plugin, medisystem };
 export const layoutIds = Object.keys(layouts) as LayoutId[];
 void S;
