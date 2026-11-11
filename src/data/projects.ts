@@ -81,7 +81,7 @@ export const projects: Project[] = [
     tagline: "A scalable healthcare design system: tokens, atomic components, slots and governance.",
     description: "An atomic design system that brings together semantic tokens, reusable components and color modes in one scalable UI foundation.",
     years: "2026", role: "Senior UI/UX & AI Designer", scope: "Design system: tokens, components, slots, governance", results: "54 components, 165 variants, 300+ variables",
-    readTime: 8, accent: "#2563eb", cover: "/case/medora-design-system/cover.png", coverBg: "#0f172a", caseStudy: base("MEDORA Design System"),
+    readTime: 8, accent: "#2563eb", cover: "/case/medora-design-system/cover.png", coverBg: "#f3f5fb", caseStudy: base("MEDORA Design System"),
   },
   {
     slug: "global-design-check",
