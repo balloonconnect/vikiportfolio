@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MapPin, Clock, ChevronDown } from "lucide-react";
 import { site } from "@/data/site";
@@ -39,6 +39,37 @@ export function Hero() {
   const [order, setOrder] = useState(() => spans.map((_, i) => i));
   const [tip, setTip] = useState(false);
   const tipText = tip ? hoursBehind() : "";
+  const grid = useRef<HTMLDivElement>(null);
+  // Wave: tiles near the pointer rise and scale with a travelling ripple, then settle back when it leaves.
+  useEffect(() => {
+    const el = grid.current;
+    if (!el || !canDrag) return;
+    let px = 0, py = 0, inside = false, raf = 0, power = 0;
+    const cur = new WeakMap<Element, number>();
+    const move = (e: PointerEvent) => { px = e.clientX; py = e.clientY; inside = true; if (!raf) raf = requestAnimationFrame(tick); };
+    const leave = () => { inside = false; };
+    const tick = (now: number) => {
+      power += ((inside ? 1 : 0) - power) * 0.08;
+      let active = false;
+      el.querySelectorAll<HTMLElement>("[data-wave]").forEach((t) => {
+        const r = t.getBoundingClientRect();
+        const dx = px - (r.left + r.width / 2), dy = py - (r.top + r.height / 2);
+        const d = Math.hypot(dx, dy);
+        const falloff = Math.exp(-((d / 300) ** 2));
+        const ripple = 0.55 + 0.45 * Math.sin(now / 260 - d / 70);
+        const target = power * falloff * ripple;
+        const v = (cur.get(t) ?? 0) + (target - (cur.get(t) ?? 0)) * 0.18;
+        cur.set(t, v);
+        if (Math.abs(v) > 0.002) active = true;
+        t.style.transform = `translate3d(0, ${(-14 * v).toFixed(2)}px, 0) scale(${(1 + 0.05 * v).toFixed(4)})`;
+      });
+      raf = active || inside ? requestAnimationFrame(tick) : 0;
+    };
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerleave", leave);
+    return () => { el.removeEventListener("pointermove", move); el.removeEventListener("pointerleave", leave); cancelAnimationFrame(raf); };
+  }, [canDrag]);
+
   const swapAt = (from: number, x: number, y: number) => {
     const el = document.elementsFromPoint(x, y).find((n) => (n as HTMLElement).dataset?.tile && Number((n as HTMLElement).dataset.tile) !== from) as HTMLElement | undefined;
     if (!el) return;
@@ -85,7 +116,7 @@ export function Hero() {
 
         {/* Draggable glass tiles: 6 x 2 grid that scales with its container (u = width / 1272). */}
         <div className="mt-[74px] w-full max-lg:mt-6" style={{ containerType: "inline-size" }}>
-          <div className="grid aspect-[1272/408] grid-cols-6 grid-rows-2" style={{ "--u": "calc(100cqw / 1272)", gap: "calc(24 * var(--u))" } as React.CSSProperties}>
+          <div ref={grid} className="grid aspect-[1272/408] grid-cols-6 grid-rows-2" style={{ "--u": "calc(100cqw / 1272)", gap: "calc(24 * var(--u))" } as React.CSSProperties}>
             {order.map((tile, slot) => {
               const p = projects[tile % projects.length];
               const sc = scatter(tile);
@@ -93,6 +124,7 @@ export function Hero() {
                 <motion.div key={tile} layout={!reduce} data-tile={tile} style={{ gridColumn: `span ${spans[slot]}` }}
                   initial={reduce ? false : { opacity: 0, ...sc, scale: 0.9 }} animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
                   transition={{ type: "spring", stiffness: 120, damping: 18, delay: 0.35 + 0.06 * tile, layout: { type: "spring", stiffness: 260, damping: 30 } }}>
+                  <div data-wave className="size-full will-change-transform">
                   <motion.div
                     drag={canDrag} dragSnapToOrigin dragElastic={1} dragMomentum={false}
                     whileDrag={{ scale: 1.03, zIndex: 30, cursor: "grabbing" }}
@@ -104,6 +136,7 @@ export function Hero() {
                       <Cover project={p} variant={tile} />
                     </div>
                   </motion.div>
+                  </div>
                 </motion.div>
               );
             })}
