@@ -2,6 +2,7 @@
 export const site = {
   name: "Vignesh Kannan",
   headline: "I'm Vignesh Kannan, a product designer who turns complex systems into clear experiences",
+  headlineBold: ["Vignesh Kannan", "product designer", "clear experiences"], // phrases shown in bold
   role: "Senior UI/UX Designer",
   employer: "Indegene",
   subline: "Senior designer on healthcare digital products and design systems",

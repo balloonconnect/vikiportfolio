@@ -46,13 +46,23 @@ export function Hero() {
     setOrder((o) => { const n = [...o]; const a = n.indexOf(from), b = n.indexOf(to); [n[a], n[b]] = [n[b], n[a]]; return n; });
   };
   useEffect(() => { setCanDrag(!reduce && matchMedia("(hover: hover) and (pointer: fine)").matches); }, [reduce]);
-  const words = site.headline.split(" ");
+  // Split the headline into words and mark the ones inside a highlighted phrase as bold.
+  const words = site.headline.split(" ").map((w, i, all) => {
+    const bold = site.headlineBold.some((ph) => {
+      const parts = ph.split(" "); const n = parts.length;
+      for (let st = Math.max(0, i - n + 1); st <= i && st + n <= all.length; st++) {
+        if (parts.every((x, k) => all[st + k].replace(/[,.]$/, "") === x)) return true;
+      }
+      return false;
+    });
+    return { w, bold };
+  });
   return (
     <section id="home" className="relative flex min-h-[100svh] flex-col justify-center pt-[110px] pb-12 max-lg:min-h-0">
       <div className="wrap w-full">
         <h1 className="h-display max-w-[760px]" aria-label={site.headline}>
-          {words.map((w, i) => (
-            <motion.span key={i} aria-hidden className="inline-block pr-[0.25em]"
+          {words.map(({ w, bold }, i) => (
+            <motion.span key={i} aria-hidden className={`inline-block pr-[0.25em] ${bold ? "font-bold" : ""}`}
               initial={reduce ? false : { opacity: 0, filter: "blur(10px)", y: 8 }}
               animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
               transition={{ duration: 0.68, delay: 0.04 * i, ease: [0.22, 1, 0.36, 1] }}>{w}</motion.span>
