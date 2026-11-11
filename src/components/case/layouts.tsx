@@ -157,19 +157,20 @@ const Table = ({ head, rows }: { head: string[]; rows: string[][] }) => (
   </table></div>
 );
 
+const M = "/case/medisystem-ai";
 const medisystem: Layout = {
   toc: T("Overview", "Impact", "Problem", "Research", "Competitors", "Users", "Process", "Key decisions", "Screens", "Safety", "Prototype", "Reflection", "More work"),
   render: (p) => {
     const A = p.accent;
     const Cap = ({ children }: { children: React.ReactNode }) => <p className="mt-3 text-[14px] text-muted">{children}</p>;
     return (<>
-    <div className="mb-[72px] max-lg:mb-12"><Img accent={A} ratio="16/10" caption="Patient dashboard. Concept project, sample data only." /></div>
+    <div className="mb-[72px] max-lg:mb-12"><Shot src={`${M}/cover.png`} alt="MediSystem AI: patient explanation, doctor review and mobile screens" w={1440} h={892} /></div>
     <Sec id="overview" title="Helping people understand their results, and helping doctors review them">
       <P>Lab reports reach patients as numbers and ranges. This concept explains a report in plain language, ties every statement to its source value, and routes it through a doctor before it is treated as reviewed.</P>
-      <div className="mt-8"><Img accent={A} variant={1} ratio="16/9" caption="Patient desktop: AI-assisted explanation with source row" /></div>
+      <div className="mt-8"><Shot src={`${M}/pd/02-dashboard.webp`} alt="Patient dashboard with reports, review count and an AI-assisted explanation" w={1440} h={900} caption="Patient dashboard: recent reports, next appointment and an AI-assisted explanation" /></div>
     </Sec>
     <Sec id="impact" title="At a glance">
-      <OutcomeStats items={[[54, "Screens designed"], [30, "Component sets", "+"], [2, "Prototype flows"]]} />
+      <OutcomeStats items={[[54, "Screens designed"], [30, "Component sets", "+"], [3, "Prototype surfaces"]]} />
       <div className="mt-8 grid gap-4 md:grid-cols-3">{[["Role", "Senior UI/UX & AI Designer (solo)"], ["Platforms", "Desktop web 1440 · Mobile 390"], ["Status", "Concept. Not user-tested."]].map(([k, v]) => <div key={k} className="border-t border-secondary pt-4"><p className="text-[13px] uppercase tracking-[0.08em] text-muted">{k}</p><p className="mt-1 text-[17px]">{v}</p></div>)}</div>
     </Sec>
     <Sec id="problem" title="The gap is understanding, not access">
@@ -188,32 +189,32 @@ const medisystem: Layout = {
     <Sec id="users" title="Two provisional personas">
       <P>Synthetic and hypothesis-based; to be confirmed or replaced by interviews.</P>
       <div className="mt-8 grid gap-6 md:grid-cols-2">{[["Maya Iyer, 34", "Patient", "Product marketing lead who also manages her father’s appointments.", ["“I get the numbers. I don’t get what they mean for me.”", "Needs plain language", "Wants to know what to do next", "Cautious about sharing data"]], ["Dr. Arjun Menon, 45", "Doctor", "General physician reviewing reports before visits.", ["“Give me the signal fast, and let me check it myself.”", "Needs structured context", "Wants to see what the patient read", "Requires review control"]]].map(([n, r, d, b], i) => (
-        <div key={n as string} className="rounded-[6px] border border-secondary bg-surface p-5"><div className="aspect-[4/3] overflow-hidden rounded-[6px]"><Placeholder accent={A} variant={i + 2} /></div><p className="mt-5 text-[12px] uppercase tracking-[0.08em] text-muted">{r as string}</p><p className="mt-1 text-[22px]">{n as string}</p><p className="mt-2 text-muted">{d as string}</p><ul className="mt-3 list-disc space-y-1 pl-5 text-[15px] text-muted">{(b as string[]).map((x) => <li key={x}>{x}</li>)}</ul></div>))}</div>
+        <div key={n as string} className="rounded-[6px] border border-secondary bg-surface p-5"><div className="flex h-16 w-16 items-center justify-center rounded-full text-[22px] text-white" style={{ background: i ? "#6b4fa0" : A }}>{(n as string).split(" ").map((w) => w[0]).slice(0, 2).join("")}</div><p className="mt-5 text-[12px] uppercase tracking-[0.08em] text-muted">{r as string}</p><p className="mt-1 text-[22px]">{n as string}</p><p className="mt-2 text-muted">{d as string}</p><ul className="mt-3 list-disc space-y-1 pl-5 text-[15px] text-muted">{(b as string[]).map((x) => <li key={x}>{x}</li>)}</ul></div>))}</div>
       <div className="mt-10"><Table head={["Stage", "Patient moment", "Pain (hypothesis)", "Design response"]} rows={[["Receive result", "Report arrives as numbers", "Anxiety, no context", "Plain-language summary with uncertainty"], ["Understand", "Searches or asks a chatbot", "Unverified answers", "Each statement tied to a report value"], ["Share", "Emails a PDF", "Privacy risk", "Consent-first sharing with audit"], ["Follow up", "Waits for a reply", "Uncertainty drags on", "Visible doctor review status"]]} /></div>
     </Sec>
     <Sec id="process" title="From research to a clickable prototype">
       <P>Four steps, each with an artifact in the Figma master file.</P>
-      <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">{["Research and personas", "Information architecture", "Design system", "Screens and prototype"].map((l, i) => <figure key={l}><div className="aspect-[4/3] overflow-hidden rounded-[6px]"><Placeholder accent={A} variant={i} /></div><Cap>{`0${i + 1} · ${l}`}</Cap></figure>)}</div>
+      <div className="mt-8"><Steps items={[["1 · Research and personas", "Desk review of five reference products, provisional personas and a journey."], ["2 · Information architecture", "Patient and doctor navigation, flows and wireframes."], ["3 · Design system", "Variables, text styles, ~30 component sets and 35 icons."], ["4 · Screens and prototype", "54 screens and an index-driven clickable prototype."]]} /></div>
       <div className="mt-8"><Cards cols={3} items={[["Information architecture", "Patient: Home, Records, Upload, Appointments, Messages, Profile. Doctor: Dashboard, Patients, Review queue, Notes, Audit."], ["Design system", "Variables for colour (light/dark), spacing and radius; 12 text styles; ~30 component sets; 35 icons."], ["AI safeguards", "May summarise and cite source rows. Must not diagnose, prescribe or call values safe or dangerous."]]} /></div>
     </Sec>
     <Sec id="key-decisions" title="Choices that build trust">
       <div className="grid items-start gap-8 md:grid-cols-2">
-        <div><Img accent={A} variant={2} ratio="16/10" caption="Patient: explanation with source row" /><div className="mt-4"><Decisions items={[["Cite the source", "Every statement links to a report row, such as page 1, row 4."], ["Show uncertainty", "Outside the printed range does not mean disease, and the screen says so."]]} /></div></div>
-        <div><Img accent={A} variant={3} ratio="16/10" caption="Doctor: AI draft review" /><div className="mt-4"><Decisions items={[["Doctor approves first", "Nothing is shown to the patient until the doctor approves."], ["Edits are audited", "Every change is recorded in the audit log."]]} /></div></div>
+        <div><Shot src={`${M}/pd/07-report-explanation.webp`} alt="Patient report explanation with values and a source row" w={1440} h={900} caption="Patient: explanation with source row" /><div className="mt-4"><Decisions items={[["Cite the source", "Every statement links to a report row, such as page 1, row 4."], ["Show uncertainty", "Outside the printed range does not mean disease, and the screen says so."]]} /></div></div>
+        <div><Shot src={`${M}/dd/07-ai-summary-review.webp`} alt="Doctor review of an AI draft summary" w={1440} h={900} caption="Doctor: AI draft review" /><div className="mt-4"><Decisions items={[["Doctor approves first", "Nothing is shown to the patient until the doctor approves."], ["Edits are audited", "Every change is recorded in the audit log."]]} /></div></div>
       </div>
     </Sec>
     <Sec id="screens" title="54 screens across three surfaces">
       <P>Selected screens, assembled from design system components.</P>
-      <div className="mt-8 space-y-4"><Img accent={A} ratio="16/9" caption="Patient desktop: dashboard" /><Img accent={A} variant={1} ratio="16/9" caption="Doctor desktop: AI review" />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">{["Dashboard", "Explanation", "AI chat", "Appointments"].map((l, i) => <Img key={l} accent={A} variant={i + 3} ratio="9/19" caption={`Mobile: ${l.toLowerCase()}`} />)}</div></div>
+      <div className="mt-8 space-y-4"><Shot src={`${M}/pd/04-upload-report.webp`} alt="Upload report screen" w={1440} h={900} caption="Patient desktop: upload with consent" /><div className="grid gap-4 md:grid-cols-2"><Shot src={`${M}/pd/08-ai-chat.webp`} alt="Ask about this report chat" w={1440} h={900} caption="Patient desktop: AI chat with limits" /><Shot src={`${M}/dd/03-patient-list.webp`} alt="Doctor patient list" w={1440} h={900} caption="Doctor desktop: patient list" /></div>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">{[["03-home", "Home"], ["10-explanation", "Explanation"], ["11-ai-chat", "AI chat"], ["13-appointments", "Appointments"]].map(([f, l]) => <Shot key={f} src={`${M}/pm/${f}.webp`} alt={`Mobile ${l}`} w={390} h={844} caption={`Mobile: ${l.toLowerCase()}`} />)}</div></div>
     </Sec>
     <Sec id="safety" title="Contrast audit fixed in the tokens">
       <P>A computed audit of 14 colour pairs found failures in light-mode status colours and dark-mode brand text. I changed the variable values so every screen updated; all pairs now pass WCAG 2.2 AA by calculation. Not yet tested with assistive technology.</P>
       <div className="mt-8"><Cards cols={3} items={[["Never diagnoses", "AI explains and cites; a clinician review state is first-class."], ["Status is never colour-only", "Always paired with text or icon."], ["Failure degrades safely", "Raw report remains available when extraction fails."]]} /></div>
     </Sec>
-    <Sec id="prototype" title="Two clickable flows and a ready test plan">
-      <P>Patient path and Doctor path, 8 frames each. A test plan with hypotheses H1 to H4 is ready. No sessions have been run and no results are claimed.</P>
-      <div className="mt-8"><ProtoFlows accent={A} /></div>
+    <Sec id="prototype" title="All 54 screens, clickable, and a ready test plan">
+      <P>All 54 screens are reachable from an index: 19 patient desktop, 18 patient mobile and 17 doctor desktop. Select any screen to view it large. A test plan with hypotheses H1 to H4 is ready. No sessions have been run and no results are claimed.</P>
+      <div className="mt-8"><Shot src={`${M}/prototype-index.webp`} alt="Prototype index listing all 54 screens" w={1440} h={1408} caption="Prototype index: every screen is reachable from here" /></div><div className="mt-10"><ProtoFlows /></div>
     </Sec>
     <Sec id="reflection" title="What I learned and what is next">
       <Table head={["Learned", "Not done (yet)", "Next"]} rows={[["Source-linked explanations build trust better than chat alone", "Interviews, usability tests, AI validation", "Run research and test H1 to H4"], ["Tokens make accessibility fixes cheap", "Assistive-technology testing, tablet screens", "Clinical and legal wording review"], ["Honest limits make a case study credible", "Business results (none claimed)", "Iterate, then extend"]]} />

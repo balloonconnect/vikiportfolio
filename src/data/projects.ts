@@ -68,8 +68,8 @@ export const projects: Project[] = [
     name: "MediSystem AI",
     tagline: "Better understanding. More connected care.",
     description: "A concept patient and doctor product that explains medical reports in plain language, with source traceability and clinician review. Sample data only.",
-    years: "2025", role: "Senior UI/UX & AI Designer (solo)", scope: "Research, UX, UI, design system, prototype", results: "54 screens, ~30 components, 2 prototype flows (concept)",
-    readTime: 6, accent: "#0f766e", caseStudy: base("MediSystem AI"),
+    years: "2025", role: "Senior UI/UX & AI Designer (solo)", scope: "Research, UX, UI, design system, prototype", results: "54 screens, ~30 components, clickable prototype (concept)",
+    readTime: 6, accent: "#0f766e", cover: "/case/medisystem-ai/cover.png", coverBg: "#12293f", caseStudy: base("MediSystem AI"),
   },
   {
     slug: "global-design-check",
