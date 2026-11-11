@@ -15,7 +15,6 @@ export function Toc({ items }: { items: { id: string; label: string }[] }) {
   return (
     <nav aria-label="Case study sections" className="fixed left-[var(--gutter)] top-[174px] z-0 hidden w-[200px] flex-col gap-[clamp(12px,2.4vh,34px)] text-[17px] lg:flex">
       <Link href="/#work" className="inline-flex items-center gap-2 text-muted transition-colors duration-[160ms] hover:text-fg"><ArrowLeft size={16} />Back</Link>
-      <a href="#top" className="font-semibold">Full TL;DR</a>
       {items.map((i) => (
         <a key={i.id} href={`#${i.id}`} className={`transition-colors duration-[160ms] ${active === i.id ? "text-fg" : "text-muted hover:text-fg"}`} aria-current={active === i.id ? "location" : undefined}>{i.label}</a>
       ))}
