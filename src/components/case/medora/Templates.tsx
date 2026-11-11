@@ -47,16 +47,16 @@ function Block({ b, w }: { b: Blk; w: number }) {
   return <div title={label} style={{ height: h, overflow: "hidden", position: "relative", borderBottom: "1px dashed #e2e8f0" }}>{body}<span style={{ position: "absolute", right: 8, top: 6, fontSize: 11, background: "#0f172acc", color: "#fff", borderRadius: 4, padding: "1px 6px" }}>{label}</span></div>;
 }
 
-function Viewport({ blocks, w, label, id, kind }: { blocks: Blk[]; w: number; label: string; id: string; kind: "desktop" | "mobile" }) {
+function Viewport({ blocks, w, label, id, kind, mode }: { blocks: Blk[]; w: number; label: string; id: string; kind: "desktop" | "mobile"; mode: "light" | "dark" }) {
   const total = blocks.reduce((a, b) => a + b[1], 0);
   const [ok, setOk] = useState(false); const ref = useRef<HTMLImageElement>(null);
   useEffect(() => { const im = ref.current; if (im && im.complete && im.naturalWidth > 0) setOk(true); }, []);
-  const src = `/case/medora-design-system/templates/${id}-${kind}.webp`;
+  const src = `/case/medora-design-system/templates/${id}-${kind}${mode === "dark" ? "-dark" : ""}.webp`;
   return (
     <div className="min-w-0">
       <p className="mb-2 text-[13px] text-muted">{label}</p>
       <div className="max-h-[560px] overflow-y-auto rounded-[8px] border border-secondary bg-surface">
-        <img ref={ref} src={src} alt={`${id} ${kind}`} className={ok ? "block h-auto w-full" : "hidden"} onLoad={() => setOk(true)} />
+        <img ref={ref} src={src} alt={`${id} ${kind} ${mode}`} className={ok ? "block h-auto w-full" : "hidden"} onLoad={() => setOk(true)} />
         {!ok && (
           <Stage w={w} h={total}><div style={{ width: w, background: "#fff", color: "#0f172a", fontFamily: "Inter, sans-serif" }}>{blocks.map((b, i) => <Block key={i} b={b} w={w} />)}</div></Stage>
         )}
@@ -66,14 +66,15 @@ function Viewport({ blocks, w, label, id, kind }: { blocks: Blk[]; w: number; la
 }
 
 export function TemplatesExplorer() {
-  const [i, setI] = useState(0); const p = pages[i];
+  const [i, setI] = useState(0); const [mode, setMode] = useState<"light" | "dark">("light"); const p = pages[i];
   return (
     <div>
-      <div className="mb-5 flex flex-wrap gap-2" role="tablist">{pages.map((x, k) => <button key={x.id} role="tab" aria-selected={k === i} onClick={() => setI(k)} className={`rounded-full border px-4 py-2 text-[14px] transition-colors ${k === i ? "border-fg bg-fg text-bg" : "border-secondary text-muted hover:text-fg"}`}>{`Page ${k + 1} · ${x.name}`}</button>)}</div>
+      <div className="mb-5 flex flex-wrap items-center gap-2"><div className="flex flex-wrap gap-2" role="tablist">{pages.map((x, k) => <button key={x.id} role="tab" aria-selected={k === i} onClick={() => setI(k)} className={`rounded-full border px-4 py-2 text-[14px] transition-colors ${k === i ? "border-fg bg-fg text-bg" : "border-secondary text-muted hover:text-fg"}`}>{`Page ${k + 1} · ${x.name}`}</button>)}</div>
+        <label className="ml-auto flex items-center gap-2 text-[14px] text-muted">Theme<select value={mode} onChange={(e) => setMode(e.target.value as "light" | "dark")} aria-label="Template theme" className="rounded-full border border-secondary bg-surface px-4 py-2 text-[14px] text-fg outline-none transition-colors hover:border-fg focus-visible:border-fg"><option value="light">Light</option><option value="dark">Dark</option></select></label></div>
       <p className="mb-6 max-w-[720px] text-[15px] leading-[24px] text-muted">{p.read}</p>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_220px]">
-        <Viewport key={p.id + "d"} blocks={p.d} w={1280} id={p.id} kind="desktop" label="Desktop · 1280 · Light" />
-        <Viewport key={p.id + "m"} blocks={p.m} w={375} id={p.id} kind="mobile" label="Mobile · 375 · Light" />
+        <Viewport key={p.id + mode + "d"} blocks={p.d} w={1280} id={p.id} kind="desktop" mode={mode} label={`Desktop · 1280 · ${mode === "dark" ? "Dark" : "Light"}`} />
+        <Viewport key={p.id + mode + "m"} blocks={p.m} w={375} id={p.id} kind="mobile" mode={mode} label={`Mobile · 375 · ${mode === "dark" ? "Dark" : "Light"}`} />
       </div>
     </div>
   );
