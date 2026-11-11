@@ -8,13 +8,14 @@ export const site = {
   location: "Coimbatore, India",
   timeZone: "Asia/Kolkata",
   yearsExperience: "7.5+",
-  email: "hello@example.com", // replace
+  email: "kvigneshdesign@outlook.com",
+  phone: "+91 7871295334",
+  phoneHref: "tel:+917871295334",
   resumeUrl: "/resume.pdf", // drop a PDF in /public
-  linkedin: "https://www.linkedin.com/",
+  linkedin: "https://www.linkedin.com/in/vignesh-k-6a3886157/",
   social: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/" },
-    { label: "Dribbble", href: "https://dribbble.com/" },
-    { label: "Behance", href: "https://www.behance.net/" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/vignesh-k-6a3886157/" },
+    { label: "Behance", href: "https://www.behance.net/kvigneshyogi" },
   ],
   intro:
     "Senior UI/UX designer with 7.5+ years across product design, UX research, design systems and visual design. I design healthcare web applications and AI-powered product experiences.",

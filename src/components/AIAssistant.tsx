@@ -16,7 +16,7 @@ function answer(q: string): string {
   if (/(experience|worked|career|job|company|indegene)/.test(s)) return experience.map((e) => `${e.role} at ${e.company} (${e.years})`).join("; ") + ".";
   if (/(skill|tool|good at|figma)/.test(s)) return `Skills: ${site.skills.join(", ")}.`;
   if (/(award|achievement)/.test(s)) return awards.length ? awards.map((a) => a.title).join("; ") : "No awards listed yet.";
-  if (/(contact|email|hire|reach|resume)/.test(s)) return `Email ${site.email}. Resume: ${site.resumeUrl}.`;
+  if (/(contact|email|hire|reach|resume)/.test(s)) return `Email ${site.email} or call ${site.phone}. LinkedIn: ${site.linkedin}. Resume: ${site.resumeUrl}.`;
   if (/(who|about|intro|yourself)/.test(s)) return site.intro;
   if (/(where|location|based)/.test(s)) return `Based in ${site.location}.`;
   return "I can answer questions about projects, experience, skills, awards and how to get in touch. Try one of the suggestions.";

@@ -24,6 +24,7 @@ export function ContactSection() {
         </h2>
         <div className="mt-[74px] flex flex-wrap items-center gap-x-8 gap-y-4">
           <a href={`mailto:${site.email}`} className="inline-flex items-center gap-2 rounded-full border-[0.8px] border-border bg-surface px-5 py-[10px] text-[17px] transition-colors duration-200 hover:bg-fg hover:text-bg"><Mail size={16} />{site.email}</a>
+          <a className={link} href={site.phoneHref}>{site.phone}</a>
           <a className={link} href={site.resumeUrl} download>Resume <ArrowUpRight size={14} /></a>
           {site.social.map((s) => <a key={s.label} className={link} href={s.href} target="_blank" rel="noreferrer">{s.label} <ArrowUpRight size={14} /></a>)}
         </div>

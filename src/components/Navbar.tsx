@@ -76,7 +76,8 @@ export function Navbar() {
                 className="absolute right-0 top-full z-[110] w-[260px] pt-2">
                 <div className="rounded-xl border border-border bg-bg p-3 text-[14px] shadow-xl">
                   <button onClick={copy} className="flex w-full items-center justify-between rounded-md p-2 text-left hover:bg-secondary"><span><span className="block text-[11px] text-muted">Email</span>{site.email}</span>{copied ? <Check size={15} /> : <Copy size={15} />}</button>
-                  {site.social.slice(0, 1).map((l) => <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-md p-2 hover:bg-secondary"><span><span className="block text-[11px] text-muted">{l.label}</span>Open profile</span><ArrowUpRight size={15} /></a>)}
+                  <a href={site.phoneHref} className="flex items-center justify-between rounded-md p-2 hover:bg-secondary"><span><span className="block text-[11px] text-muted">Phone</span>{site.phone}</span><ArrowUpRight size={15} /></a>
+                  {site.social.map((l) => <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-md p-2 hover:bg-secondary"><span><span className="block text-[11px] text-muted">{l.label}</span>Open profile</span><ArrowUpRight size={15} /></a>)}
                   <a href={site.resumeUrl} download className="flex items-center justify-between rounded-md p-2 hover:bg-secondary"><span><span className="block text-[11px] text-muted">Resume</span>Download PDF</span><ArrowUpRight size={15} /></a>
                 </div>
               </motion.div>
