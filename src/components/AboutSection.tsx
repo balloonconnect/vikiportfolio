@@ -7,7 +7,7 @@ export function AboutSection() {
   return (
     <section id="about" className="pt-[144px] max-lg:pt-20">
       <div className="wrap grid grid-cols-12 gap-x-6 gap-y-12">
-        <Reveal className="col-span-6 max-lg:col-span-12">
+        <Reveal className="col-span-6 pb-[72px] max-lg:col-span-12 max-lg:pb-8">
           <h2 className="text-[24px] font-semibold leading-[1.2]">My Story</h2>
           <div className="mt-[18px] space-y-4 text-[16px] leading-[26px]">
             {site.bio.map((p) => <p key={p}>{p}</p>)}
