@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const REPO = "https://github.com/balloonconnect/global-design-check";
 // SHA-256 of "vgdc-source:" + password. The password itself is not stored anywhere in this code.
@@ -38,23 +39,25 @@ export function SourceGate() {
 
   return (
     <>
-      <button ref={trigger} type="button" onClick={() => setOpen(true)} className="underline underline-offset-2 hover:text-fg">View the plugin source</button>
-      {open && (
-        <div className="fixed inset-0 z-[3000] grid place-items-center bg-black/40 p-4" onMouseDown={(e) => e.target === e.currentTarget && close()}>
-          <form onSubmit={submit} role="dialog" aria-modal="true" aria-labelledby="src-gate-title" className="w-full max-w-[380px] rounded-[10px] border border-secondary bg-surface p-6 text-fg shadow-[0_10px_50px_#00000040]">
-            <div className="flex items-center gap-2"><Lock size={18} /><h3 id="src-gate-title" className="text-[20px] font-semibold">Plugin source</h3></div>
-            <p className="mt-2 text-[15px] text-muted">Enter the password to open the repository.</p>
-            <label className="sr-only" htmlFor="src-gate-pw">Password</label>
-            <input id="src-gate-pw" ref={input} type="password" autoComplete="off" value={value} onChange={(e) => { setValue(e.target.value); setError(""); }}
-              className="mt-4 w-full rounded-[6px] border border-secondary bg-transparent px-3 py-2 text-[16px]" aria-invalid={!!error} aria-describedby={error ? "src-gate-err" : undefined} />
-            {error && <p id="src-gate-err" role="alert" className="mt-2 text-[14px] text-[#d84646]">{error}</p>}
-            <div className="mt-5 flex justify-end gap-3">
-              <button type="button" onClick={close} className="px-3 py-2 text-[15px] text-muted hover:text-fg">Cancel</button>
-              <button type="submit" disabled={!value} className="press rounded-full bg-fg px-5 py-2 text-[15px] text-bg disabled:opacity-40">Open</button>
-            </div>
-          </form>
-        </div>
-      )}
+      <button ref={trigger} type="button" onClick={() => (open ? close() : setOpen(true))} aria-expanded={open} className="underline underline-offset-2 hover:text-fg">View the plugin source</button>.
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }} className="block overflow-hidden">
+            <form onSubmit={submit} aria-labelledby="src-gate-title" className="mt-4 max-w-[460px] rounded-[10px] border border-secondary bg-surface p-5 text-fg">
+              <div className="flex items-center gap-2"><Lock size={16} /><h3 id="src-gate-title" className="text-[16px] font-semibold">Plugin source</h3></div>
+              <p className="mt-1 text-[14px] text-muted">Enter the password to open the repository.</p>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <label className="sr-only" htmlFor="src-gate-pw">Password</label>
+                <input id="src-gate-pw" ref={input} type="password" autoComplete="off" value={value} onChange={(e) => { setValue(e.target.value); setError(""); }} placeholder="Password"
+                  className="min-w-0 flex-1 rounded-[6px] border border-secondary bg-transparent px-3 py-2 text-[16px]" aria-invalid={!!error} aria-describedby={error ? "src-gate-err" : undefined} />
+                <button type="submit" disabled={!value} className="press rounded-full bg-fg px-5 py-2 text-[15px] text-bg disabled:opacity-40">Open</button>
+                <button type="button" onClick={close} className="px-2 py-2 text-[15px] text-muted hover:text-fg">Cancel</button>
+              </div>
+              {error && <p id="src-gate-err" role="alert" className="mt-2 text-[14px] text-[#d84646]">{error}</p>}
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

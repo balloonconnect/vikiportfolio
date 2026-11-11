@@ -27,7 +27,7 @@ export function PluginFrame() {
       <div className="overflow-hidden rounded-[14px] border border-secondary shadow-[0_10px_50px_#00000024]" data-cursor="grow">
         <iframe ref={frame} src="/plugin/ui.html" title="Global Design Check plugin, interactive demo" loading="lazy" className="block h-[700px] w-full border-0 bg-surface" />
       </div>
-      <figcaption className="mt-3 text-[14px] text-muted">The plugin's real interface running on a sample file, so scanning and fixing here don't touch anything. <SourceGate />.</figcaption>
+      <figcaption className="mt-3 text-[14px] text-muted">The plugin's real interface running on a sample file, so scanning and fixing here don't touch anything. <SourceGate /></figcaption>
     </figure>
   );
 }
