@@ -12,6 +12,7 @@ export const site = {
   email: "kvigneshdesign@outlook.com",
   phone: "+91 7871295334",
   phoneHref: "tel:+917871295334",
+  whatsappHref: "https://wa.me/917871295334?text=" + encodeURIComponent("Hi Vignesh, I saw your portfolio and would like to connect."),
   resumeUrl: "/vignesh_kannan_cv.pdf", // drop a PDF in /public
   linkedin: "https://www.linkedin.com/in/vignesh-k-6a3886157/",
   social: [
