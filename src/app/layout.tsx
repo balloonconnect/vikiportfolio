@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('theme');if(!t&&matchMedia('(prefers-color-scheme: dark)').matches)t='dark';if(t)document.documentElement.dataset.theme=t}catch(e){}` }} />
+        <script dangerouslySetInnerHTML={{ __html: `try{var h=new Date().getHours(),t=(h>=18||h<6)?'dark':'light',r=localStorage.getItem('theme-override');if(r){var o=JSON.parse(r);if(o&&Date.now()<o.until)t=o.theme}document.documentElement.dataset.theme=t}catch(e){}` }} />
       </head>
       <body>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[5000] focus:bg-surface focus:p-2">Skip to content</a>

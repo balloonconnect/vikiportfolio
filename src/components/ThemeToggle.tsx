@@ -1,20 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
+import { currentTheme, setManual } from "@/lib/theme";
 
 export function ThemeToggle() {
   const [dark, setDark] = useState(false);
   useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    const d = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setDark(d);
-    document.documentElement.dataset.theme = d ? "dark" : "light";
+    const apply = () => { const d = currentTheme() === "dark"; setDark(d); document.documentElement.dataset.theme = d ? "dark" : "light"; };
+    apply();
+    const id = setInterval(apply, 30000); // flips at 06:00 / 18:00 local time, or when a manual choice expires
+    return () => clearInterval(id);
   }, []);
   const toggle = () => {
     const d = !dark;
     setDark(d);
     document.documentElement.dataset.theme = d ? "dark" : "light";
-    try { localStorage.setItem("theme", d ? "dark" : "light"); } catch {}
+    setManual(d ? "dark" : "light");
   };
   return (
     <button onClick={toggle} aria-label={dark ? "Switch to light theme" : "Switch to dark theme"} aria-pressed={dark}
