@@ -30,6 +30,14 @@ export const ISSUES: Issue[] = [
   comp("i14", "info", "Avatar / M", "In-file / Avatar / M", 2, 97),
   comp("i15", "info", "Icon / Chevron", "In-file / Icon / Chevron", 2, 99),
   comp("i16", "info", "Modal / Base", "In-file / Modal / Base", 2, 90),
+  mk({ id: "i17", sev: "warning", cat: "Layout", rule: "no-auto-layout-frame", title: "Frame without auto layout", object: "Card + 2 more", current: "Absolute positioning", suggested: "Add auto layout (direction, gap and padding detected)", src: "Auto layout", srcName: "Convert", conf: 80, action: "Convert", noBulk: true, layers: 3,
+    items: [{ id: "l1", name: "Card", type: "FRAME", to: "" }, { id: "l2", name: "Profile header", type: "FRAME", to: "" }, { id: "l3", name: "Toolbar", type: "FRAME", to: "" }] }),
+  mk({ id: "i18", sev: "info", cat: "Layout", rule: "no-auto-layout-group", title: "Group without auto layout", object: "Group 4 + 1 more", current: "Group · absolute layers", suggested: "Convert to a frame with auto layout", src: "Auto layout", srcName: "Convert", conf: 80, action: "Convert", noBulk: true, layers: 2,
+    items: [{ id: "l4", name: "Group 4", type: "GROUP", to: "" }, { id: "l5", name: "Group 9", type: "GROUP", to: "" }] }),
+  mk({ id: "i19", sev: "info", cat: "Naming", rule: "layer-name", title: "Text layers with default names", object: "Text + 5 more", current: "Default text names", suggested: "Named from content", src: "Rename", srcName: "Layer name", conf: 80, action: "Rename", layers: 6,
+    items: [{ id: "n1", name: "Text 12", type: "TEXT", to: "Good morning, Maya" }, { id: "n2", name: "Text 13", type: "TEXT", to: "Recent reports" }, { id: "n3", name: "Text 14", type: "TEXT", to: "Next appointment" }, { id: "n4", name: "Text 15", type: "TEXT", to: "View explanation" }, { id: "n5", name: "Text 16", type: "TEXT", to: "Upcoming" }, { id: "n6", name: "Text 17", type: "TEXT", to: "Reviewed" }] }),
+  mk({ id: "i20", sev: "info", cat: "Naming", rule: "layer-name", title: "Generic layer name", object: "Frame 12 + 2 more", current: "Frame …", suggested: "Card · from content", src: "Rename", srcName: "Layer name", conf: 90, action: "Rename", layers: 3,
+    items: [{ id: "n7", name: "Frame 12", type: "FRAME", to: "Card · Complete blood count" }, { id: "n8", name: "Frame 13", type: "FRAME", to: "Card · Follow-up consultation" }, { id: "n9", name: "Frame 14", type: "FRAME", to: "Header · Home" }] }),
 ];
 
 const COL_NAMES = ["Color · Primitives", "Color · Semantic", "Spacing", "Radius", "Typography", "Elevation", "Motion", "Opacity", "Border width", "Breakpoints", "Z-index", "Sizing"];
@@ -39,11 +47,32 @@ const COL_TARGETS = [
   { kind: "local", id: "t2", key: "", name: "Spacing v2", count: 18, lib: "" },
   { kind: "library", id: "", key: "lib-core", name: "Color · Semantic", lib: "Design System Core" },
 ];
-const STATS = { nodes: 258, ms: 700, truncated: false, pages: 1, tokens: { floats: 42, strings: 3, colors: 36, textStyles: 14, paintStyles: 0 }, libraryImported: 0, libraryError: null, ignored: 0 };
+const CS_COLS = COLLECTIONS.filter((c) => c.remote).map((c, k) => ({ id: c.id, name: c.name, lib: c.lib, key: `lib-${k}`, modes: ["Light", "Dark"], varCount: c.varCount, layers: c.layers, viaInst: 0,
+  groups: [{ name: "Brand", count: Math.ceil(c.varCount / 2), layers: Math.ceil(c.layers / 2), sample: ["Button", "Card"] }, { name: "Neutral", count: Math.floor(c.varCount / 2), layers: Math.floor(c.layers / 2), sample: ["Divider", "Caption"] }],
+  auto: k === 0 ? { id: "t1", label: "same name" } : k === 1 ? { id: "t2", label: "shared prefix" } : null }));
+const CS_LOCALS = [
+  { id: "t1", name: "Color · Semantic v2", count: 34, modeList: [{ id: "m1", name: "Light" }, { id: "m2", name: "Dark" }] },
+  { id: "t2", name: "Spacing v2", count: 18, modeList: [{ id: "m3", name: "Default" }] },
+];
+const planFor = (src: (typeof CS_COLS)[number], targetKey: string) => {
+  const total = src.varCount; const none = targetKey === "none"; const matched = none ? 0 : Math.max(1, total - 2 - (total % 3));
+  const rows = (n: number) => Array.from({ length: n }, (_, k) => k);
+  return {
+    type: "col-plan", sourceId: src.id, targetKey, matched, total, typography: "variables", modeNodes: none ? 0 : 4, nTextStyles: 3, nPaintStyles: 1,
+    unmatchedVars: rows(total - matched).map((k) => `${src.name.split(" · ")[0].toLowerCase()}/legacy-${k + 1}`),
+    preview: none ? [] : rows(Math.min(5, matched)).map((k) => ({ id: `p${k}`, layer: ["Button", "Card", "Divider", "Caption", "Badge"][k], field: ["Fill", "Fill", "Stroke", "Text", "Radius"][k], from: `${src.name.split(" · ")[0]}/brand-${k + 1}00`, to: `semantic/brand-${k + 1}00`, method: k < 3 ? "Name & type" : "Value & type" })),
+    unmatchedRows: rows(total - matched).slice(0, 3).map((k) => ({ id: `u${k}`, layer: "Tag", field: "Fill", source: `legacy-${k + 1}`, reason: "No variable with the same name or value in the target", vid: `v${k}`, type: "COLOR" })),
+    unmatchedBindings: total - matched, targetVars: [{ id: "tv1", name: "brand/500", col: "Color · Semantic v2", type: "COLOR" }, { id: "tv2", name: "neutral/200", col: "Color · Semantic v2", type: "COLOR" }],
+    styleRows: [{ name: "Body / Small", layers: 8, matched: true, create: false, to: "Body / Small", fields: 3, styleId: "s1" }, { name: "Heading / H5", layers: 4, matched: true, create: true, to: "Heading / H5", fields: 3, styleId: "s2" }],
+    localTextStyles: [], manualItems: [],
+  };
+};
+
+const STATS = { nodes: 258, ms: 700, truncated: false, pages: 1, tokens: { floats: 42, strings: 3, colors: 36, textStyles: 14, paintStyles: 0 }, libraryLoaded: 0, libraryError: null, ignored: 0 };
 const STEPS = [["Reading tokens…", 0], ["Walking layers…", 64], ["Walking layers…", 150], ["Matching colors…", 232], ["Checking typography…", 258], ["Matching components…", 258], ["Reading variable collections…", 258]] as const;
 
 export function createHost(post: (m: Msg) => void, opts: { dark: boolean }) {
-  let timers: number[] = []; let ignored = 0; let dark = opts.dark;
+  const done: Record<string, Set<string>> = {}; let timers: number[] = []; let ignored = 0; let dark = opts.dark;
   let settings: Msg = { scope: "selection" }; // mirrors what the UI last saved, so a theme change keeps the user's settings
   const later = (fn: () => void, ms: number) => { timers.push(window.setTimeout(fn, ms)); };
   const clear = () => { timers.forEach(clearTimeout); timers = []; };
@@ -55,7 +84,7 @@ export function createHost(post: (m: Msg) => void, opts: { dark: boolean }) {
       case "scan": {
         clear();
         STEPS.forEach(([label, nodes], k) => later(() => post({ type: "progress", nodes, label }), 120 + k * 230));
-        later(() => post({ type: "result", scope: m.scope || "selection", issues: ISSUES, collections: COLLECTIONS, colTargets: COL_TARGETS, stats: { ...STATS, ignored } }), 120 + STEPS.length * 230);
+        later(() => post({ type: "result", scope: m.scope || "selection", issues: ISSUES, collections: COLLECTIONS, colTargets: COL_TARGETS, extVars: [], stats: { ...STATS, ignored } }), 120 + STEPS.length * 230);
         return;
       }
       case "cancel": clear(); return post({ type: "cancelled" });
@@ -66,21 +95,31 @@ export function createHost(post: (m: Msg) => void, opts: { dark: boolean }) {
       }
       case "ignore": ignored += (m.sigs || []).length; return post({ type: "ignored", count: ignored });
       case "reset-ignored": ignored = 0; return post({ type: "ignored", count: 0 });
+      case "col-scan": {
+        later(() => post({ type: "cs-progress", nodes: 120, label: "Reading variable collections…" }), 150);
+        later(() => post({ type: "cs-scanned", scope: m.scope || "page", collections: CS_COLS, locals: CS_LOCALS, nodes: STATS.nodes, ms: 600, truncated: false }), 650);
+        return;
+      }
       case "col-plan": {
-        const src = COLLECTIONS.find((c) => c.id === m.sourceId); if (!src) return;
-        const total = src.varCount; const matched = Math.max(1, total - 2 - (total % 3));
-        const unmatched = Array.from({ length: total - matched }, (_, k) => `${src.name.split(" · ")[0].toLowerCase()}/legacy-${k + 1}`);
-        later(() => post({ type: "col-plan", sourceId: m.sourceId, targetKey: m.targetKey, matched, total, layers: src.layers, unmatched }), 450);
+        const src = CS_COLS.find((c) => c.id === m.sourceId); if (!src) return;
+        later(() => post(planFor(src, m.targetKey)), 350);
         return;
       }
       case "col-swap": {
-        const src = COLLECTIONS.find((c) => c.id === m.sourceId); if (!src) return;
-        const total = src.varCount; const matched = Math.max(1, total - 2 - (total % 3));
-        later(() => post({ type: "col-swapped", sourceId: m.sourceId, vars: matched, layers: src.layers, failed: 0, unmatched: total - matched }), 800);
+        const src = CS_COLS.find((c) => c.id === m.sourceId); if (!src) return;
+        const plan = planFor(src, m.targetKey); const tgt = CS_LOCALS.find((t) => `local:${t.id}` === m.targetKey);
+        later(() => post({ type: "col-swapped", sourceId: m.sourceId, sourceName: src.name, targetName: tgt?.name || "", updated: src.layers, layersUpdated: src.layers, styles: 2, vars: plan.matched, layers: src.layers, failed: 0, unmatched: plan.unmatchedVars.length, skipped: 0, modeRemaps: 4, review: 0, matchedCount: plan.matched }), 800);
         return;
       }
+      case "fix-one": {
+        const it = ISSUES.find((i) => i.id === m.id); const total = it?.items?.length || it?.layers || 1;
+        done[m.id] = new Set(done[m.id] || []).add(m.nodeId);
+        later(() => post({ type: "fixed-one", id: m.id, nodeId: m.nodeId, ok: true, left: Math.max(0, total - done[m.id].size) }), 350);
+        return;
+      }
+      case "ext-swap": later(() => post({ type: "ext-swapped", ok: 0, failed: 0, keys: (m.items || []).map((x: Msg) => x.key) }), 400); return;
       case "settings": settings = { ...m.settings }; return;
-      default: return; // locate, col-locate, settings: nothing to do outside Figma
+      default: return; // locate, ext-locate, col-locate, col-locate-one: nothing to do outside Figma
     }
   };
   return { handle, setDark: (d: boolean) => { dark = d; init(); }, dispose: clear };

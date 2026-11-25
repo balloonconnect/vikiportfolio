@@ -87,7 +87,32 @@ body.dark {
 .spin { animation: spin .8s linear infinite; }
 
 /* tabs */
-.tabs { flex: none; height: 38px; display: flex; overflow-x: auto; padding: 0 4px; justify-content: space-between; background: var(--surface); border-bottom: 1px solid var(--border); scrollbar-width: none; }
+.view-toggle { display: flex; gap: 4px; padding: 8px 12px 0; }
+.view-toggle button { flex: 1; height: 26px; border: 1px solid var(--border-strong); background: var(--surface-subtle); color: var(--text-soft); border-radius: 6px; font-size: 10.5px; font-weight: 600; }
+.view-toggle button.on { background: var(--purple-soft); color: var(--purple); border-color: var(--purple); }
+.view-toggle.method { padding: 0 0 6px; }
+.view-toggle button:disabled { opacity: .45; }
+.col-cats { margin: 0 0 6px; font-size: 10px; color: var(--text-faint); }
+.ext-chips { padding: 8px 12px 2px; }
+.ext-bulk { padding: 6px 12px 0; display: flex; justify-content: flex-end; }
+.alt-select { width: 100%; min-width: 0; padding: 3px 4px; font-size: 10.5px; font-weight: 600; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 5px; color: var(--text); }
+.home { flex: 1; overflow-y: auto; padding: 14px 14px 10px; display: grid; gap: 10px; align-content: start; }
+.home h2 { margin: 0; font-size: 15px; }
+.home > p { margin: 0 0 2px; color: var(--text-soft); font-size: 11px; line-height: 16px; }
+.mode-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 12px; background: var(--surface); cursor: pointer; display: grid; gap: 7px; }
+.mode-card.active { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(74,61,198,.12); }
+.mode-card h3 { margin: 0; font-size: 12.5px; display: flex; align-items: center; gap: 7px; }
+.mode-card h3 i { width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid var(--border-strong); display: inline-block; }
+.mode-card.active h3 i { border: 4px solid var(--purple); }
+.mode-card p { margin: 0; color: var(--text-soft); font-size: 10.5px; line-height: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: 13px; border: 1px solid var(--border-strong); background: var(--surface-subtle); color: var(--text-soft); font-size: 10.5px; font-weight: 600; }
+.chip.on { background: var(--purple); border-color: var(--purple); color: #fff; }
+.mode-card:not(.active) .chip { opacity: .55; pointer-events: none; }
+.home-links { font-size: 10.5px; color: var(--text-soft); }
+.home-links a { color: var(--purple); cursor: pointer; }
+.home-actions { display: flex; gap: 8px; align-items: center; }
+.tabs { flex: none; height: 38px; display: flex; overflow-x: auto; padding: 0 10px; gap: 14px; justify-content: flex-start; background: var(--surface); border-bottom: 1px solid var(--border); scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
 .tabs button { position: relative; height: 38px; display: flex; align-items: center; gap: 2px; padding: 0 2px; white-space: nowrap; color: var(--text-soft); background: transparent; border: 0; font-size: 9px; letter-spacing: -.01em; font-weight: 550; }
 .tabs button:hover { color: var(--text); }
@@ -109,8 +134,35 @@ kbd { padding: 1px 4px; color: var(--text-faint); background: var(--surface-subt
 .col-body { margin: 9px 0 8px 34px; display: grid; gap: 6px; }
 .col-body label { color: var(--text-faint); font-size: 9px; }
 .col-body select { width: 100%; padding: 7px 8px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 6px; font-size: 11px; }
+.col-groups { display: grid; gap: 2px; margin: 4px 0; max-height: 84px; overflow-y: auto; }
+.col-g { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--text); }
+.col-g span { color: var(--text-faint); margin-left: auto; }
+.col-tbl { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 9.5px; }
+.col-tbl th, .col-tbl td { text-align: left; padding: 2px 4px; border-bottom: 1px solid var(--border); word-break: break-word; }
+.col-map { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: center; margin-top: 4px; }
+.col-map select { padding: 4px 5px; font-size: 10px; }
 .col-plan { padding: 7px 9px; color: var(--text-soft); background: var(--surface-subtle); border-radius: 6px; font-size: 10.5px; line-height: 15px; }
 .col-plan strong { color: var(--text); }
+.cs-wrap { display: grid; gap: 8px; padding: 2px 0 14px; }
+.cs-wrap .cs-l { display: block; margin-bottom: 3px; color: var(--text-faint); font-size: 9.5px; font-weight: 600; }
+.cs-wrap select { width: 100%; padding: 7px 8px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 6px; font-size: 11px; color: var(--text); }
+.cs-wrap .view-toggle { padding: 0; }
+.cs-wrap .cs-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.cs-wrap .cs-stat { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; }
+.cs-wrap .cs-stat b { color: var(--text); }
+.cs-wrap .cs-err { color: var(--red); background: var(--red-soft, var(--surface-subtle)); }
+.cs-grp { border-bottom: 1px solid var(--border); padding: 3px 0; }
+.cs-grp-h { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.cs-grp-h .col-g { flex: 1; min-width: 0; }
+.cs-target { width: 24px; height: 24px; flex: none; }
+.cs-groups { max-height: 220px; overflow-y: auto; margin-top: 4px; }
+.layer-list { margin: 6px 0 2px 34px; font-size: 10.5px; }
+.layer-list .cs-lyr { align-items: center; padding-left: 0; }
+.layer-list .cs-lyr a { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--purple); text-decoration: none; }
+.cs-lyr { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0 2px 18px; font-size: 10px; }
+.cs-lyr span { color: var(--text-faint); }
+.cs-wrap .cs-pick { border-color: var(--purple); color: var(--purple); font-weight: 600; }
+.cs-wrap a { color: var(--purple); text-decoration: none; }
 .col-plan.ok { color: var(--green); background: var(--green-soft); }
 .col-plan details { margin-top: 4px; }
 .col-plan summary { cursor: pointer; color: var(--orange); }
@@ -148,6 +200,8 @@ kbd { padding: 1px 4px; color: var(--text-faint); background: var(--surface-subt
 .category-icon { width: 26px; height: 26px; flex: 0 0 26px; display: grid; place-items: center; color: var(--purple); background: var(--purple-soft); border-radius: 6px; }
 .category-icon.colors { color: #397ccb; background: var(--blue-soft); }
 .category-icon.accessibility { color: var(--orange); background: var(--orange-soft); }
+.category-icon.layout { color: #3d7fb8; background: var(--blue-soft); }
+.category-icon.naming { color: #2f8f6b; background: color-mix(in srgb, var(--green) 14%, var(--surface)); }
 .category-icon.components { color: #bc5aad; background: color-mix(in srgb, var(--red-soft) 55%, var(--purple-soft)); }
 .card-title { min-width: 0; flex: 1; }
 .card-title h3 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; line-height: 15px; font-weight: 650; }
@@ -249,7 +303,6 @@ kbd { padding: 1px 4px; color: var(--text-faint); background: var(--surface-subt
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 5px); } }
 @keyframes slide-in { from { opacity: 0; transform: translateY(8px); } }
 </style>
-<link rel="stylesheet" href="inter.css">
 </head>
 <body>
 <div class="shell" id="root"></div>
@@ -294,21 +347,24 @@ const TABS = [
   { name: 'All', icon: 'alert' },
   { name: 'Variables', icon: 'variable' },
   { name: 'Typography', icon: 'type' },
-  { name: 'Colors', icon: 'palette' },
+  { name: 'Colors', icon: 'palette', hidden: true }, // merged into the Variables tab
   { name: 'Components', icon: 'component' },
   { name: 'Accessibility', icon: 'accessibility' },
+  { name: 'Layout', icon: 'selection' },
+  { name: 'Naming', icon: 'type' },
   { name: 'Collections', icon: 'layers' },
 ];
-const CHECK_KEYS = { Variables: 'variables', Typography: 'typography', Colors: 'colors', Components: 'components', Accessibility: 'accessibility' };
+const CHECK_KEYS = { Variables: 'variables', Typography: 'typography', Colors: 'colors', Components: 'components', Accessibility: 'accessibility', Naming: 'naming', Layout: 'layout' };
 const DEFAULT_SETTINGS = {
   dark: null,
   scope: 'page',
-  checks: { variables: true, typography: true, colors: true, components: true, accessibility: true, collections: true },
+  checks: { variables: true, typography: true, colors: true, components: true, accessibility: true, collections: true, naming: true, layout: true },
   minText: 12,
   minTarget: 24,
   includeInstances: false,
   includeHidden: false,
-  includeLibraryVars: false,
+  includeLibraryVars: true,
+  mode: 'page', // page | system
 };
 
 const S = {
@@ -317,6 +373,8 @@ const S = {
   tab: 'All',
   filter: 'All issues',
   query: '',
+  home: false, // the plugin opens straight on the main page
+  picks: {}, // issue id -> chosen variable id (when several variables match)
   status: 'idle', // idle | scanning | done
   progress: { nodes: 0, label: '' },
   issues: [],
@@ -324,6 +382,8 @@ const S = {
   selected: new Set(),
   collapsed: new Set(),
   fixed: new Set(),
+  accepted: new Set(),
+  itemDone: new Set(),
   ignored: new Set(),
   selectionCount: 0,
   ignoredTotal: 0,
@@ -334,11 +394,15 @@ const S = {
   fixing: false,
   scopeUsed: 'page',
   collections: [],
+  extVars: [], extCat: 'All', extView: 'category', extPick: {}, extDone: new Set(), extBusy: false,
   colTargets: [],
   colSel: {},
+  colMethod: {},
+  colOpt: {},
   colPlan: {},
   colDone: {},
   colBusy: null,
+  cs: { scope: null, scanning: false, progress: null, status: '', cols: [], locals: [], scanned: false, srcId: '', tgtId: '', autoLabel: '', groups: null, valueMatch: true, overrides: {}, modeMap: {}, typo: 'variables', styleOv: {}, plan: null, busy: false, result: null, error: '' },
 };
 
 const send = (msg) => parent.postMessage({ pluginMessage: msg }, '*');
@@ -354,10 +418,12 @@ function toast(text, err) {
 /* Derived data                                                      */
 /* ---------------------------------------------------------------- */
 const live = () => S.issues.filter((i) => !S.fixed.has(i.id) && !S.ignored.has(i.id));
+// The Variables tab lists every variable-bindable property: colors, spacing (padding, gap), width, height and radius.
+const inTab = (i, tab) => tab === 'All' || i.cat === tab || (tab === 'Variables' && i.cat === 'Colors');
 function countFor(tab) {
   const l = live();
-  if (tab === 'Collections') return S.collections.length;
-  return tab === 'All' ? l.length : l.filter((i) => i.cat === tab).length;
+  if (tab === 'Collections') return colPending().length;
+  return l.filter((i) => inTab(i, tab)).length;
 }
 function visibleIssues() {
   const q = S.query.trim().toLowerCase();
@@ -365,29 +431,37 @@ function visibleIssues() {
     if (S.ignored.has(i.id)) return false;
     if (S.filter === 'Fixed') { if (!S.fixed.has(i.id)) return false; }
     else if (S.fixed.has(i.id)) return false;
-    if (S.tab !== 'All' && i.cat !== S.tab) return false;
+    if (!inTab(i, S.tab)) return false;
     if (['Critical', 'Warning', 'Info'].includes(S.filter) && i.sev !== S.filter.toLowerCase()) return false;
     if (!q) return true;
     return `${i.title} ${i.object} ${i.cat} ${i.current} ${i.suggested}`.toLowerCase().includes(q);
   });
 }
+// external collections that are still linked to a library count as problems until they are swapped
+const colPending = () => (S.cs.scanned ? S.cs.cols : S.collections.filter((c) => c.remote));
 function healthScore() {
   const l = live();
   const nodes = Math.max((S.stats && S.stats.nodes) || 1, 50);
   const w = { critical: 3, warning: 1.5, info: 0.4 };
-  const penalty = l.reduce((s, i) => s + w[i.sev] * i.layers, 0);
+  const colPen = S.settings.checks.collections ? colPending().reduce((s, c) => s + w.warning * Math.max(1, c.layers || 1), 0) : 0;
+  const penalty = colPen + l.reduce((s, i) => s + w[i.sev] * i.layers, 0); // every tab counts: variables, typography, components, accessibility, collections, layer names and layout
   let score = Math.round(100 * (1 - Math.min(1, penalty / nodes)));
-  if (l.some((i) => i.sev !== 'info')) score = Math.min(score, 99);
+  if (colPen || l.some((i) => i.sev !== 'info')) score = Math.min(score, 99);
   return Math.max(0, score);
 }
 function categoryStatus(cat) {
   if (S.status === 'idle') return 'idle';
-  const l = live().filter((i) => i.cat === cat);
+  if (cat === 'Collections' && S.settings.checks.collections && colPending().length) return 'warning';
+  const l = live().filter((i) => inTab(i, cat) && cat !== 'All');
   if (l.some((i) => i.sev === 'critical')) return 'critical';
   if (l.some((i) => i.sev === 'warning')) return 'warning';
   return 'good';
 }
 const safeIssues = () => live().filter((i) => i.canFix && i.safe);
+// "Fix All" applies every fixable variable (spacing, padding, gap, width, radius), color and typography issue.
+// Hug / Fill widths are left for a manual click because linking them turns them into a fixed size.
+const BULK_CATS = ['Variables', 'Colors', 'Typography', 'Naming'];
+const bulkIssues = () => live().filter((i) => i.canFix && !i.noBulk && BULK_CATS.includes(i.cat));
 
 /* ---------------------------------------------------------------- */
 /* Rendering                                                         */
@@ -418,6 +492,7 @@ function renderCard(i) {
   const sel = S.selected.has(i.id);
   const fixed = S.fixed.has(i.id);
   const tab = TABS.find((t) => t.name === i.cat);
+  const srcText = i.src ? ' · ' + (i.src === 'Library' && i.srcName ? 'Library: ' + (i.srcName.length > 18 ? i.srcName.slice(0, 17) + '…' : i.srcName) : i.src) : '';
   const conf = i.conf ? `<span class="badge conf ${i.conf < 90 ? 'mid' : ''}">${i.conf}% match</span>` : '';
   const safe = i.safe && !fixed ? `<span class="badge safe">Safe</span>` : '';
   const cb = i.canFix && !fixed
@@ -426,14 +501,18 @@ function renderCard(i) {
   const cur = `${i.currentSwatch ? `<i class="swatch" style="background:${esc(i.currentSwatch)}"></i>` : ''}<span title="${esc(i.current)}">${esc(i.current)}</span>`;
   const sug = `${i.suggestedSwatch ? `<i class="swatch" style="background:${esc(i.suggestedSwatch)}"></i>` : ''}<span title="${esc(i.suggested)}">${esc(i.suggested)}</span>`;
   const layerText = i.cat === 'Colors' ? `Used on ${i.layers} layer${i.layers === 1 ? '' : 's'}` : `${i.layers} layer${i.layers === 1 ? '' : 's'}`;
+  const itemBtn = i.rule === 'layer-name' ? 'Rename' : 'Convert';
+  const itemsHtml = i.items && i.items.length && !fixed ? `<details class="layer-list"><summary>${i.cat === 'Layout' ? 'Frames and groups' : 'Layers'} (${i.layers})</summary>${i.items.map((x) => { const done = S.itemDone.has(i.id + '|' + x.id); return `<div class="cs-lyr"><a href="#" data-act="col-loc1" data-id="${esc(x.id)}">${icon('locate', 11)} ${esc(x.name)}</a>${x.to && i.rule === 'layer-name' ? `<span>→ ${esc(x.to)}</span>` : `<span>${esc(String(x.type || '').toLowerCase())}</span>`}${done ? '<span>✓</span>' : i.canFix ? `<button class="secondary-small" data-act="fix-one" data-id="${esc(i.id)}" data-node="${esc(x.id)}" ${S.fixing ? 'disabled' : ''}>${itemBtn}</button>` : ''}</div>`; }).join('')}${i.layers > i.items.length ? `<div class="cs-lyr"><span>+ ${i.layers - i.items.length} more — use ${i.cat === 'Layout' ? 'Select layers' : 'the Rename button above'}</span></div>` : ''}</details>` : '';
   const locateText = i.layers > 1 ? (i.cat === 'Components' ? 'Find all' : 'Select layers') : 'Locate';
   const typeBtns = `${i.hasStyle ? `<button class="action-small" data-act="fix" data-mode="style" data-id="${i.id}" ${S.fixing ? 'disabled' : ''}>Apply Style</button>` : ''}${i.hasVars ? `<button class="${i.hasStyle ? 'secondary-small' : 'action-small'}" data-act="fix" data-mode="vars" data-id="${i.id}" ${S.fixing ? 'disabled' : ''}>Link Variables</button>` : ''}`;
+  const acceptable = !fixed && i.cat === 'Components' && (i.rule === 'detached-instance' || i.rule === 'external-instance');
+  const acceptBtn = acceptable ? `<button class="${i.canFix && i.action ? 'secondary-small' : 'action-small'}" data-act="accept" data-id="${i.id}" title="Keep this as it is — it will count as passing">Accept Component</button>` : '';
   const action = fixed
-    ? `<span class="manual">✓ Fixed</span>`
+    ? `<span class="manual">✓ ${S.accepted.has(i.id) ? 'Accepted' : 'Fixed'}</span>`
     : i.cat === 'Typography' && i.rule === 'unlinked-type' && i.canFix ? typeBtns
     : i.canFix && i.action
-      ? `<button class="action-small" data-act="fix" data-id="${i.id}" ${S.fixing ? 'disabled' : ''}>${esc(i.action)}</button>`
-      : `<span class="manual">Manual fix</span>`;
+      ? `<button class="action-small" data-act="fix" data-id="${i.id}" ${S.fixing ? 'disabled' : ''}>${esc(i.action)}</button>${acceptBtn}`
+      : acceptable ? acceptBtn : `<span class="manual">Manual fix</span>`;
   return `<article class="issue-card ${sel ? 'selected' : ''} ${fixed ? 'fixed' : ''}">
     <div class="card-top">
       ${cb}
@@ -444,8 +523,9 @@ function renderCard(i) {
     ${renderPreview(i)}
     ${i.cat === 'Components' && i.preview ? '' : `<div class="comparison">
       <div><span>Current</span><strong>${cur}</strong></div>${icon('arrow', 13)}
-      <div><span>Suggested</span><strong class="${i.canFix ? '' : 'none'}">${sug}</strong></div>
+      <div><span title="${esc(i.srcName || '')}">Suggested${esc(srcText)}</span>${i.alts && i.alts.length > 1 && i.canFix && !fixed ? `<select class="alt-select" data-alt="${i.id}" title="${i.alts.length} similar variables">${i.alts.map((a) => `<option value="${esc(a.id)}" ${(S.picks[i.id] || i.alts[0].id) === a.id ? 'selected' : ''}>${esc(a.label)}${a.src ? ' · ' + esc(a.src.length > 16 ? a.src.slice(0, 15) + '…' : a.src) : ''}</option>`).join('')}</select>` : `<strong class="${i.canFix ? '' : 'none'}">${sug}</strong>`}</div>
     </div>`}
+    ${itemsHtml}
     <div class="card-footer">
       <span class="layer-meta">${icon('layers', 13)}${layerText}</span>
       <div>
@@ -469,44 +549,105 @@ function renderGroups(list) {
   }).join('');
 }
 
-const colKey = (t) => (t.kind === 'local' ? 'local:' + t.id : 'library:' + t.key);
-function colTarget(key) {
-  const t = S.colTargets.find((x) => colKey(x) === key);
-  return t ? { kind: t.kind, id: t.id, key: t.key } : null;
-}
 function renderCollections() {
-  const q = S.query.trim().toLowerCase();
-  const list = S.collections.filter((c) => !q || (c.name + ' ' + c.lib).toLowerCase().includes(q));
-  if (!S.settings.checks.collections) return `<div class="empty-state"><div class="empty-icon idle">${icon('layers', 22)}</div><h3>Collections check is off</h3><p>Turn on “Collections” in Settings and run the check.</p></div>`;
-  if (!list.length) return `<div class="empty-state"><div class="empty-icon idle">${icon('layers', 22)}</div><h3>No variable bindings found</h3><p>No layers in this scope use variables yet.</p></div>`;
-  return `<div class="issue-groups"><section class="issue-group"><div class="cards">${list.map((c) => {
-    const sel = S.colSel[c.id] || '';
-    const plan = S.colPlan[c.id];
-    const done = S.colDone[c.id];
-    const opts = S.colTargets.filter((t) => !(t.kind === 'local' && t.id === c.id));
-    const loc = opts.filter((t) => t.kind === 'local');
-    const lib = opts.filter((t) => t.kind === 'library');
-    const select = `<select data-col="${esc(c.id)}"><option value="">Choose collection…</option>
-      ${loc.length ? `<optgroup label="This file">${loc.map((t) => `<option value="${esc(colKey(t))}" ${sel === colKey(t) ? 'selected' : ''}>${esc(t.name)} (${t.count})</option>`).join('')}</optgroup>` : ''}
-      ${lib.length ? `<optgroup label="Libraries">${lib.map((t) => `<option value="${esc(colKey(t))}" ${sel === colKey(t) ? 'selected' : ''}>${esc((t.lib ? t.lib + ' / ' : '') + t.name)}</option>`).join('')}</optgroup>` : ''}</select>`;
-    let planHtml = '';
-    if (plan === 'loading') planHtml = `<div class="col-plan">Matching variables by name…</div>`;
-    else if (plan) planHtml = `<div class="col-plan"><strong>${plan.matched} of ${plan.total}</strong> variables match by name · ${plan.layers} layer${plan.layers === 1 ? '' : 's'} will change${plan.unmatched.length ? `<details><summary>${plan.total - plan.matched} unmatched — stay on the current collection</summary><ul>${plan.unmatched.map((n) => `<li>${esc(n)}</li>`).join('')}</ul></details>` : ''}</div>`;
-    if (done) planHtml = `<div class="col-plan ok">✓ Swapped ${done.vars} variable${done.vars === 1 ? '' : 's'} on ${done.layers} layer${done.layers === 1 ? '' : 's'}${done.failed ? ` · ${done.failed} failed` : ''}${done.unmatched ? ` · ${done.unmatched} unmatched` : ''}. Rescan to refresh.</div>`;
-    const busy = S.colBusy === c.id;
-    return `<article class="issue-card">
-      <div class="card-top"><div class="category-icon">${icon('variable', 14)}</div>
-        <div class="card-title"><h3>${esc(c.name)}</h3><p>${esc(c.remote ? (c.lib || 'Library') : 'This file')} · ${c.varCount} variable${c.varCount === 1 ? '' : 's'} · ${c.layers} layer${c.layers === 1 ? '' : 's'}</p></div>
-        <span class="badge ${c.remote ? 'safe' : 'conf'}">${c.remote ? 'Library' : 'Local'}</span></div>
-      <div class="col-body"><label>Swap to</label>${select}${planHtml}</div>
-      <div class="card-footer"><span class="layer-meta">${icon('layers', 13)}${c.layers} layers</span>
-        <div><button class="secondary-small" data-act="col-locate" data-id="${esc(c.id)}">${icon('locate', 13)}Select layers</button>
-        <button class="action-small" data-act="col-swap" data-id="${esc(c.id)}" ${!plan || plan === 'loading' || !plan.matched || busy || done ? 'disabled' : ''}>${busy ? 'Swapping…' : 'Swap collection'}</button></div></div>
-    </article>`;
-  }).join('')}</div></section></div>`;
+  return renderCollectionSwap();
+}
+const csScope = () => (S.settings.scope === 'selection' && S.selectionCount === 0 ? 'page' : S.settings.scope);
+const csKey = () => (S.cs.tgtId ? 'local:' + S.cs.tgtId : 'none');
+const csSrc = () => S.cs.cols.find((c) => c.id === S.cs.srcId) || null;
+const csTgt = () => S.cs.locals.find((t) => t.id === S.cs.tgtId) || null;
+function csModeMap() {
+  const src = csSrc(); const tgt = csTgt();
+  const out = {};
+  if (!src || !tgt) return out;
+  const tl = tgt.modeList || [];
+  (src.modes || []).forEach((m, i) => {
+    const pick = S.cs.modeMap[m] || ((tl.find((x) => x.name === m) || tl[i] || {}).id) || '';
+    if (pick) out[m] = pick;
+  });
+  return out;
+}
+function csOpts() {
+  const c = S.cs;
+  return { groups: c.groups ? Array.from(c.groups) : null, overrides: c.overrides, valueMatch: c.valueMatch, modeMap: csModeMap(), typography: c.typo, styleOverrides: c.styleOv };
+}
+function csSetSource(id) {
+  const c = S.cs;
+  c.srcId = id; c.groups = null; c.overrides = {}; c.styleOv = {}; c.modeMap = {}; c.plan = null; c.result = null; c.error = '';
+  const src = csSrc();
+  const a = src && src.auto;
+  if (a && c.locals.some((t) => t.id === a.id)) {
+    c.tgtId = a.id;
+    c.autoLabel = 'Auto-matched · ' + a.label;
+  } else {
+    c.tgtId = '';
+    c.autoLabel = src ? 'No match — choose a local collection' : '';
+  }
+}
+function csPlanNow() {
+  const c = S.cs;
+  if (!c.srcId) return;
+  c.plan = 'loading'; c.error = '';
+  render();
+  send({ type: 'col-plan', sourceId: c.srcId, targetKey: csKey(), target: c.tgtId ? { kind: 'local', id: c.tgtId } : { kind: 'none' }, opts: csOpts() });
+}
+function renderCollectionSwap() {
+  const c = S.cs;
+  const scope = csScope();
+  const src = csSrc();
+  const tgt = csTgt();
+  const plan = c.plan;
+  const busy = c.busy || c.scanning;
+  const status = c.scanning
+    ? `${esc((c.progress && c.progress.label) || 'Scanning…')} · ${((c.progress && c.progress.nodes) || 0).toLocaleString()} layers`
+    : c.status;
+  const scanRow = status ? `<div class="col-plan">${status}</div>` : `<div class="col-plan">Run Design Check — external collections are found automatically.</div>`;
+  const srcOpts = c.cols.map((x) => `<option value="${esc(x.id)}" ${x.id === c.srcId ? 'selected' : ''}>${esc((x.lib ? x.lib + ' / ' : '') + x.name)} · ${x.varCount} variable${x.varCount === 1 ? '' : 's'} · ${x.layers} layer${x.layers === 1 ? '' : 's'}</option>`).join('');
+  const srcSel = `<div><label class="cs-l">Source · external collection</label><select data-cs="src" ${busy ? 'disabled' : ''}>${c.cols.length ? srcOpts : `<option value="">${c.scanned ? 'No external collections found in this scope' : 'Run Design Check to find external collections'}</option>`}</select></div>`;
+  const tgtOpts = c.locals.map((t) => `<option value="${esc(t.id)}" ${t.id === c.tgtId ? 'selected' : ''}>${esc(t.name)} · ${t.count} variable${t.count === 1 ? '' : 's'}</option>`).join('');
+  const tgtSel = `<div><label class="cs-l">Target · local collection</label><select data-cs="tgt" ${c.busy || c.scanning ? 'disabled' : ''}><option value="">${c.locals.length ? 'Choose a local collection…' : 'No local collections yet'}</option>${tgtOpts}</select>
+    ${c.autoLabel ? `<div class="col-plan" style="margin-top:6px">${esc(c.autoLabel)}${c.autoLabel.indexOf('Auto') === 0 && c.tgtId && src && src.auto && src.auto.id !== c.tgtId ? ' · changed manually' : ''}</div>` : ''}</div>`;
+  let groupsHtml = '';
+  if (src) {
+    const gl = src.groups || [];
+    const isOn = (n) => !c.groups || c.groups.has(n);
+    groupsHtml = `<div class="col-plan"><strong>Variable groups</strong> <a href="#" data-act="cs-gall">All</a> · <a href="#" data-act="cs-gnone">None</a>
+      <div class="cs-groups">${gl.map((g) => `<div class="cs-grp"><div class="cs-grp-h"><label class="col-g"><input type="checkbox" data-csg="${esc(g.name)}" ${isOn(g.name) ? 'checked' : ''}> ${esc(g.name)} <span>${g.count} var · ${g.layers || 0} layer${g.layers === 1 ? '' : 's'}</span></label><button class="icon-button cs-target" data-act="cs-gloc" data-g="${esc(g.name)}" title="Select these layers on canvas" aria-label="Select layers of ${esc(g.name)}">${icon('locate', 13)}</button></div>${(g.sample || []).length ? `<details><summary>Layers to swap</summary>${g.sample.map((x) => `<div class="cs-lyr">${x.id ? `<a href="#" data-act="col-loc1" data-id="${esc(x.id)}">${icon('locate', 11)} ${esc(x.name)}</a>` : esc(x.name)} <span>${esc(x.type)}</span></div>`).join('')}${g.layers > g.sample.length ? `<div class="cs-lyr"><span>+ ${g.layers - g.sample.length} more — use the target icon to select all</span></div>` : ''}</details>` : ''}</div>`).join('')}</div></div>`;
+  }
+  let modeHtml = '';
+  if (src && tgt && (src.modes || []).length && (tgt.modeList || []).length) {
+    const mm = csModeMap();
+    modeHtml = `<div class="col-plan"><strong>Mode mapping</strong> · source mode → target mode${src.modes.map((m) => `<div class="col-map"><span>${esc(m)}</span><select data-csm="${esc(m)}">${tgt.modeList.map((x) => `<option value="${esc(x.id)}" ${mm[m] === x.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div>`).join('')}</div>`;
+  }
+  const vm = `<label class="col-g"><input type="checkbox" data-csvm="1" ${c.valueMatch ? 'checked' : ''}> Auto-match by value (number, string, color) when name doesn't match</label>`;
+  const ready = !!src && !busy;
+  const typoHtml = src ? `<div><label class="cs-l">Typography</label><select data-cstypo="1" ${busy ? 'disabled' : ''}><option value="variables" ${c.typo === 'variables' ? 'selected' : ''}>Swap variables (text styles keep their name, variables are rebound; external styles get a local copy)</option><option value="styles" ${c.typo === 'styles' ? 'selected' : ''}>Swap text styles (layers get the matching local text style)</option></select></div>` : '';
+  const buttons = `<div class="cs-row"><button class="secondary-small" data-act="cs-preview" ${ready ? '' : 'disabled'}>Preview only</button>
+    <button class="action-small" data-act="cs-swap" ${ready ? '' : 'disabled'}>${c.busy ? 'Swapping…' : 'Swap Variables'}</button></div>`;
+  let previewHtml = '';
+  if (plan === 'loading') previewHtml = `<div class="col-plan">Matching variables…</div>`;
+  else if (plan && plan.error) previewHtml = `<div class="col-plan cs-err">Error: ${esc(plan.error)}</div>`;
+  else if (plan) {
+    const o = c.overrides;
+    const tv = plan.targetVars || [];
+    const locLink = (id, text) => (id ? `<a href="#" data-act="col-loc1" data-id="${esc(id)}">${esc(text)}</a>` : esc(text));
+    previewHtml = `<div class="col-plan cs-stat"><span>Matched variables</span><b>${plan.matched}</b><span>Unmatched variables</span><b>${(plan.unmatchedVars || []).length}</b><span>Layers using a mode override</span><b>${plan.modeNodes || 0}</b><span>Text Styles</span><b>${plan.nTextStyles || 0}</b><span>Paint Styles</span><b>${plan.nPaintStyles || 0}</b><span>Component properties (manual only)</span><b>${(plan.manualItems || []).length}</b></div>`;
+    if ((plan.preview || []).length) previewHtml += `<div class="col-plan"><details open><summary><strong>Matched</strong> · ${plan.preview.length} shown (nothing is changed)</summary><table class="col-tbl"><tr><th>Layer</th><th>Field</th><th>Source → Target</th><th>By</th></tr>${plan.preview.map((r) => `<tr><td>${locLink(r.id, r.layer)}</td><td>${esc(r.field)}</td><td>${esc(r.from)} → ${esc(r.to)}</td><td>${esc((r.method || '').replace('Name & type', 'name').replace('Value & type', 'value').toLowerCase())}</td></tr>`).join('')}</table></details></div>`;
+    if ((plan.unmatchedRows || []).length) previewHtml += `<div class="col-plan"><details open><summary><strong>Unmatched</strong> · ${plan.unmatchedRows.length}${(plan.unmatchedBindings || 0) > plan.unmatchedRows.length ? ' of ' + plan.unmatchedBindings : ''} shown</summary>${plan.unmatchedRows.map((u) => `<div style="padding:5px 0;border-bottom:1px solid var(--border)"><div>${locLink(u.id, u.layer)} · ${esc(u.field)} · <b>${esc(u.source)}</b></div><div style="color:var(--text-faint)">${esc(u.reason)}</div><select class="cs-pick" data-csov="${esc(u.vid)}"><option value="">Select target…</option>${tv.filter((x) => x.type === u.type).map((x) => `<option value="${esc(x.id)}" ${o[u.vid] === x.id ? 'selected' : ''}>${esc(x.col)} / ${esc(x.name)}</option>`).join('')}</select></div>`).join('')}</details></div>`;
+    if ((plan.styleRows || []).length) previewHtml += `<div class="col-plan"><details open><summary><strong>Text styles</strong> · ${plan.styleRows.length}</summary>${plan.styleRows.map((r) => `<div style="padding:5px 0;border-bottom:1px solid var(--border)"><div><b>${esc(r.name)}</b> · ${r.layers} layer${r.layers === 1 ? '' : 's'} → ${plan.typography === 'styles' ? (r.toId ? esc(r.to) + ' (' + esc(r.method) + ')' : '<i>no matching local style</i>') : r.matched ? (r.create ? 'new local style “' + esc(r.name) + '”' : 'local style “' + esc(r.to) + '”') + ' · ' + r.fields + ' variable' + (r.fields === 1 ? '' : 's') + ' rebound' : '<i>no matching target variables</i>'}</div>${plan.typography === 'styles' ? `<select data-csso="${esc(r.styleId)}"><option value="">${r.toId && r.method !== 'manual' ? 'Change target…' : 'Select target…'}</option>${(plan.localTextStyles || []).map((x) => `<option value="${esc(x.id)}" ${S.cs.styleOv[r.styleId] === x.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select>` : ''}</div>`).join('')}</details></div>`;
+    if ((plan.manualItems || []).length) previewHtml += `<div class="col-plan"><details><summary><strong>Manual review</strong> · component-property bindings, not changed</summary>${plan.manualItems.map((m) => `<div>${locLink(m.id, m.layer)} · ${esc(m.field)} · ${esc(m.variable)}</div>`).join('')}</details></div>`;
+  }
+  let resultHtml = '';
+  if (c.error) resultHtml = `<div class="col-plan cs-err">Error: ${esc(c.error)}</div>`;
+  if (c.result) {
+    const r = c.result;
+    resultHtml += `<div class="col-plan ${r.updated ? 'ok' : ''}"><strong>Result</strong><div class="cs-stat"><span>Source</span><b>${esc(r.sourceName)}</b><span>Target</span><b>${esc(r.targetName)}</b><span>Updated</span><b>${r.updated}</b><span>Skipped</span><b>${r.skipped}</b><span>Layers updated</span><b>${r.layersUpdated}</b><span>Mode remaps</span><b>${r.modeRemaps}</b><span>Manual review</span><b>${r.review}</b></div>${r.reasons && r.reasons.length ? `<div>Why some failed: ${esc(r.reasons.join('; '))}</div>` : ''}${!r.matchedCount ? '<div>No variables matched, so nothing was changed. Use the pickers in Preview or choose another target.</div>' : ''}<div>⌘Z undoes the swap. Rescan to refresh.</div></div>`;
+  }
+  return `<div class="cs-wrap">${scanRow}${srcSel}${tgtSel}${groupsHtml}${typoHtml}${modeHtml}${vm}${buttons}${previewHtml}${resultHtml}</div>`;
 }
 
 function renderBody() {
+  if (S.tab === 'Collections') return renderCollections();
   if (S.status === 'idle') {
     return `<div class="empty-state"><div class="empty-icon idle">${icon('spark', 24)}</div><h3>Ready to check your design</h3>
       <p>Scan the selection, this page or the whole file for unlinked variables, missing text styles, raw colors, legacy components and accessibility problems.</p>
@@ -516,7 +657,6 @@ function renderBody() {
     return `<div class="empty-state"><div class="empty-icon idle">${icon('refresh', 24).replace('class="icon"', 'class="icon spin"')}</div><h3>Scanning…</h3>
       <p>${esc(S.progress.label || '')}<br>${S.progress.nodes.toLocaleString()} layers checked</p></div>`;
   }
-  if (S.tab === 'Collections') return renderCollections();
   const list = visibleIssues();
   const allCount = countFor(S.tab);
   if (!list.length) {
@@ -530,14 +670,66 @@ function renderBody() {
   }
   let notice = '';
   if (S.stats && S.stats.tokens.floats === 0 && (S.tab === 'Variables' || S.tab === 'All') && list.some((i) => i.cat === 'Variables')) {
-    notice = `<div class="notice"><b>No spacing / radius variables found.</b> Create local number variables, or turn on “Include team-library variables” in Settings, to get suggestions.</div>`;
+    notice = `<div class="notice"><b>No spacing, size or radius variables found.</b> Create local number variables, or turn on “Include team-library variables” in Settings, to get suggestions.</div>`;
   }
   if (S.stats && S.stats.libraryError) notice += `<div class="notice"><b>Team library:</b> ${esc(S.stats.libraryError)}</div>`;
   if (S.stats && S.stats.truncated) notice += `<div class="notice"><b>Large file:</b> scan stopped at ${S.stats.nodes.toLocaleString()} layers. Scan a page or selection for full coverage.</div>`;
   return notice + `<div class="issue-groups">${renderGroups(list)}</div>`;
 }
 
+function tabEnabled(n) {
+  const c = S.settings.checks;
+  return n === 'All' || (n === 'Variables' ? c.variables || c.colors : n === 'Collections' ? c.collections : c[CHECK_KEYS[n]] !== false);
+}
+const MODES = {
+  page: { title: 'Page Design', desc: 'Screens and pages you are designing.', checks: ['variables', 'typography', 'accessibility'] },
+  system: { title: 'Design System', desc: 'A design system file, including collections and components.', checks: ['variables', 'typography', 'collections', 'accessibility', 'components', 'naming', 'layout'] },
+};
+const CHECK_LABELS = { variables: 'Variables', typography: 'Typography', collections: 'Collections', accessibility: 'Accessibility', components: 'Components' };
+function applyMode(mode) {
+  S.settings.mode = mode;
+  const on = MODES[mode].checks;
+  ['variables', 'typography', 'collections', 'accessibility', 'components', 'naming', 'layout'].forEach((k) => { S.settings.checks[k] = on.indexOf(k) >= 0; });
+  S.settings.checks.colors = S.settings.checks.variables; // colors are reported inside Variables
+}
+function renderHome() {
+  const m = S.settings.mode === 'system' ? 'system' : 'page';
+  const ch = S.settings.checks;
+  const any = true;
+  const scope = S.settings.scope === 'selection' && S.selectionCount === 0 ? 'page' : S.settings.scope;
+  const card = (key) => `<div class="mode-card ${m === key ? 'active' : ''}" data-act="home-mode" data-mode="${key}">
+      <h3><i></i>${MODES[key].title}</h3><p>${MODES[key].desc}</p>
+</div>`;
+  return `<header class="app-header">
+    <div class="brand"><div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+      <div><h1>Global Design Check</h1><p>Design system governance</p></div></div>
+    <div class="header-actions">
+      <button class="icon-button" data-act="theme" aria-label="Toggle theme">${icon(S.dark ? 'sun' : 'moon')}</button>
+      <button class="icon-button" data-act="settings" aria-label="Settings">${icon('settings')}</button>
+    </div></header>
+  <div class="home">
+    <h2>Check your design</h2>
+    <p>Scans variables, typography, collections, accessibility, components and layer names in one pass.</p>
+    <div class="home-actions">
+      <div class="scope-select">${icon(scope === 'selection' ? 'selection' : scope === 'file' ? 'file' : 'layers', 14)}
+        <select id="scope" aria-label="Scan scope">
+          <option value="selection" ${scope === 'selection' ? 'selected' : ''} ${S.selectionCount === 0 ? 'disabled' : ''}>Scan Selection${S.selectionCount ? ' (' + S.selectionCount + ')' : ''}</option>
+          <option value="page" ${scope === 'page' ? 'selected' : ''}>Scan Page</option>
+          <option value="file" ${scope === 'file' ? 'selected' : ''}>Scan Entire File</option>
+        </select>${icon('chevron', 14)}</div>
+      <button class="primary-button" data-act="home-start" ${any ? '' : 'disabled'}>${icon('spark')}Start scan</button>
+    </div>
+    ${S.status === 'done' ? `<div class="home-links"><a data-act="home-back">← Back to last results</a></div>` : ''}
+  </div>
+  ${S.toast ? `<div class="toast ${S.toast.err ? 'err' : ''}">${icon(S.toast.err ? 'alert' : 'check', 14)}${esc(S.toast.text)}</div>` : ''}
+  ${S.sheet ? renderSettings() : ''}`;
+}
 function render() {
+  if (S.home && S.status !== 'scanning') {
+    document.body.classList.toggle('dark', S.dark);
+    document.getElementById('root').innerHTML = renderHome();
+    return;
+  }
   const active = document.activeElement;
   const scEl = document.getElementById('scroll');
   const shEl = document.querySelector('.sheet-body');
@@ -546,7 +738,7 @@ function render() {
   const keep = active && active.id ? { id: active.id, s: active.selectionStart, e: active.selectionEnd } : null;
   const scoreReady = S.status === 'done';
   const score = scoreReady ? healthScore() : 0;
-  const total = live().length;
+  const total = live().length + (S.settings.checks.collections ? colPending().length : 0);
   const ring = score >= 85 ? 'var(--green)' : score >= 60 ? 'var(--orange)' : 'var(--red)';
   const title = S.status === 'idle' ? 'Not scanned yet' : S.status === 'scanning' ? 'Scanning…' :
     `${score >= 90 ? 'Healthy' : score >= 70 ? 'Good' : score >= 50 ? 'Needs attention' : 'At risk'}, ${total === 0 ? 'no issues' : total + ' issue' + (total === 1 ? '' : 's')}`;
@@ -558,11 +750,11 @@ function render() {
   const nonSafe = fixable.filter((i) => !i.safe).length;
   const confirmKey = 'tab:' + S.tab;
   const selectedFixable = live().filter((i) => S.selected.has(i.id) && i.canFix);
-  const safeCount = safeIssues().length;
+  const safeCount = bulkIssues().length;
 
   document.body.classList.toggle('dark', S.dark);
 
-  const metrics = ['Variables', 'Colors', 'Typography', 'Components', 'Accessibility']
+  const metrics = ['Variables', 'Typography', 'Collections', 'Components', 'Accessibility', 'Layout', 'Naming'].filter(tabEnabled)
     .map((c) => `<span><i class="dot ${categoryStatus(c)}"></i>${c}</span>`).join('');
 
   document.getElementById('root').innerHTML = `
@@ -595,17 +787,17 @@ function render() {
   </section>
 
   <nav class="tabs" aria-label="Check categories">
-    ${TABS.map((t) => `<button class="${S.tab === t.name ? 'active' : ''}" data-act="tab" data-tab="${t.name}">${t.name}<span>${S.status === 'done' ? countFor(t.name) : '–'}</span></button>`).join('')}
+    ${TABS.filter((t) => !t.hidden && tabEnabled(t.name)).map((t) => `<button class="${S.tab === t.name ? 'active' : ''}" data-act="tab" data-tab="${t.name}">${t.name}<span>${t.name === 'Collections' ? (S.cs.scanned ? S.cs.cols.length : '–') : S.status === 'done' ? countFor(t.name) : '–'}</span></button>`).join('')}
   </nav>
 
   <div class="content-scroll" id="scroll">
-    <div class="toolbar">
+    ${S.tab === 'Collections' ? '' : `<div class="toolbar">
       <label class="search-box">${icon('search', 14)}<input id="q" value="${esc(S.query)}" placeholder="Search ${S.tab === 'All' ? 'issues' : S.tab.toLowerCase()}" autocomplete="off" /><kbd>⌘K</kbd></label>
 
-    </div>
+    </div>`}
     <section class="workspace">
-      ${S.status === 'done' ? `<div class="section-heading"><div><h2>${S.tab === 'All' ? 'Issues to review' : S.tab === 'Collections' ? 'Variable collections' : S.tab}</h2>
-        <p>${S.tab === 'Collections' ? S.collections.length + ' in use · swap bindings to another collection' : list.length + ' shown · sorted by priority'}${S.stats ? ' · ' + S.stats.nodes.toLocaleString() + ' layers scanned in ' + (S.stats.ms / 1000).toFixed(1) + 's' : ''}</p></div>
+      ${S.status === 'done' && S.tab !== 'Collections' ? `<div class="section-heading"><div><h2>${S.tab === 'All' ? 'Issues to review' : S.tab === 'Collections' ? 'Variable collections' : S.tab}</h2>
+        <p>${S.tab === 'Collections' ? S.collections.length + ' external · link each to a local or a linked library collection' : list.length + ' shown · sorted by priority'}${S.stats ? ' · ' + S.stats.nodes.toLocaleString() + ' layers scanned in ' + (S.stats.ms / 1000).toFixed(1) + 's' : ''}</p></div>
         ${tabAll && fixable.length ? `<button class="text-action ${S.confirm === confirmKey ? 'confirm' : ''}" data-act="fix-tab">${icon('wand', 13)}${S.confirm === confirmKey ? `Click again — ${nonSafe} will change appearance` : 'Fix all ' + S.tab.toLowerCase()}</button>` : ''}</div>` : ''}
       ${renderBody()}
     </section>
@@ -613,8 +805,8 @@ function render() {
 
   <footer class="bottom-bar">
     <button class="footer-action" data-act="export-menu" ${S.status !== 'done' ? 'disabled' : ''}>${icon('export', 14)}Export</button>
-    <button class="footer-action" data-act="scan" ${S.status === 'scanning' ? 'disabled' : ''}>${icon('refresh', 14)}Rescan</button>
-    <button class="fix-button" data-act="fix-footer" ${S.fixing || (!selectedFixable.length && safeCount === 0) ? 'disabled' : ''}>${icon('wand', 14)}${S.fixing ? 'Fixing…' : selectedFixable.length ? 'Fix ' + selectedFixable.length + ' selected' : 'Fix All Safe Issues' + (safeCount ? ' (' + safeCount + ')' : '')}</button>
+    ${S.tab === 'Collections' ? '' : `<button class="footer-action" data-act="scan" ${S.status === 'scanning' ? 'disabled' : ''}>${icon('refresh', 14)}Rescan</button>`}
+    <button class="fix-button" data-act="fix-footer" ${S.fixing || (!selectedFixable.length && safeCount === 0) ? 'disabled' : ''}>${icon('wand', 14)}${S.fixing ? 'Fixing' + (S.fixProg ? ' ' + S.fixProg.done + '/' + S.fixProg.total : '') + '…' : selectedFixable.length ? 'Fix ' + selectedFixable.length + ' selected' : 'Fix All' + (safeCount ? ' (' + safeCount + ')' : '')}</button>
   </footer>
 
   ${S.popover ? `<div class="popover">
@@ -643,12 +835,14 @@ function renderSettings() {
     <div class="sheet-head"><h2>Settings</h2><button class="icon-button" data-act="settings" aria-label="Close">${icon('x', 14)}</button></div>
     <div class="sheet-body">
       <h4>Checks</h4>
-      ${toggle('check.variables', s.checks.variables, 'Variables', 'Padding, gap, corner radius')}
+      ${toggle('check.variables', s.checks.variables, 'Variables', 'Color, spacing, padding, gap, width, radius')}
       ${toggle('check.typography', s.checks.typography, 'Typography', 'Unlinked font, weight, size, line height')}
-      ${toggle('check.colors', s.checks.colors, 'Colors', 'Raw fills & strokes, broken tokens')}
+      ${toggle('check.colors', s.checks.colors, 'Colors', 'Raw fills & strokes, broken tokens (shown in Variables)')}
       ${toggle('check.components', s.checks.components, 'Components', 'External library instances')}
       ${toggle('check.collections', s.checks.collections, 'Collections', 'Variable collection usage and swapping')}
       ${toggle('check.accessibility', s.checks.accessibility, 'Accessibility', 'Contrast, text size, touch targets')}
+      ${toggle('check.layout', s.checks.layout, 'Auto layout', 'Frames and groups without auto layout')}
+      ${toggle('check.naming', s.checks.naming, 'Layer names', 'Default names like Frame 12, with suggested names')}
       <h4>Thresholds</h4>
       <div class="row"><div class="lbl">Minimum text size<small>Smaller text is flagged</small></div><input class="num" id="minText" type="number" min="6" max="24" value="${s.minText}" /></div>
       <div class="row"><div class="lbl">Minimum touch target<small>Buttons, inputs, tabs, toggles</small></div>
@@ -656,7 +850,7 @@ function renderSettings() {
       <h4>Scan scope</h4>
       ${toggle('includeInstances', s.includeInstances, 'Include instance contents', 'Also check layers inside component instances')}
       ${toggle('includeHidden', s.includeHidden, 'Include hidden layers')}
-      ${toggle('includeLibraryVars', s.includeLibraryVars, 'Include team-library variables', 'Imports enabled library variables as suggestions (slower)')}
+      ${toggle('includeLibraryVars', s.includeLibraryVars, 'Suggest from team-library variables', 'Local variables are always read; this adds variables from libraries added to this file')}
       <h4>Data</h4>
       <div class="row"><div class="lbl">Ignored issues<small>${S.ignoredTotal} hidden in this file</small></div></div>
       <button class="danger-link" data-act="reset-ignored" ${S.ignoredTotal ? '' : 'disabled'}>Reset ignored issues</button>
@@ -671,10 +865,11 @@ function persist() { send({ type: 'settings', settings: S.settings }); }
 
 function startScan() {
   if (S.status === 'scanning') return;
+  S.home = false;
   const scope = S.settings.scope === 'selection' && S.selectionCount === 0 ? 'page' : S.settings.scope;
   S.status = 'scanning';
   S.progress = { nodes: 0, label: 'Starting…' };
-  S.selected.clear(); S.fixed.clear(); S.ignored.clear(); S.confirm = null; S.popover = false; S.colBusy = null;
+  S.selected.clear(); S.fixed.clear(); S.accepted.clear(); S.itemDone.clear(); S.ignored.clear(); S.confirm = null; S.popover = false; S.colBusy = null;
   render();
   const s = S.settings;
   send({ type: 'scan', scope, opts: {
@@ -684,9 +879,10 @@ function startScan() {
 
 function runFix(ids, modes) {
   const real = ids.filter((id) => { const i = S.issues.find((x) => x.id === id); return i && i.canFix && !S.fixed.has(id); });
-  if (!real.length) return;
-  S.fixing = true; S.confirm = null; render();
-  send({ type: 'fix', ids: real, modes: modes || {} });
+  if (!real.length) return toast('Nothing to fix here');
+  S.fixing = true; S.fixProg = { done: 0, total: real.length }; S.confirm = null; render();
+  const picks = {}; real.forEach((id) => { if (S.picks[id]) picks[id] = S.picks[id]; });
+  send({ type: 'fix', ids: real, modes: modes || {}, picks });
 }
 
 function exportReport(fmt) {
@@ -726,12 +922,40 @@ document.addEventListener('click', (e) => {
     case 'cancel': send({ type: 'cancel' }); return;
     case 'theme': S.dark = !S.dark; S.settings.dark = S.dark; persist(); return render();
     case 'settings': S.sheet = !S.sheet; return render();
+    case 'home': if (S.status === 'scanning') return; S.home = true; S.popover = false; return render();
+    case 'home-back': S.home = false; return render();
+    case 'home-mode': if (S.settings.mode !== t.dataset.mode || !t.dataset.mode) applyMode(t.dataset.mode); persist(); return render();
+    case 'home-chip': { e.stopPropagation(); const k = t.dataset.chk; S.settings.checks[k] = !S.settings.checks[k]; if (k === 'variables') S.settings.checks.colors = S.settings.checks.variables; persist(); return render(); }
+    case 'home-all': MODES[S.settings.mode === 'system' ? 'system' : 'page'].checks.forEach((k) => { S.settings.checks[k] = true; }); S.settings.checks.colors = S.settings.checks.variables; persist(); return render();
+    case 'home-none': MODES[S.settings.mode === 'system' ? 'system' : 'page'].checks.forEach((k) => { S.settings.checks[k] = false; }); S.settings.checks.colors = false; persist(); return render();
+    case 'home-start': applyMode('system'); persist(); S.home = false; S.tab = 'All'; return startScan();
     case 'tab': S.tab = t.dataset.tab; S.confirm = null; return render();
     case 'collapse': S.collapsed.has(t.dataset.sev) ? S.collapsed.delete(t.dataset.sev) : S.collapsed.add(t.dataset.sev); return render();
     case 'toggle': S.selected.has(id) ? S.selected.delete(id) : S.selected.add(id); return render();
     case 'locate': send({ type: 'locate', id }); return;
-    case 'col-locate': send({ type: 'col-locate', sourceId: id }); return;
-    case 'col-swap': { const key = S.colSel[id]; if (!key) return; S.colBusy = id; render(); send({ type: 'col-swap', sourceId: id, target: colTarget(key) }); return; }
+    case 'cs-gloc': { e.preventDefault(); send({ type: 'col-locate', sourceId: S.cs.srcId, group: t.dataset.g }); return; }
+    case 'cs-preview': return csPlanNow();
+    case 'cs-gall': { e.preventDefault(); S.cs.groups = null; if (S.cs.plan) csPlanNow(); else render(); return; }
+    case 'cs-gnone': { e.preventDefault(); S.cs.groups = new Set(); if (S.cs.plan) csPlanNow(); else render(); return; }
+    case 'cs-swap': {
+      const c = S.cs;
+      if (!c.srcId || c.busy) return;
+      c.busy = true; c.error = ''; c.result = null; render();
+      send({ type: 'col-swap', sourceId: c.srcId, target: c.tgtId ? { kind: 'local', id: c.tgtId } : { kind: 'none' }, opts: csOpts() }); return;
+    }
+    case 'ext-view': S.extView = t.dataset.view; return render();
+    case 'ext-cat': S.extCat = t.dataset.cat; return render();
+    case 'ext-loc': return send({ type: 'ext-locate', key: t.dataset.key });
+    case 'ext-swap': { const k = t.dataset.key; const x = S.extVars.find((v) => v.key === k); if (!x) return; S.extBusy = true; send({ type: 'ext-swap', items: [{ key: k, targetId: S.extPick[k] || (x.suggest[0] && x.suggest[0].id) }] }); return render(); }
+    case 'ext-swap-all': {
+      const q = S.query.trim().toLowerCase();
+      const items = S.extVars.filter((x) => (S.extCat === 'All' || x.cat === S.extCat) && (!q || (x.name + ' ' + x.lib + ' ' + x.collection).toLowerCase().includes(q)) && !S.extDone.has(x.key) && (x.suggest || []).length).map((x) => ({ key: x.key, targetId: S.extPick[x.key] || x.suggest[0].id }));
+      if (!items.length) return;
+      S.extBusy = true; send({ type: 'ext-swap', items }); return render();
+    }
+    case 'fix-one': { if (S.fixing) return; send({ type: 'fix-one', id, nodeId: t.dataset.node }); return; }
+    case 'col-loc1': { e.preventDefault(); send({ type: 'col-locate-one', nodeId: id }); return; }
+    case 'accept': { const i = S.issues.find((x) => x.id === id); if (!i) return; S.accepted.add(id); S.fixed.add(id); S.selected.delete(id); S.ignoredTotal++; send({ type: 'ignore', sigs: [i.sig] }); toast('Accepted — it now counts as passing · restore in Settings'); return; }
     case 'ignore': { const i = S.issues.find((x) => x.id === id); if (!i) return; S.ignored.add(id); S.selected.delete(id); S.ignoredTotal++; send({ type: 'ignore', sigs: [i.sig] }); toast('Issue ignored · restore in Settings'); return; }
     case 'fix': return runFix([id], t.dataset.mode ? { [id]: t.dataset.mode } : null);
     case 'fix-tab': {
@@ -743,7 +967,7 @@ document.addEventListener('click', (e) => {
     }
     case 'fix-footer': {
       const sel = live().filter((i) => S.selected.has(i.id) && i.canFix).map((i) => i.id);
-      return runFix(sel.length ? sel : safeIssues().map((i) => i.id));
+      return runFix(sel.length ? sel : bulkIssues().map((i) => i.id));
     }
     case 'export-menu': S.popover = !S.popover; e.stopPropagation(); return render();
     case 'export': return exportReport(t.dataset.fmt), render();
@@ -765,14 +989,23 @@ document.addEventListener('input', (e) => {
 document.addEventListener('change', (e) => {
   const id = e.target.id;
   if (id === 'scope') { S.settings.scope = e.target.value; persist(); return render(); }
-  if (e.target.dataset && e.target.dataset.col) {
-    const sid = e.target.dataset.col; const val = e.target.value;
-    S.colSel[sid] = val; delete S.colDone[sid];
-    if (!val) { delete S.colPlan[sid]; return render(); }
-    S.colPlan[sid] = 'loading'; render();
-    send({ type: 'col-plan', sourceId: sid, targetKey: val, target: colTarget(val) });
-    return;
+  const d = e.target.dataset || {};
+  if (d.alt) { S.picks[d.alt] = e.target.value; return; }
+  if (d.extpick) { S.extPick[d.extpick] = e.target.value; return; }
+  if (d.cs === 'src') { csSetSource(e.target.value); if (S.cs.srcId) return csPlanNow(); return render(); }
+  if (d.cs === 'tgt') {
+    const c = S.cs; c.tgtId = e.target.value; c.plan = null; c.result = null; c.modeMap = {}; c.overrides = {};
+    const src = csSrc();
+    c.autoLabel = !c.tgtId ? 'No target selected' : src && src.auto && src.auto.id === c.tgtId ? 'Auto-matched · ' + src.auto.label : 'Manual selection';
+    if (src) return csPlanNow();
+    return render();
   }
+  if (d.cstypo) { S.cs.typo = e.target.value; return csPlanNow(); }
+  if (d.csso) { const o = S.cs.styleOv; if (e.target.value) o[d.csso] = e.target.value; else delete o[d.csso]; return csPlanNow(); }
+  if (d.csg !== undefined) { const c = S.cs; const src = csSrc(); if (!c.groups) c.groups = new Set((src.groups || []).map((g) => g.name)); e.target.checked ? c.groups.add(d.csg) : c.groups.delete(d.csg); if (c.plan) return csPlanNow(); return render(); }
+  if (d.csvm) { S.cs.valueMatch = e.target.checked; if (S.cs.plan) return csPlanNow(); return render(); }
+  if (d.csov) { const o = S.cs.overrides; if (e.target.value) o[d.csov] = e.target.value; else delete o[d.csov]; return csPlanNow(); }
+  if (d.csm) { S.cs.modeMap[d.csm] = e.target.value; return render(); }
   if (id === 'minText') { S.settings.minText = Math.max(6, Math.min(24, Number(e.target.value) || 12)); persist(); return render(); }
   if (id === 'minTarget') { S.settings.minTarget = Number(e.target.value); persist(); return render(); }
 });
@@ -792,34 +1025,64 @@ window.onmessage = (event) => {
       if (m.settings) {
         const saved = m.settings;
         S.settings = Object.assign({}, DEFAULT_SETTINGS, saved, { checks: Object.assign({}, DEFAULT_SETTINGS.checks, saved.checks || {}) });
+        if (saved.mode !== 'system') applyMode('system');
       }
+      if (!S.settings.libMig) { S.settings.includeLibraryVars = true; S.settings.libMig = true; persist(); } // library variables are suggested by default
       if (S.settings.dark !== null && S.settings.dark !== undefined) S.dark = !!S.settings.dark;
       S.selectionCount = m.selection || 0;
       S.ignoredTotal = m.ignored || 0;
       return render();
     }
     case 'selection': S.selectionCount = m.count; return render();
-    case 'progress': S.progress = { nodes: m.nodes || 0, label: m.label || '' }; return render();
+    case 'fixed-one': {
+      if (m.ok) { S.itemDone.add(m.id + '|' + m.nodeId); if (m.left === 0) { S.fixed.add(m.id); S.selected.delete(m.id); } render(); return toast('Fixed · ⌘Z to undo'); }
+      return toast(`Couldn't fix: ${m.reason || 'unknown error'}`, true);
+    }
+    case 'fix-progress': if (S.fixing) { S.fixProg = { done: m.done, total: m.total }; render(); } return;
+    case 'progress': if (S.cs.scanning) { S.cs.progress = { nodes: m.nodes || 0, label: m.label || '' }; return render(); } S.progress = { nodes: m.nodes || 0, label: m.label || '' }; return render();
+    case 'cs-progress': S.cs.progress = { nodes: m.nodes || 0, label: m.label || '' }; return render();
+    case 'cs-scanned': {
+      const c = S.cs;
+      c.scanning = false; c.scanned = true; c.cols = m.collections || []; c.locals = m.locals || []; c.result = null; c.plan = null; c.error = '';
+      c.status = `${c.cols.length} external collection${c.cols.length === 1 ? '' : 's'} · ${m.nodes.toLocaleString()} layers scanned in ${(m.ms / 1000).toFixed(1)}s${m.truncated ? ' · stopped at the layer limit, scan fewer layers for full coverage' : ''}`;
+      csSetSource(c.cols.length ? c.cols[0].id : '');
+      if (c.srcId) return csPlanNow();
+      return render();
+    }
     case 'cancelled': S.status = S.issues.length ? 'done' : 'idle'; return render();
     case 'result': {
-      S.collections = m.collections || []; S.colTargets = m.colTargets || []; S.colSel = {}; S.colPlan = {}; S.colDone = {}; S.colBusy = null;
+      S.collections = m.collections || []; S.extVars = m.extVars || []; S.extPick = {}; S.extDone = new Set(); S.extBusy = false; S.colTargets = m.colTargets || []; S.colSel = {}; S.colMethod = {}; S.colOpt = {}; S.colPlan = {}; S.colDone = {}; S.colBusy = null;
       S.issues = m.issues; S.stats = m.stats; S.scopeUsed = m.scope; S.status = 'done'; S.ignoredTotal = m.stats.ignored;
       S.collapsed.clear();
+      Object.assign(S.cs, { scanning: false, scanned: false, cols: [], locals: [], srcId: '', tgtId: '', autoLabel: '', groups: null, overrides: {}, modeMap: {}, plan: null, busy: false, result: null, error: '', status: '' });
+      if (tabEnabled('Collections')) { S.cs.scanning = true; S.cs.progress = { nodes: 0, label: 'Reading collections…' }; send({ type: 'col-scan', scope: m.scope === 'page' || m.scope === 'selection' || m.scope === 'file' ? m.scope : 'page' }); }
       render();
       return toast(`${m.scope === 'selection' ? 'Selection' : m.scope === 'file' ? 'File' : 'Page'} scan complete · ${m.issues.length} issue${m.issues.length === 1 ? '' : 's'} found`);
     }
-    case 'error': S.status = S.issues.length ? 'done' : 'idle'; S.fixing = false; S.colBusy = null; for (const k in S.colPlan) if (S.colPlan[k] === 'loading') delete S.colPlan[k]; render(); return toast(m.message || 'Something went wrong', true);
+    case 'error': S.status = S.issues.length ? 'done' : 'idle'; S.fixing = false; S.fixProg = null; S.colBusy = null; S.extBusy = false; if (S.cs.scanning || S.cs.busy || S.cs.plan === 'loading') { S.cs.error = m.message || 'Something went wrong'; if (S.cs.plan === 'loading') S.cs.plan = null; } S.cs.scanning = false; S.cs.busy = false; render(); return toast(m.message || 'Something went wrong', true);
     case 'fixed': {
-      S.fixing = false;
+      S.fixing = false; S.fixProg = null;
       let ok = 0, layers = 0, failed = 0, reason = '';
       m.results.forEach((r) => { if (r.ok) { ok++; layers += r.fixed; S.fixed.add(r.id); S.selected.delete(r.id); } else { failed++; reason = r.reason || reason; } });
       render();
       if (failed && !ok) return toast(`Couldn't fix: ${reason}`, true);
-      return toast(`${ok} issue${ok === 1 ? '' : 's'} fixed (${layers} layer${layers === 1 ? '' : 's'})${failed ? ` · ${failed} failed` : ' · ⌘Z to undo'}`, failed > 0);
+      return toast(`${ok} issue${ok === 1 ? '' : 's'} fixed (${layers} layer${layers === 1 ? '' : 's'})${failed ? ` · ${failed} failed${reason ? ' (' + reason + ')' : ''}` : ' · ⌘Z to undo'}`, failed > 0);
     }
     case 'ignored': S.ignoredTotal = m.count; return render();
-    case 'col-plan': { if (S.colSel[m.sourceId] === m.targetKey) S.colPlan[m.sourceId] = m; return render(); }
-    case 'col-swapped': { S.colBusy = null; S.colDone[m.sourceId] = m; delete S.colPlan[m.sourceId]; render(); return toast(`Swapped ${m.vars} variable${m.vars === 1 ? '' : 's'} on ${m.layers} layers · ⌘Z to undo`, m.failed > 0); }
+    case 'col-plan': { if (S.cs.srcId === m.sourceId && csKey() === m.targetKey) S.cs.plan = m; return render(); }
+    case 'ext-swapped': { S.extBusy = false; (m.keys || []).forEach((k) => S.extDone.add(k)); render(); return toast(`Swapped ${m.ok} layer binding${m.ok === 1 ? '' : 's'}${m.failed ? ' · ' + m.failed + ' failed' : ''} · ⌘Z to undo`, m.failed > 0); }
+    case 'col-swapped': {
+      const c = S.cs;
+      c.busy = false;
+      const done = m.updated > 0 && !m.skipped && !m.failed; // fully applied: hide it and show the rest
+      if (done) {
+        c.cols = c.cols.filter((x) => x.id !== m.sourceId);
+        csSetSource(c.cols.length ? c.cols[0].id : '');
+        c.result = m;
+        if (c.srcId) { csPlanNow(); } else { c.plan = null; render(); }
+      } else { c.result = m; c.plan = null; render(); }
+      return toast(m.updated ? `Swapped ${m.updated} binding${m.updated === 1 ? '' : 's'} · ⌘Z to undo` : 'Nothing was swapped', !m.updated || m.failed > 0);
+    }
   }
 };
 
